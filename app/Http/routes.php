@@ -6,7 +6,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', function () {
-        return 'home | <a href="/logout">log out</a>';
+        return view('home');
     });
 });
 

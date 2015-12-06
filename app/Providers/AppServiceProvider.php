@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        view()->share('appName', env('APP_NAME'));
     }
 }

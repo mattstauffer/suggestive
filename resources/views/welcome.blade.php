@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Laravel</title>
+        <title>{{ $appName }}</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -33,14 +33,33 @@
             .title {
                 font-size: 96px;
             }
+
+            .login {
+                font-size: 1.5rem;
+            }
+
+            .login-button {
+                background: #fafafa;
+                border: 1px solid #444;
+                border-radius: 0.5rem;
+                color: #444;
+                font-weight: bold;
+                padding: 0.5rem 1.75rem;
+                text-decoration: none;
+            }
+
+            .login-button:hover {
+                background: #fff;
+                color: #000;
+            }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Laravel 5</div>
+                <div class="title">{{ $appName }}</div>
                 <div class="login">
-                    <a href="/auth/github">Log in with GitHub</a>
+                    <a href="/auth/github" class="login-button">Log in with GitHub</a>
                 </div>
             </div>
         </div>
