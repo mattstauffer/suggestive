@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-@if (Auth::user()->isAdmin())
-    <admin-dashboard></admin-dashboard>
-@else
-    <user-dashboard></user-dashboard>
-@endif
+<p>
+    NAV:
+    <a v-link="{ path: '/' }">Home</a> |
+    <a v-link="{ path: '/add-topic' }">Add Topic</a>
+</p>
+
+<!-- use router-view element as route outlet -->
+<router-view></router-view>
 @endsection

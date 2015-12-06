@@ -2,7 +2,7 @@
 </style>
 
 <template>
-    I am the user dashboard!
+    I am the ADMIN dashboard!
 
     <a v-link="{ path: '/add-topic' }">Add topic</a>
 </template>

@@ -6,9 +6,10 @@
         <link href="/css/app.css" rel="stylesheet" type="text/css">
 
         <script>
-        var App = {
+        var Suggestive = {
             appName: "{{ $appName }}",
-            userId: "{{ Auth::user()->id }}"
+            userId: "{{ Auth::user()->id }}",
+            isAdmin: {{ Auth::user()->isAdmin() ? 'true': 'false' }}
         };
         </script>
     </head>
