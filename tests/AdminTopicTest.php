@@ -83,7 +83,7 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_admins_can_flag_topics()
+    public function test_admins_can_flag_topics_as_yes()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);
