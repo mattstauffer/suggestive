@@ -2,6 +2,7 @@
 
 use App\Topic;
 use App\User;
+use App\Vote;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
@@ -41,6 +42,22 @@ class UserTopicTest extends TestCase
         ]);
         $this->seeJson([
             'title' => $topic2->title
+        ]);
+    }
+
+    public function test_user_can_upvote_a_topic()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+
+        $topic1 = factory(Topic::class)->make();
+        $user->topics()->save($topic1);
+
+        $this->post('api/topics/' . $topic1->id . '/votes');
+
+        $this->visit('api/topics/' . $topic1->id);
+        $this->seeJson([
+            'votes' => 1
         ]);
     }
 }

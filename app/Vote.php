@@ -2,14 +2,15 @@
 
 namespace App;
 
+use App\Topic;
 use App\User;
-use App\Vote;
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class Vote extends Model
 {
     protected $fillable = [
-        'title'
+        'user_id',
+        'topic_id'
     ];
 
     public function user()
@@ -17,8 +18,8 @@ class Topic extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function votes()
+    public function topic()
     {
-        return $this->hasMany(Vote::class);
+        return $this->belongsTo(Topic::class);
     }
 }
