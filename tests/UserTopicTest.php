@@ -71,10 +71,10 @@ class UserTopicTest extends TestCase
         $user->topics()->save($topic);
 
         $this->patch('api/topics/' . $topic->id, [
-            'status' => 'yes'
+            'status' => 'accepted'
         ]);
 
-        $this->visit('api/topics?status=yes');
+        $this->visit('api/topics?status=accepted');
         $this->dontSeeJson([
             'title' => $topic->title
         ]);

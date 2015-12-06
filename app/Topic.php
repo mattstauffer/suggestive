@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
 {
-    const FLAG_YES = 'yes';
+    const FLAG_ACCEPTED = 'accepted';
     const FLAG_DUPLICATE = 'duplicate';
+    const FLAG_REJECTED = 'rejected';
 
     protected $fillable = [
         'title'
@@ -23,8 +24,9 @@ class Topic extends Model
     public static function validStatuses()
     {
         return [
-            self::FLAG_YES,
+            self::FLAG_ACCEPTED,
             self::FLAG_DUPLICATE,
+            self::FLAG_REJECTED
         ];
     }
 
@@ -43,9 +45,21 @@ class Topic extends Model
         return $this->hasMany(Vote::class);
     }
 
-    public function flagYes()
+    public function flagAccepted()
     {
-        $this->status = self::FLAG_YES;
+        $this->status = self::FLAG_ACCEPTED;
+        $this->save();
+    }
+
+    public function flagDuplicate()
+    {
+        $this->status = self::FLAG_DUPLICATE;
+        $this->save();
+    }
+
+    public function flagRejected()
+    {
+        $this->status = self::FLAG_REJECTED;
         $this->save();
     }
 

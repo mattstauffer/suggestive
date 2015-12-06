@@ -25,7 +25,7 @@ class AdminTopicTest extends TestCase
         $user->topics()->save($topic2);
         $user2->topics()->save($topic3);
 
-        $topic2->flagYes();
+        $topic2->flagAccepted();
 
         $this->visit('api/topics?unflagged=true');
         $this->seeJson([
@@ -39,7 +39,7 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_unflagged_topics_dont_show_up_in_yes()
+    public function test_unflagged_topics_dont_show_up_in_accepted()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -48,13 +48,13 @@ class AdminTopicTest extends TestCase
 
         $user->topics()->save($topic1);
 
-        $this->visit('api/topics?status=yes');
+        $this->visit('api/topics?status=accepted');
         $this->dontSeeJson([
             'title' => $topic1->title
         ]);
     }
 
-    public function test_it_can_show_all_yes_topics()
+    public function test_it_can_show_all_accepted_topics()
     {
         $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
@@ -68,10 +68,10 @@ class AdminTopicTest extends TestCase
         $user->topics()->save($topic2);
         $user2->topics()->save($topic3);
 
-        $topic2->flagYes();
-        $topic3->flagYes();
+        $topic2->flagAccepted();
+        $topic3->flagAccepted();
 
-        $this->visit('api/topics?status=yes');
+        $this->visit('api/topics?status=accepted');
         $this->dontSeeJson([
             'title' => $topic1->title
         ]);
@@ -83,7 +83,7 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_admins_can_flag_topics_as_yes()
+    public function test_admins_can_flag_topics_as_accepted()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);
@@ -93,10 +93,10 @@ class AdminTopicTest extends TestCase
         $user->topics()->save($topic);
 
         $this->patch('api/topics/' . $topic->id, [
-            'status' => 'yes'
+            'status' => 'accepted'
         ]);
 
-        $this->visit('api/topics?status=yes');
+        $this->visit('api/topics?status=accepted');
         $this->seeJson([
             'title' => $topic->title
         ]);
@@ -121,6 +121,30 @@ class AdminTopicTest extends TestCase
         ]);
 
         $this->visit('api/topics?status=duplicate');
+        $this->seeJson([
+            'title' => $topic->title
+        ]);
+
+        $this->visit('api/topics?unflagged=true');
+        $this->dontSeeJson([
+            'title' => $topic->title
+        ]);
+    }
+
+    public function test_admins_can_flag_topics_as_rejected()
+    {
+        $user = factory(User::class, 'admin')->create();
+        $this->be($user);
+
+        $topic = factory(Topic::class)->make();
+
+        $user->topics()->save($topic);
+
+        $this->patch('api/topics/' . $topic->id, [
+            'status' => 'rejected'
+        ]);
+
+        $this->visit('api/topics?status=rejected');
         $this->seeJson([
             'title' => $topic->title
         ]);

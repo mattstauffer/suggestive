@@ -11,7 +11,7 @@ CORE
 - [x] List all "yes will do" topics
 - [x] Flag topics for "yes will do"
 - [x] Flag topics for "duplicate"
-- [ ] Flag topics for "will not do"
+- [x] Flag topics for "will not do"
 - [ ] Archive topic as done
 
 NOT CORE
