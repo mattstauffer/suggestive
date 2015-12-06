@@ -4,6 +4,7 @@ namespace App;
 
 use App\User;
 use App\Vote;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
@@ -16,9 +17,14 @@ class Topic extends Model
         'title'
     ];
 
+    protected $casts = [
+        'archived' => 'boolean'
+    ];
+
     protected $patchable = [
         'title',
-        'status'
+        'status',
+        'archived'
     ];
 
     public static function validStatuses()
@@ -66,6 +72,11 @@ class Topic extends Model
     public function scopeUnflagged($query)
     {
         return $query->where('status', null);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('archived', false);
     }
 
     public function patch($properties)

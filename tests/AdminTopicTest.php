@@ -154,4 +154,30 @@ class AdminTopicTest extends TestCase
             'title' => $topic->title
         ]);
     }
+
+    public function test_admins_can_archive_topics()
+    {
+        $user = factory(User::class, 'admin')->create();
+        $this->be($user);
+
+        $topic = factory(Topic::class)->make();
+
+        $user->topics()->save($topic);
+
+        $topic->flagAccepted();
+
+        $this->patch('api/topics/' . $topic->id, [
+            'archived' => true
+        ]);
+
+        $this->visit('api/topics?status=accepted');
+        $this->dontSeeJson([
+            'title' => $topic->title
+        ]);
+
+        $this->visit('api/topics?unflagged=true');
+        $this->dontSeeJson([
+            'title' => $topic->title
+        ]);
+    }
 }

@@ -22,14 +22,14 @@ class TopicsController extends Controller
             return $this->indexByStatus($request->get('status'));
         }
 
-        return Topic::all()->map(function ($topic) {
+        return Topic::active()->get()->map(function ($topic) {
             return new ApiTopic($topic);
         });
     }
 
     private function unflaggedIndex()
     {
-        return Topic::unflagged()->get()->map(function ($topic) {
+        return Topic::unflagged()->active()->get()->map(function ($topic) {
             return new ApiTopic($topic);
         });
     }
@@ -45,7 +45,7 @@ class TopicsController extends Controller
     {
         $this->validateStatus($status);
 
-        return Topic::where('status', $status)->get()->map(function ($topic) {
+        return Topic::where('status', $status)->active()->get()->map(function ($topic) {
             return new ApiTopic($topic);
         });
     }
