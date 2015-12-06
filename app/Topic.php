@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
 {
+    const FLAG_YES = 'yes';
+
     protected $fillable = [
         'title'
     ];
@@ -20,5 +22,16 @@ class Topic extends Model
     public function votes()
     {
         return $this->hasMany(Vote::class);
+    }
+
+    public function flagYes()
+    {
+        $this->status = self::FLAG_YES;
+        $this->save();
+    }
+
+    public function scopeUnflagged($query)
+    {
+        return $query->where('status', null);
     }
 }

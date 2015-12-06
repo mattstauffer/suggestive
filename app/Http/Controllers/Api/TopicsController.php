@@ -11,9 +11,20 @@ use Illuminate\Support\Facades\Auth;
 
 class TopicsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->get('unflagged')) {
+            return $this->unflaggedIndex();
+        }
+
         return Topic::all()->map(function ($topic) {
+            return new ApiTopic($topic);
+        });
+    }
+
+    private function unflaggedIndex()
+    {
+        return Topic::unflagged()->get()->map(function ($topic) {
             return new ApiTopic($topic);
         });
     }

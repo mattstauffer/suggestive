@@ -16,6 +16,7 @@ class CreateTopicsTable extends Migration
             $table->increments('id');
             $table->text('title');
             $table->integer('user_id');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
