@@ -14,6 +14,11 @@ class Topic extends Model
         'title'
     ];
 
+    protected $patchable = [
+        'title',
+        'status'
+    ];
+
     public static function isValidStatus($status)
     {
         return $status === null || $status === self::FLAG_YES;
@@ -38,5 +43,16 @@ class Topic extends Model
     public function scopeUnflagged($query)
     {
         return $query->where('status', null);
+    }
+
+    public function patch($properties)
+    {
+        foreach ($properties as $key => $value) {
+            if (! in_array($key, $this->patchable)) {
+                throw new Exception("Cannot patch {$key}");
+            }
+
+            $this->$key = $value;
+        }
     }
 }

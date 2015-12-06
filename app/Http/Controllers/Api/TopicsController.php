@@ -91,26 +91,12 @@ class TopicsController extends Controller
         //
     }
 
-    // @todo: Is there a better way to do this?
-    private function patchable($field)
-    {
-        return in_array($field, [
-            'status'
-        ]);
-    }
-
     public function patch($id, Request $request)
     {
         $topic = Topic::findorFail($id);
         $this->authorize('update-topic', $topic);
 
-        foreach ($request->all() as $key => $value) {
-            if (! $this->patchable($key)) {
-                throw new Exception("Cannot patch {$key}");
-            }
-
-            $topic->$key = $value;
-        }
+        $topic->patch($request->all());
         $topic->save();
 
         return response()->json([
