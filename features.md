@@ -15,7 +15,7 @@
 - [x] Flag topics for "will not do"
 - [x] Archive topic as done
 
-###
+### NOT CORE
 - [ ] Comment on a topic
 - [ ] Grab a smaller group of the "yes will do" topics for a particular episode/etc.
 - [ ] Suggest revisions to a topic
