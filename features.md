@@ -2,7 +2,7 @@
 
 ### CORE
 #### Users
-- [ ] Authenticate via GitHub
+- [x] Authenticate via GitHub
 - [x] Suggest a topic
 - [x] See a list of all suggested topics
 - [x] Vote up a topic

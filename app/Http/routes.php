@@ -4,8 +4,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'api'], function () {
-    Route::post('topics/{id}/votes', 'Api\TopicsVoteController@store');
-    Route::patch('topics/{id}', 'Api\TopicsController@patch');
-    Route::resource('topics', 'Api\TopicsController');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('home', function () {
+        return 'home | <a href="/logout">log out</a>';
+    });
 });
+
+Route::group(['prefix' => 'api', 'namespace' => 'Api'], function () {
+    Route::post('topics/{id}/votes', 'TopicsVoteController@store');
+    Route::patch('topics/{id}', 'TopicsController@patch');
+    Route::resource('topics', 'TopicsController');
+});
+
+Route::group(['prefix' => 'auth/github', 'namespace' => 'Auth'], function () {
+    Route::get('/', 'GitHubOAuthController@redirectToProvider');
+    Route::get('callback', 'GitHubOAuthController@handleProviderCallback');
+});
+
+Route::get('logout', 'Auth\AuthController@getLogout');
+
