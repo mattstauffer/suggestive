@@ -42,4 +42,9 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany(Topic::class);
     }
+
+    public function isAdmin()
+    {
+        return $this->role === 'owner' || $this->role === 'admin';
+    }
 }

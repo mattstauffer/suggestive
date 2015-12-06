@@ -67,7 +67,7 @@ class TopicsController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Topic successfully saved.'
+            'message' => 'Topic successfully created.'
         ]);
     }
 
@@ -89,5 +89,31 @@ class TopicsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function patch($id, Request $request)
+    {
+        // @todo: Is there a better way to do this?
+        $patchable = [
+            'status'
+        ];
+
+        $topic = Topic::findorFail($id);
+
+        $this->authorize('update-topic', $topic);
+
+        foreach ($request->all() as $key => $value) {
+            if (! in_array($key, $patchable)) {
+                throw new Exception('Cannot patch ' . $key);
+            }
+
+            $topic->$key = $value;
+        }
+        $topic->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Topic successfully updated.'
+        ]);
     }
 }

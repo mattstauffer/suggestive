@@ -20,6 +20,12 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->defineAs(App\User::class, 'admin', function ($faker) use ($factory) {
+    $user = $factory->raw(App\User::class);
+
+    return array_merge($user, ['role' => 'admin']);
+});
+
 $factory->define(App\Topic::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->sentence,
