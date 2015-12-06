@@ -106,28 +106,4 @@ class AdminTopicTest extends TestCase
             'title' => $topic->title
         ]);
     }
-
-    public function test_users_cant_flag_topics()
-    {
-        $user = factory(User::class)->create();
-        $this->be($user);
-
-        $topic = factory(Topic::class)->make();
-
-        $user->topics()->save($topic);
-
-        $this->patch('api/topics/' . $topic->id, [
-            'status' => 'yes'
-        ]);
-
-        $this->visit('api/topics?status=yes');
-        $this->dontSeeJson([
-            'title' => $topic->title
-        ]);
-
-        $this->visit('api/topics?unflagged=true');
-        $this->seeJson([
-            'title' => $topic->title
-        ]);
-    }
 }
