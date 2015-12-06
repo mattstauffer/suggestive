@@ -6,4 +6,4 @@ Suggestive makes it easy for podcasts and other recurring content sources to tak
 
 Features:
 
-[Features.txt](https://github.com/mattstauffer/suggestive/blob/master/tests/features.txt)
+[Features.md](https://github.com/mattstauffer/suggestive/blob/master/features.md)

@@ -1,12 +1,13 @@
-Features
-CORE
-= Users =
+##  Features
+
+### CORE
+#### Users
 - [ ] Authenticate via GitHub
 - [x] Suggest a topic
 - [x] See a list of all suggested topics
 - [x] Vote up a topic
 
-= Owners =
+#### Owners
 - [x] List all un-flagged topics
 - [x] List all "yes will do" topics
 - [x] Flag topics for "yes will do"
@@ -14,7 +15,7 @@ CORE
 - [x] Flag topics for "will not do"
 - [x] Archive topic as done
 
-NOT CORE
+###
 - [ ] Comment on a topic
 - [ ] Grab a smaller group of the "yes will do" topics for a particular episode/etc.
 - [ ] Suggest revisions to a topic
