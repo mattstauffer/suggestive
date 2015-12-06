@@ -9,7 +9,7 @@
         var Suggestive = {
             appName: "{{ $appName }}",
             userId: "{{ Auth::user()->id }}",
-            isAdmin: {{ Auth::user()->isAdmin() ? 'true': 'false' }}
+            isAdmin: {{ Auth::user()->isAdmin() ? 'true' : 'false' }}
         };
         </script>
     </head>

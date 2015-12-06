@@ -10,7 +10,6 @@
 <script>
     export default {
         ready: function () {
-            // alert('t');
         }
     };
 </script>

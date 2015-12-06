@@ -12198,34 +12198,37 @@ exports.insert = function (css) {
 window.Vue = require('vue');
 window.VueRouter = require('vue-router');
 
-var UserDashboard = require('./components/user-dashboard.vue');
+if (Suggestive.isAdmin) {
+    var Dashboard = require('./components/admin-dashboard.vue');
+} else {
+    var Dashboard = require('./components/user-dashboard.vue');
+}
 var AddTopic = require('./components/add-topic.vue');
+
 var App = Vue.extend({});
 
 var router = new VueRouter();
 
 router.map({
+    '/': {
+        component: Dashboard
+    },
     '/add-topic': {
         component: AddTopic
-    },
-    '/': {
-        component: UserDashboard
     }
 });
 
 router.start(App, '#app');
 
-},{"./components/add-topic.vue":7,"./components/user-dashboard.vue":8,"vue":4,"vue-router":3}],7:[function(require,module,exports){
+},{"./components/add-topic.vue":7,"./components/admin-dashboard.vue":8,"./components/user-dashboard.vue":9,"vue":4,"vue-router":3}],7:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+        value: true
 });
 exports.default = {
-    ready: function ready() {
-        // alert('t');
-    }
+        ready: function ready() {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    Add topic!\n"
@@ -12249,12 +12252,37 @@ var __vueify_style__ = require("vueify-insert-css").insert("\n")
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+        value: true
 });
 exports.default = {
-    ready: function ready() {
-        // alert('t');
-    }
+        ready: function ready() {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    I am the ADMIN dashboard!\n\n    <a v-link=\"{ path: '/add-topic' }\">Add topic</a>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/admin-dashboard.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":4,"vue-hot-reload-api":2,"vueify-insert-css":5}],9:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n")
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+        value: true
+});
+exports.default = {
+        ready: function ready() {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    I am the user dashboard!\n\n    <a v-link=\"{ path: '/add-topic' }\">Add topic</a>\n"
