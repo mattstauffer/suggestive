@@ -14,6 +14,11 @@ class Topic extends Model
         'title'
     ];
 
+    public static function isValidStatus($status)
+    {
+        return $status === null || $status === self::FLAG_YES;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

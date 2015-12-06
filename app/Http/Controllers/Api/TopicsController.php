@@ -6,6 +6,7 @@ use App\ApiObjects\Topic as ApiTopic;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Topic;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,6 +18,10 @@ class TopicsController extends Controller
             return $this->unflaggedIndex();
         }
 
+        if ($request->get('status')) {
+            return $this->indexByStatus($request->get('status'));
+        }
+
         return Topic::all()->map(function ($topic) {
             return new ApiTopic($topic);
         });
@@ -25,6 +30,22 @@ class TopicsController extends Controller
     private function unflaggedIndex()
     {
         return Topic::unflagged()->get()->map(function ($topic) {
+            return new ApiTopic($topic);
+        });
+    }
+
+    private function validateStatus($status)
+    {
+        if (! Topic::isValidStatus($status)) {
+            throw new Exception('Invalid status.');
+        }
+    }
+
+    private function indexByStatus($status)
+    {
+        $this->validateStatus($status);
+
+        return Topic::where('status', $status)->get()->map(function ($topic) {
             return new ApiTopic($topic);
         });
     }
