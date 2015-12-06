@@ -12,7 +12,7 @@ CORE
 - [x] Flag topics for "yes will do"
 - [x] Flag topics for "duplicate"
 - [x] Flag topics for "will not do"
-- [ ] Archive topic as done
+- [x] Archive topic as done
 
 NOT CORE
 - [ ] Comment on a topic
