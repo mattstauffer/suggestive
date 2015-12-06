@@ -54,5 +54,7 @@ class Topic extends Model
 
             $this->$key = $value;
         }
+
+        $this->save();
     }
 }

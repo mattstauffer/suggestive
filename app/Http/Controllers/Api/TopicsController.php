@@ -97,7 +97,6 @@ class TopicsController extends Controller
         $this->authorize('update-topic', $topic);
 
         $topic->patch($request->all());
-        $topic->save();
 
         return response()->json([
             'success' => true,
