@@ -1,5 +1,3 @@
-## Suggestive
-
 ![Suggestive Logo](suggestive-logo.png)
 
 [ ![Codeship Status for mattstauffer/suggestive](https://codeship.com/projects/13c6db40-7e06-0133-5999-1a60f99c26b7/status?branch=master)](https://codeship.com/projects/120269)
