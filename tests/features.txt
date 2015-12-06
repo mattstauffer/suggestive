@@ -1,0 +1,25 @@
+Features
+CORE
+= Users =
+- Authenticate via GitHub
+- Suggest a topic
+- See a list of all suggested topics
+- Vote up a topic
+
+= Owners =
+- List all un-flagged topics
+- List all "yes will do" topics
+- See and sort topics
+- Flag topics for "yes will do"
+- Flag topics for "done"
+- Flag topics for "duplicate"
+- Flag topics for "will not do"
+- Archive topic as done
+
+NOT CORE
+- Comment on a topic
+- Grab a smaller group of the "yes will do" topics for a particular episode/etc.
+- Suggest revisions to a topic
+- Edit a topic
+- List all "will not do" topics
+- When flagging duplicate, allow for linking to other topic
