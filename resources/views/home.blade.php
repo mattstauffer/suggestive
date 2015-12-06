@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-home | <a href="/logout">log out</a>
+@if (Auth::user()->isAdmin())
+    <admin-dashboard></admin-dashboard>
+@else
+    <user-dashboard></user-dashboard>
+@endif
 @endsection

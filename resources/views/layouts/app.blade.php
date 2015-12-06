@@ -16,6 +16,8 @@
         <div class="container" id="app">
             <div class="content">
                 <h1>{{ $appName }}</h1>
+                <div>home | <a href="/logout">log out</a></div>
+                <br>
 
                 @yield('content')
 
