@@ -19,9 +19,6 @@ class TopicsVoteController extends Controller
 
         $vote->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Vote successfully saved'
-        ]);
+        return response('', 200);
     }
 }

@@ -65,10 +65,7 @@ class TopicsController extends Controller
         $topic->title = $request->get('title');
         Auth::user()->topics()->save($topic);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Topic successfully created.'
-        ]);
+        return response('', 201);
     }
 
     public function show($id)
@@ -98,9 +95,6 @@ class TopicsController extends Controller
 
         $topic->patch($request->all());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Topic successfully updated.'
-        ]);
+        return response('', 200);
     }
 }
