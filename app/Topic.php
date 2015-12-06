@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Topic extends Model
 {
     const FLAG_YES = 'yes';
+    const FLAG_DUPLICATE = 'duplicate';
 
     protected $fillable = [
         'title'
@@ -19,9 +20,17 @@ class Topic extends Model
         'status'
     ];
 
+    public static function validStatuses()
+    {
+        return [
+            self::FLAG_YES,
+            self::FLAG_DUPLICATE,
+        ];
+    }
+
     public static function isValidStatus($status)
     {
-        return $status === null || $status === self::FLAG_YES;
+        return $status === null || in_array($status, self::validStatuses());
     }
 
     public function user()

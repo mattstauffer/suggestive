@@ -106,4 +106,28 @@ class AdminTopicTest extends TestCase
             'title' => $topic->title
         ]);
     }
+
+    public function test_admins_can_flag_topics_as_duplicate()
+    {
+        $user = factory(User::class, 'admin')->create();
+        $this->be($user);
+
+        $topic = factory(Topic::class)->make();
+
+        $user->topics()->save($topic);
+
+        $this->patch('api/topics/' . $topic->id, [
+            'status' => 'duplicate'
+        ]);
+
+        $this->visit('api/topics?status=duplicate');
+        $this->seeJson([
+            'title' => $topic->title
+        ]);
+
+        $this->visit('api/topics?unflagged=true');
+        $this->dontSeeJson([
+            'title' => $topic->title
+        ]);
+    }
 }
