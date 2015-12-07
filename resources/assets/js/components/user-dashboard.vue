@@ -18,6 +18,7 @@
             <a v-link="{ path: '/add-topic' }" class="btn btn-primary pull-right">Add topic</a>
             <h2>Topics</h2>
 
+            <p v-show="topics.length == 0">No topics yet.</p>
             <div v-for="topic in topics" class="row">
                 <div class="col-xs-2 col-sm-1">
                     <a @click.prevent="voteFor(topic)" class="btn btn-primary">UP</a>
