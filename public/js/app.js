@@ -13091,7 +13091,7 @@ var App = Vue.extend({
         };
     },
     created: function created() {
-        this.$http.get('topics', function (data) {
+        this.$http.get('topics', function (data, status, request) {
             this.topics = data;
         }).error(function (data, status, request) {
             console.log('error', data);
@@ -13134,20 +13134,22 @@ exports.default = {
         addTopic: function addTopic() {
             var self = this;
 
-            this.topics.push({
-                title: this.title,
-                votes: 0
-            });
-
             this.$http.post('topics', { title: this.title }, function (data) {
                 self.title = '';
+
+                self.topics.push({
+                    id: data.id,
+                    title: data.title,
+                    votes: 0
+                });
+
                 self.$route.router.go('/');
             });
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h2>Add Topic</h2>\n\n    <form @submit.prevent=\"addTopic\">\n        <label>Title</label><br>\n        <input type=\"text\" v-model=\"title\" class=\"form-control\"><br>\n        <input type=\"submit\" class=\"btn btn-primary\">\n    </form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Add Topic</h2>\n\n            <form @submit.prevent=\"addTopic\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\"><br>\n                <input type=\"submit\" class=\"btn btn-primary\">\n            </form>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -13191,8 +13193,8 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],17:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n")
-"use strict";
+var __vueify_style__ = require("vueify-insert-css").insert("\n    .panel-heading {\n        padding: 5px 10px;\n    }\n    .panel-body {\n        padding: 10px;\n    }\n    .topic-title {\n        font-size: 1.75rem;\n        margin-bottom: 0;\n        margin-top: 0;\n    }\n")
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -13203,17 +13205,29 @@ exports.default = {
             sync: true
         }
     },
-    ready: function ready() {}
+    ready: function ready() {},
+    methods: {
+        voteFor: function voteFor(topic) {
+            this.$http.post('topics/' + topic.id + '/votes', [], function (data, status, request) {
+                // New vote
+                if (status == 200) {
+                    topic.votes++;
+                }
+            }).error(function (data, status, request) {
+                console.log('error');
+            });
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        I am the user dashboard!\n\n        <a v-link=\"{ path: '/add-topic' }\" class=\"btn btn-primary pull-right\">Add topic</a>\n\n        <ul>\n            <li v-for=\"topic in topics\">\n                {{ topic.title }} ({{ topic.votes }})\n            </li>\n        </ul>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <a v-link=\"{ path: '/add-topic' }\" class=\"btn btn-primary pull-right\">Add topic</a>\n            <h2>Topics</h2>\n\n            <div v-for=\"topic in topics\" class=\"row\">\n                <div class=\"col-xs-2 col-sm-1\">\n                    <a @click.prevent=\"voteFor(topic)\" class=\"btn btn-primary\">UP</a>\n                </div>\n                <div class=\"col-xs-10 col-sm-11\">\n                    <div class=\"panel panel-default\">\n                        <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }} ({{ topic.votes }})</h3></div>\n                        <div class=\"panel-body\">\n                            Abc\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/user-dashboard.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n"] = false
+    require("vueify-insert-css").cache["\n    .panel-heading {\n        padding: 5px 10px;\n    }\n    .panel-body {\n        padding: 10px;\n    }\n    .topic-title {\n        font-size: 1.75rem;\n        margin-bottom: 0;\n        margin-top: 0;\n    }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

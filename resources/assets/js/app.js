@@ -20,7 +20,7 @@ var App = Vue.extend({
         };
     },
     created: function () {
-        this.$http.get('topics', function (data) {
+        this.$http.get('topics', function (data, status, request) {
             this.topics = data;
         }).error(function (data, status, request) {
             console.log('error', data);

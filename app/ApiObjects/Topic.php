@@ -20,6 +20,7 @@ class Topic implements Arrayable, Jsonable
     public function toArray()
     {
         return [
+            'id' => $this->topic->id,
             'title' => $this->topic->title,
             'votes' => $this->topic->votes()->count()
         ];

@@ -17,7 +17,7 @@ class TopicsVoteController extends Controller
             'topic_id' => $topicId
         ];
 
-        if (! Vote::find($data)->isEmpty()) {
+        if (Vote::where($data)->count() > 0) {
             return response('', 204);
         }
 

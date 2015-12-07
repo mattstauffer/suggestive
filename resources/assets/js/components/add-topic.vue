@@ -2,13 +2,17 @@
 </style>
 
 <template>
-    <h2>Add Topic</h2>
+    <div class="row">
+        <div class="col-md-8 col-md-push-2">
+            <h2>Add Topic</h2>
 
-    <form @submit.prevent="addTopic">
-        <label>Title</label><br>
-        <input type="text" v-model="title" class="form-control"><br>
-        <input type="submit" class="btn btn-primary">
-    </form>
+            <form @submit.prevent="addTopic">
+                <label>Title</label><br>
+                <input type="text" v-model="title" class="form-control"><br>
+                <input type="submit" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -27,13 +31,15 @@
             addTopic: function () {
                 var self = this;
 
-                this.topics.push({
-                    title: this.title,
-                    votes: 0
-                });
-
                 this.$http.post('topics', { title: this.title }, function (data) {
                     self.title = '';
+
+                    self.topics.push({
+                        id: data.id,
+                        title: data.title,
+                        votes: 0
+                    });
+
                     self.$route.router.go('/');
                 });
             }
