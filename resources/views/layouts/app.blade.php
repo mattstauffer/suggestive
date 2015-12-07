@@ -17,6 +17,8 @@
             isAdmin: {{ Auth::user()->isAdmin() ? 'true' : 'false' }}
         };
         </script>
+
+        @include('partials.svg')
     </head>
     <body>
         @yield('body')

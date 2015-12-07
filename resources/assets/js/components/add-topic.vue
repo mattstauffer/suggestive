@@ -10,6 +10,7 @@
                 <label>Title</label><br>
                 <input type="text" v-model="title" class="form-control" autofocus v-el:add-topic-input><br>
                 <input type="submit" class="btn btn-primary" value="Add topic">
+                <a v-link="{ path: '/' }" class="btn btn-default">Cancel</a>
             </form>
         </div>
     </div>

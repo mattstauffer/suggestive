@@ -15,13 +15,20 @@
 <template>
     <div class="row">
         <div class="col-md-8 col-md-push-2">
-            <a v-link="{ path: '/add-topic' }" class="btn btn-primary pull-right">Add topic</a>
+            <a v-link="{ path: '/add-topic' }" class="btn btn-primary add-button pull-right">
+                <svg class="icon icon-plus" style=""><use xlink:href="#icon-plus"></use></svg>
+                Add topic</a>
             <h2>Topics</h2>
 
             <p v-show="topics.length == 0">No topics yet.</p>
             <div v-for="topic in topics" class="row">
                 <div class="col-xs-2 col-sm-1">
-                    <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', topic.userVotedFor ? 'disabled' : '' ]">UP</a>
+                    <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
+                        <div class="clearfix">
+                            <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up"><use xlink:href="#icon-arrow-up"></use></svg>
+                            <svg v-show="topic.userVotedFor" class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-xs-10 col-sm-11">
                     <div class="panel panel-default">
