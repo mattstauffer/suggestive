@@ -5749,4 +5749,7 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+body {
+  padding-top: 70px; }
+
 /*# sourceMappingURL=app.css.map */

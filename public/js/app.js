@@ -12205,7 +12205,13 @@ if (Suggestive.isAdmin) {
 }
 var AddTopic = require('./components/add-topic.vue');
 
-var App = Vue.extend({});
+var App = Vue.extend({
+    data: function data() {
+        return {
+            topics: ['alphabet']
+        };
+    }
+});
 
 var router = new VueRouter();
 
@@ -12222,16 +12228,31 @@ router.start(App, '#app');
 
 },{"./components/add-topic.vue":7,"./components/admin-dashboard.vue":8,"./components/user-dashboard.vue":9,"vue":4,"vue-router":3}],7:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
 exports.default = {
-        ready: function ready() {}
+    data: function data() {
+        return {
+            title: ''
+        };
+    },
+    props: {
+        topics: {
+            sync: true
+        }
+    },
+    methods: {
+        addTopic: function addTopic() {
+            this.topics.push(this.title);
+            console.log(this.topics);
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    Add topic!\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h2>Add Topic</h2>\n\n    <form @submit.prevent=\"addTopic\">\n        <label>Title</label><br>\n        <input type=\"text\" v-model=\"title\" class=\"form-control\"><br>\n        <input type=\"submit\" class=\"btn btn-primary\">\n    </form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -12258,7 +12279,7 @@ exports.default = {
         ready: function ready() {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    I am the ADMIN dashboard!\n\n    <a v-link=\"{ path: '/add-topic' }\">Add topic</a>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        I am the ADMIN dashboard!\n\n        <a v-link=\"{ path: '/add-topic' }\">Add topic</a>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -12279,13 +12300,18 @@ var __vueify_style__ = require("vueify-insert-css").insert("\n")
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
 exports.default = {
-        ready: function ready() {}
+    props: {
+        topics: {
+            sync: true
+        }
+    },
+    ready: function ready() {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    I am the user dashboard!\n\n    <a v-link=\"{ path: '/add-topic' }\">Add topic</a>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        I am the user dashboard!\n\n        <a v-link=\"{ path: '/add-topic' }\" class=\"btn btn-primary pull-right\">Add topic</a>\n\n        <ul>\n            <li v-for=\"topic in topics\">\n                {{ topic }}\n            </li>\n        </ul>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

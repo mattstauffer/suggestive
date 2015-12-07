@@ -2,12 +2,33 @@
 </style>
 
 <template>
-    Add topic!
+    <h2>Add Topic</h2>
+
+    <form @submit.prevent="addTopic">
+        <label>Title</label><br>
+        <input type="text" v-model="title" class="form-control"><br>
+        <input type="submit" class="btn btn-primary">
+    </form>
 </template>
 
 <script>
     export default {
-        ready: function () {
+        data: function () {
+            return {
+                title: ''
+            };
+        },
+        props: {
+            topics: {
+                sync: true
+            }
+        },
+        methods: {
+            addTopic: function ()
+            {
+                this.topics.push(this.title);
+                console.log(this.topics);
+            }
         }
     };
 </script>

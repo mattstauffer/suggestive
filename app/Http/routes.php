@@ -5,7 +5,7 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('home', function () {
+    Route::get('dashboard', function () {
         return view('home');
     });
 });

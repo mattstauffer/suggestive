@@ -8,7 +8,15 @@ if (Suggestive.isAdmin) {
 }
 var AddTopic = require('./components/add-topic.vue');
 
-var App = Vue.extend({});
+var App = Vue.extend({
+    data: function() {
+        return {
+            topics: [
+                'alphabet'
+            ]
+        };
+    }
+});
 
 var router = new VueRouter();
 
