@@ -26,7 +26,10 @@
         methods: {
             addTopic: function ()
             {
-                this.topics.push(this.title);
+                this.topics.push({
+                    title: this.title,
+                    votes: 0
+                });
                 this.title = '';
                 this.$route.router.go('/');
             }

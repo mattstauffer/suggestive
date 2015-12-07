@@ -1,6 +1,10 @@
 window.Vue = require('vue');
 window.VueRouter = require('vue-router');
 
+Vue.use(require('vue-resource'));
+
+Vue.http.options.root = '/api';
+
 if (Suggestive.isAdmin) {
     var Dashboard = require('./components/admin-dashboard.vue');
 } else {
@@ -11,10 +15,15 @@ var AddTopic = require('./components/add-topic.vue');
 var App = Vue.extend({
     data: function() {
         return {
-            topics: [
-                'alphabet'
-            ]
+            topics: []
         };
+    },
+    created: function () {
+        this.$http.get('topics', function (data) {
+            this.topics = data;
+        }).error(function (data, status, request) {
+            console.log('error', data);
+        });
     }
 });
 

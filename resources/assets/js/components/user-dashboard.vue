@@ -9,7 +9,7 @@
 
         <ul>
             <li v-for="topic in topics">
-                {{ topic }}
+                {{ topic.title }} ({{ topic.votes }})
             </li>
         </ul>
     </div>
