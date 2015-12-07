@@ -4,6 +4,7 @@ window.VueRouter = require('vue-router');
 Vue.use(require('vue-resource'));
 
 Vue.http.options.root = '/api';
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').getAttribute('content');
 
 if (Suggestive.isAdmin) {
     var Dashboard = require('./components/admin-dashboard.vue');

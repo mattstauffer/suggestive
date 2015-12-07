@@ -24,14 +24,18 @@
             }
         },
         methods: {
-            addTopic: function ()
-            {
+            addTopic: function () {
+                var self = this;
+
                 this.topics.push({
                     title: this.title,
                     votes: 0
                 });
-                this.title = '';
-                this.$route.router.go('/');
+
+                this.$http.post('topics', { title: this.title }, function (data) {
+                    self.title = '';
+                    self.$route.router.go('/');
+                });
             }
         }
     };
