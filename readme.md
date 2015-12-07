@@ -7,3 +7,7 @@ Suggestive makes it easy for podcasts and other recurring content sources to tak
 Features:
 
 [Features.md](https://github.com/mattstauffer/suggestive/blob/master/features.md)
+
+Demo of current progress:
+
+![Demo of where it is right now](demo.gif)
