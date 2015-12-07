@@ -8,8 +8,8 @@
 
             <form @submit.prevent="addTopic">
                 <label>Title</label><br>
-                <input type="text" v-model="title" class="form-control"><br>
-                <input type="submit" class="btn btn-primary">
+                <input type="text" v-model="title" class="form-control" autofocus v-el:add-topic-input><br>
+                <input type="submit" class="btn btn-primary" value="Add topic">
             </form>
         </div>
     </div>
@@ -43,6 +43,9 @@
                     self.$route.router.go('/');
                 });
             }
+        },
+        ready: function () {
+            this.$els.addTopicInput.focus();
         }
     };
 </script>

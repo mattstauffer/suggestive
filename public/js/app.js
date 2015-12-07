@@ -13146,10 +13146,13 @@ exports.default = {
                 self.$route.router.go('/');
             });
         }
+    },
+    ready: function ready() {
+        this.$els.addTopicInput.focus();
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Add Topic</h2>\n\n            <form @submit.prevent=\"addTopic\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\"><br>\n                <input type=\"submit\" class=\"btn btn-primary\">\n            </form>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Add Topic</h2>\n\n            <form @submit.prevent=\"addTopic\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\" autofocus=\"\" v-el:add-topic-input=\"\"><br>\n                <input type=\"submit\" class=\"btn btn-primary\" value=\"Add topic\">\n            </form>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
