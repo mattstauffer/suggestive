@@ -12247,7 +12247,8 @@ exports.default = {
     methods: {
         addTopic: function addTopic() {
             this.topics.push(this.title);
-            console.log(this.topics);
+            this.title = '';
+            this.$route.router.go('/');
         }
     }
 };
