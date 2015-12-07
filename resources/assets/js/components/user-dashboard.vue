@@ -21,13 +21,13 @@
             <p v-show="topics.length == 0">No topics yet.</p>
             <div v-for="topic in topics" class="row">
                 <div class="col-xs-2 col-sm-1">
-                    <a @click.prevent="voteFor(topic)" class="btn btn-primary">UP</a>
+                    <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', topic.userVotedFor ? 'disabled' : '' ]">UP</a>
                 </div>
                 <div class="col-xs-10 col-sm-11">
                     <div class="panel panel-default">
                         <div class="panel-heading"><h3 class="topic-title">{{ topic.title }} ({{ topic.votes }})</h3></div>
                         <div class="panel-body">
-                            Abc
+                            Body?
                         </div>
                     </div>
                 </div>
@@ -52,8 +52,10 @@
                     if (status == 200) {
                         topic.votes++;
                     }
+
+                    topic.userVotedFor = true;
                 }).error(function (data, status, request) {
-                    console.log('error');
+                    console.log('error', data, status);
                 });
             }
         }

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Topic;
+use App\Vote;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -46,5 +47,10 @@ class User extends Model implements AuthenticatableContract,
     public function isAdmin()
     {
         return $this->role === 'owner' || $this->role === 'admin';
+    }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
     }
 }

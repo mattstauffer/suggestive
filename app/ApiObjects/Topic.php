@@ -2,6 +2,7 @@
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Facades\Auth;
 
 class Topic implements Arrayable, Jsonable
 {
@@ -22,7 +23,8 @@ class Topic implements Arrayable, Jsonable
         return [
             'id' => $this->topic->id,
             'title' => $this->topic->title,
-            'votes' => $this->topic->votes()->count()
+            'votes' => $this->topic->votes()->count(),
+            'userVotedFor' => in_array($this->topic->id, Auth::user()->votes->lists('topic_id')->toArray())
         ];
     }
 }
