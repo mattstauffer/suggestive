@@ -12,12 +12,16 @@ class TopicsVoteController extends Controller
 {
     public function store($topicId, Request $request)
     {
-        $vote = Vote::firstOrNew([
+        $data = [
             'user_id' => Auth::user()->id,
             'topic_id' => $topicId
-        ]);
+        ];
 
-        $vote->save();
+        if (! Vote::find($data)->isEmpty()) {
+            return response('', 204);
+        }
+
+        Vote::create($data);
 
         return response('', 200);
     }
