@@ -67,7 +67,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><h3 class="topic-title">{{ topic.title }}</h3></div>
                         <div class="panel-body">
-                            <!-- Body? -->
+                            {{ topic.description }}
                         </div>
                     </div>
                 </div>

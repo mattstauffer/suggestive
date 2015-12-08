@@ -14,7 +14,8 @@ class Topic extends Model
     const FLAG_REJECTED = 'rejected';
 
     protected $fillable = [
-        'title'
+        'title',
+        'description'
     ];
 
     protected $casts = [

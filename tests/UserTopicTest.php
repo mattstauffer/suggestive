@@ -16,12 +16,31 @@ class UserTopicTest extends TestCase
         $this->be(factory(User::class)->create());
 
         $this->post('api/topics', [
-            'title' => 'How is Laravel 5.2 going?'
+            'title' => 'How is Laravel 5.2 going?',
+            'description' => 'Just because I am curious'
         ]);
 
         $this->visit('api/topics');
         $this->seeJson([
-            'title' => 'How is Laravel 5.2 going?'
+            'title' => 'How is Laravel 5.2 going?',
+            'description' => 'Just because I am curious'
+        ]);
+    }
+
+    public function test_upon_creating_a_topic_return_contains_all_relevant_data()
+    {
+        $this->be(factory(User::class)->create());
+
+        $this->post('api/topics', [
+            'title' => 'How is Laravel 5.2 going?',
+            'description' => 'Just because I am curious'
+        ]);
+
+        $this->seeJson([
+            'title' => 'How is Laravel 5.2 going?',
+            'description' => 'Just because I am curious',
+            'userVotedFor' => false, // Hm, curious.
+            'votes' => 0
         ]);
     }
 
@@ -38,10 +57,12 @@ class UserTopicTest extends TestCase
 
         $this->visit('api/topics');
         $this->seeJson([
-            'title' => $topic1->title
+            'title' => $topic1->title,
+            'description' => $topic1->description,
         ]);
         $this->seeJson([
-            'title' => $topic2->title
+            'title' => $topic2->title,
+            'description' => $topic1->description,
         ]);
     }
 

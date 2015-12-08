@@ -13122,7 +13122,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     data: function data() {
         return {
-            title: ''
+            title: '',
+            description: ''
         };
     },
     props: {
@@ -13134,12 +13135,14 @@ exports.default = {
         addTopic: function addTopic() {
             var self = this;
 
-            this.$http.post('topics', { title: this.title }, function (data) {
+            this.$http.post('topics', { title: this.title, description: this.description }, function (data) {
                 self.title = '';
+                self.description = '';
 
                 self.topics.push({
                     id: data.id,
                     title: data.title,
+                    description: data.description,
                     votes: 0
                 });
 
@@ -13152,7 +13155,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Add Topic</h2>\n\n            <form @submit.prevent=\"addTopic\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\" autofocus=\"\" v-el:add-topic-input=\"\"><br>\n                <input type=\"submit\" class=\"btn btn-primary\" value=\"Add topic\">\n                <a v-link=\"{ path: '/' }\" class=\"btn btn-default\">Cancel</a>\n            </form>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Suggest a Topic</h2>\n\n            <form @submit.prevent=\"addTopic\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\" length=\"255\" autofocus=\"\" v-el:add-topic-input=\"\"><br>\n\n                <label>Description</label><br>\n                <textarea v-model=\"description\" class=\"form-control\"></textarea><br>\n\n                <input type=\"submit\" class=\"btn btn-primary\" value=\"Suggest topic\">\n                <a v-link=\"{ path: '/' }\" class=\"btn btn-default\">Cancel</a>\n            </form>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -13225,7 +13228,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <a v-link=\"{ path: '/add-topic' }\" class=\"btn btn-primary add-button pull-right\">\n                <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n                Add topic</a>\n            <h2>Topics</h2>\n\n            <p v-show=\"topics.length == 0\">No topics yet.</p>\n            <div v-for=\"topic in topics\" class=\"row\">\n                <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                    <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\">\n                        <div class=\"clearfix\">\n                            <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\"><use xlink:href=\"#icon-arrow-up\"></use></svg>\n                            <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\"><use xlink:href=\"#icon-checkmark\"></use></svg>\n                        </div>\n                    </a><br>\n                    <div class=\"vote-count\">\n                        {{ topic.votes }}\n                    </div>\n                </div>\n                <div class=\"col-xs-9 col-sm-10\">\n                    <div class=\"panel panel-default\">\n                        <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                        <div class=\"panel-body\">\n                            <!-- Body? -->\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <a v-link=\"{ path: '/add-topic' }\" class=\"btn btn-primary add-button pull-right\">\n                <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n                Add topic</a>\n            <h2>Topics</h2>\n\n            <p v-show=\"topics.length == 0\">No topics yet.</p>\n            <div v-for=\"topic in topics\" class=\"row\">\n                <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                    <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\">\n                        <div class=\"clearfix\">\n                            <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\"><use xlink:href=\"#icon-arrow-up\"></use></svg>\n                            <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\"><use xlink:href=\"#icon-checkmark\"></use></svg>\n                        </div>\n                    </a><br>\n                    <div class=\"vote-count\">\n                        {{ topic.votes }}\n                    </div>\n                </div>\n                <div class=\"col-xs-9 col-sm-10\">\n                    <div class=\"panel panel-default\">\n                        <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                        <div class=\"panel-body\">\n                            {{ topic.description }}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

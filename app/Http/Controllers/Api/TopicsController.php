@@ -63,6 +63,7 @@ class TopicsController extends Controller
 
         $topic = new Topic;
         $topic->title = $request->get('title');
+        $topic->description = $request->get('description');
         Auth::user()->topics()->save($topic);
 
         return response()->json(new ApiTopic($topic), 201);
