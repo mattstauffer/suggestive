@@ -14,7 +14,7 @@ class CreateTopicsTable extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title')->nullable();
+            $table->string('title');
             $table->text('description')->nullable();
             $table->integer('user_id');
             $table->boolean('archived')->default(false);

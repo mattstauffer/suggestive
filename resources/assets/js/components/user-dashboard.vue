@@ -10,6 +10,12 @@
         margin-bottom: 0;
         margin-top: 0;
     }
+
+    .vote-button, .vote-count {
+        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */
+        margin-right: -15px;
+    }
+
     .vote-button {
         height: 4rem;
         overflow: hidden;
@@ -47,7 +53,7 @@
         <div class="col-md-8 col-md-push-2">
             <a v-link="{ path: '/add-topic' }" class="btn btn-primary add-button pull-right">
                 <svg class="icon icon-plus" style=""><use xlink:href="#icon-plus"></use></svg>
-                Add topic</a>
+                Suggest topic</a>
             <h2>Topics</h2>
 
             <p v-show="topics.length == 0">No topics yet.</p>

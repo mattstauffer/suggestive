@@ -8,12 +8,12 @@
 
             <form @submit.prevent="addTopic">
                 <label>Title</label><br>
-                <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:add-topic-input><br>
+                <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:add-topic-input required><br>
 
                 <label>Description</label><br>
                 <textarea v-model="description" class="form-control"></textarea><br>
 
-                <input type="submit" class="btn btn-primary" value="Suggest topic">
+                <input type="submit" class="btn btn-primary" value="Suggest">
                 <a v-link="{ path: '/' }" class="btn btn-default">Cancel</a>
             </form>
         </div>

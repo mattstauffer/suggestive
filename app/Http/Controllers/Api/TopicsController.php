@@ -58,7 +58,8 @@ class TopicsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required'
+            'title' => 'required',
+            'description' => ''
         ]);
 
         $topic = new Topic;
