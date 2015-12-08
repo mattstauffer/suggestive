@@ -52,8 +52,9 @@
     <div class="row">
         <div class="col-md-8 col-md-push-2">
             <a v-link="{ path: '/add-topic' }" class="btn btn-primary add-button pull-right">
+                Suggest topic
                 <svg class="icon icon-plus" style=""><use xlink:href="#icon-plus"></use></svg>
-                Suggest topic</a>
+            </a>
             <h2>Topics</h2>
 
             <p v-show="topics.length == 0">No topics yet.</p>
