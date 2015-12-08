@@ -5768,6 +5768,6 @@ body {
   transition: all 0.5s ease; }
 
 .expand-enter, .expand-leave {
-  opacity: 0; }
+  top: 5em !important; }
 
 /*# sourceMappingURL=app.css.map */

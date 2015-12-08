@@ -12,12 +12,15 @@
     }
     .vote-button {
         height: 4rem;
+        overflow: hidden;
         position: relative;
+        transition: all 0.5s ease;
         width: 4.5rem;
     }
     .vote-button.disabled {
-        background: #aaa;
-        border-color: #999;
+        background: #bbb;
+        border-color: #bbb;
+        opacity: 1;
     }
     .vote-button .icon {
         height: 1.5em;
@@ -28,15 +31,14 @@
     }
 
     .vote-count {
-        float: right;
+        background: #ddd;
+        border-radius: 0 0 0.35em 0.35em;
+        display: inline-block;
+        margin-top: -0.5em;
+        padding-bottom: 0.1em;
+        padding-top: 0.5em;
         text-align: center;
-        width: 4rem;
-    }
-
-    @media only screen and (min-width: 350px) {
-        .vote-count {
-            width: 4.75rem;
-        }
+        width: 4.5rem;
     }
 </style>
 
