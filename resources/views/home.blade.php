@@ -10,7 +10,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav pull-right">
                         <li><a v-link="{ path: '/' }">Home</a></li>
-                        <li><a v-link="{ path: '/add-topic' }">Add Topic</a></li>
+                        <li><a v-link="{ path: '/suggest-topic' }">Suggest Topic</a></li>
                         <li><a href="/logout">Log out</a></li>
                     </ul>
                 </div>

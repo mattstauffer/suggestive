@@ -13082,7 +13082,7 @@ if (Suggestive.isAdmin) {
 } else {
     var Dashboard = require('./components/user-dashboard.vue');
 }
-var AddTopic = require('./components/add-topic.vue');
+var SuggestTopic = require('./components/suggest-topic.vue');
 
 var App = Vue.extend({
     data: function data() {
@@ -13105,14 +13105,41 @@ router.map({
     '/': {
         component: Dashboard
     },
-    '/add-topic': {
-        component: AddTopic
+    '/suggest-topic': {
+        component: SuggestTopic
     }
 });
 
 router.start(App, '#app');
 
-},{"./components/add-topic.vue":15,"./components/admin-dashboard.vue":16,"./components/user-dashboard.vue":17,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
+},{"./components/admin-dashboard.vue":15,"./components/suggest-topic.vue":16,"./components/user-dashboard.vue":17,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n")
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+        value: true
+});
+exports.default = {
+        ready: function ready() {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        I am the ADMIN dashboard!\n\n        <a v-link=\"{ path: '/suggest-topic' }\">Suggest topic</a>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/admin-dashboard.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],16:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -13132,7 +13159,7 @@ exports.default = {
         }
     },
     methods: {
-        addTopic: function addTopic() {
+        suggestTopic: function suggestTopic() {
             var self = this;
 
             this.$http.post('topics', { title: this.title, description: this.description }, function (data) {
@@ -13151,43 +13178,16 @@ exports.default = {
         }
     },
     ready: function ready() {
-        this.$els.addTopicInput.focus();
+        this.$els.topicTitleInput.focus();
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Suggest a Topic</h2>\n\n            <form @submit.prevent=\"addTopic\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\" length=\"255\" autofocus=\"\" v-el:add-topic-input=\"\" required=\"\"><br>\n\n                <label>Description</label><br>\n                <textarea v-model=\"description\" class=\"form-control\"></textarea><br>\n\n                <input type=\"submit\" class=\"btn btn-primary\" value=\"Suggest\">\n                <a v-link=\"{ path: '/' }\" class=\"btn btn-default\">Cancel</a>\n            </form>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Suggest a Topic</h2>\n\n            <form @submit.prevent=\"suggestTopic\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\" length=\"255\" autofocus=\"\" v-el:topic-title-input=\"\" required=\"\"><br>\n\n                <label>Description</label><br>\n                <textarea v-model=\"description\" class=\"form-control\"></textarea><br>\n\n                <input type=\"submit\" class=\"btn btn-primary\" value=\"Suggest\">\n                <a v-link=\"{ path: '/' }\" class=\"btn btn-default\">Cancel</a>\n            </form>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/add-topic.vue"
-  module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord(id, module.exports)
-  } else {
-    hotAPI.update(id, module.exports, module.exports.template)
-  }
-})()}
-},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],16:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n")
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-        value: true
-});
-exports.default = {
-        ready: function ready() {}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        I am the ADMIN dashboard!\n\n        <a v-link=\"{ path: '/add-topic' }\">Add topic</a>\n    </div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/admin-dashboard.vue"
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/suggest-topic.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -13228,7 +13228,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <a v-link=\"{ path: '/add-topic' }\" class=\"btn btn-primary add-button pull-right\">\n                Suggest topic\n                <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n            </a>\n            <h2>Topics</h2>\n\n            <p v-show=\"topics.length == 0\">No topics yet.</p>\n            <div v-for=\"topic in topics\" class=\"row\">\n                <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                    <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\">\n                        <div class=\"clearfix\">\n                            <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\"><use xlink:href=\"#icon-arrow-up\"></use></svg>\n                            <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\"><use xlink:href=\"#icon-checkmark\"></use></svg>\n                        </div>\n                    </a><br>\n                    <div class=\"vote-count\">\n                        {{ topic.votes }}\n                    </div>\n                </div>\n                <div class=\"col-xs-9 col-sm-10\">\n                    <div class=\"panel panel-default\">\n                        <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                        <div class=\"panel-body\">\n                            {{ topic.description }}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <a v-link=\"{ path: '/suggest-topic' }\" class=\"btn btn-primary add-button pull-right\">\n                Suggest topic\n                <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n            </a>\n            <h2>Topics</h2>\n\n            <p v-show=\"topics.length == 0\">No topics yet.</p>\n            <div v-for=\"topic in topics\" class=\"row\">\n                <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                    <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\">\n                        <div class=\"clearfix\">\n                            <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\"><use xlink:href=\"#icon-arrow-up\"></use></svg>\n                            <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\"><use xlink:href=\"#icon-checkmark\"></use></svg>\n                        </div>\n                    </a><br>\n                    <div class=\"vote-count\">\n                        {{ topic.votes }}\n                    </div>\n                </div>\n                <div class=\"col-xs-9 col-sm-10\">\n                    <div class=\"panel panel-default\">\n                        <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                        <div class=\"panel-body\">\n                            {{ topic.description }}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

@@ -11,7 +11,7 @@ if (Suggestive.isAdmin) {
 } else {
     var Dashboard = require('./components/user-dashboard.vue');
 }
-var AddTopic = require('./components/add-topic.vue');
+var SuggestTopic = require('./components/suggest-topic.vue');
 
 var App = Vue.extend({
     data: function() {
@@ -34,8 +34,8 @@ router.map({
     '/': {
         component: Dashboard
     },
-    '/add-topic': {
-        component: AddTopic
+    '/suggest-topic': {
+        component: SuggestTopic
     }
 });
 

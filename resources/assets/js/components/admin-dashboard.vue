@@ -5,7 +5,7 @@
     <div>
         I am the ADMIN dashboard!
 
-        <a v-link="{ path: '/add-topic' }">Add topic</a>
+        <a v-link="{ path: '/suggest-topic' }">Suggest topic</a>
     </div>
 </template>
 

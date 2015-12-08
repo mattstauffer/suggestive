@@ -6,9 +6,9 @@
         <div class="col-md-8 col-md-push-2">
             <h2>Suggest a Topic</h2>
 
-            <form @submit.prevent="addTopic">
+            <form @submit.prevent="suggestTopic">
                 <label>Title</label><br>
-                <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:add-topic-input required><br>
+                <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:topic-title-input required><br>
 
                 <label>Description</label><br>
                 <textarea v-model="description" class="form-control"></textarea><br>
@@ -34,7 +34,7 @@
             }
         },
         methods: {
-            addTopic: function () {
+            suggestTopic: function () {
                 var self = this;
 
                 this.$http.post('topics', { title: this.title, description: this.description }, function (data) {
@@ -53,7 +53,7 @@
             }
         },
         ready: function () {
-            this.$els.addTopicInput.focus();
+            this.$els.topicTitleInput.focus();
         }
     };
 </script>
