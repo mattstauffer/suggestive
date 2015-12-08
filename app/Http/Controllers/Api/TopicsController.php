@@ -50,11 +50,6 @@ class TopicsController extends Controller
         });
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -73,21 +68,6 @@ class TopicsController extends Controller
     public function show($id)
     {
         return new ApiTopic(Topic::findOrFail($id));
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 
     public function patch($id, Request $request)
