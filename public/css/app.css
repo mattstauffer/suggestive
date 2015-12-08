@@ -5758,14 +5758,6 @@ body {
   height: 1em;
   width: 1em; }
 
-.vote-button.disabled {
-  background: #aaa;
-  border-color: #999; }
-
-.vote-button .icon {
-  height: 1.5em;
-  width: 1.5em; }
-
 .add-button .icon {
   height: 0.8em;
   line-height: 0.5;

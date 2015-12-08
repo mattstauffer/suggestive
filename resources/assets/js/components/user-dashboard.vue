@@ -10,6 +10,33 @@
         margin-bottom: 0;
         margin-top: 0;
     }
+    .vote-button.disabled {
+        background: #aaa;
+        border-color: #999;
+    }
+    .vote-button .icon {
+        height: 1em;
+        width: 1em;
+    }
+
+    @media only screen and (min-width: 350px) {
+        .vote-button .icon {
+            height: 1.5em;
+            width: 1.5em;
+        }
+    }
+
+    .vote-count {
+        float: right;
+        text-align: center;
+        width: 4rem;
+    }
+
+    @media only screen and (min-width: 350px) {
+        .vote-count {
+            width: 4.75rem;
+        }
+    }
 </style>
 
 <template>
@@ -22,19 +49,22 @@
 
             <p v-show="topics.length == 0">No topics yet.</p>
             <div v-for="topic in topics" class="row">
-                <div class="col-xs-2 col-sm-1">
+                <div class="col-xs-3 col-sm-2" style="text-align: right">
                     <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
                         <div class="clearfix">
                             <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up"><use xlink:href="#icon-arrow-up"></use></svg>
                             <svg v-show="topic.userVotedFor" class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg>
                         </div>
-                    </a>
+                    </a><br>
+                    <div class="vote-count">
+                        {{ topic.votes }}
+                    </div>
                 </div>
-                <div class="col-xs-10 col-sm-11">
+                <div class="col-xs-9 col-sm-10">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><h3 class="topic-title">{{ topic.title }} ({{ topic.votes }})</h3></div>
+                        <div class="panel-heading"><h3 class="topic-title">{{ topic.title }}</h3></div>
                         <div class="panel-body">
-                            Body?
+                            <!-- Body? -->
                         </div>
                     </div>
                 </div>
