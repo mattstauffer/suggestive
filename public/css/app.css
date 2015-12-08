@@ -5763,4 +5763,11 @@ body {
   line-height: 0.5;
   width: 0.8em; }
 
+/* always present */
+.expand-transition {
+  transition: all 0.5s ease; }
+
+.expand-enter, .expand-leave {
+  opacity: 0; }
+
 /*# sourceMappingURL=app.css.map */

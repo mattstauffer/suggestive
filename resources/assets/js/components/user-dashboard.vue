@@ -10,20 +10,21 @@
         margin-bottom: 0;
         margin-top: 0;
     }
+    .vote-button {
+        height: 4rem;
+        position: relative;
+        width: 4.5rem;
+    }
     .vote-button.disabled {
         background: #aaa;
         border-color: #999;
     }
     .vote-button .icon {
-        height: 1em;
-        width: 1em;
-    }
-
-    @media only screen and (min-width: 350px) {
-        .vote-button .icon {
-            height: 1.5em;
-            width: 1.5em;
-        }
+        height: 1.5em;
+        left: 1.1rem;
+        position: absolute;
+        top: 0.6rem;
+        width: 1.5em;
     }
 
     .vote-count {
@@ -52,8 +53,8 @@
                 <div class="col-xs-3 col-sm-2" style="text-align: right">
                     <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
                         <div class="clearfix">
-                            <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up"><use xlink:href="#icon-arrow-up"></use></svg>
-                            <svg v-show="topic.userVotedFor" class="icon icon-checkmark"><use xlink:href="#icon-checkmark"></use></svg>
+                            <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up" transition="expand"><use xlink:href="#icon-arrow-up"></use></svg>
+                            <svg v-show="topic.userVotedFor" class="icon icon-checkmark" transition="expand"><use xlink:href="#icon-checkmark"></use></svg>
                         </div>
                     </a><br>
                     <div class="vote-count">

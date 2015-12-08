@@ -18,3 +18,14 @@ body {
         width: 0.8em;
     }
 }
+
+
+// Vue Transitions
+/* always present */
+.expand-transition {
+    transition: all 0.5s ease;
+}
+
+.expand-enter, .expand-leave {
+    opacity: 0;
+}
