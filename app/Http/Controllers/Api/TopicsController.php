@@ -72,7 +72,7 @@ class TopicsController extends Controller
 
     public function patch($id, Request $request)
     {
-        $topic = Topic::findorFail($id);
+        $topic = Topic::findOrFail($id);
         $this->authorize('update-topic', $topic);
 
         $topic->patch($request->all());
