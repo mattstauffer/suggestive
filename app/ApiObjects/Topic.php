@@ -25,6 +25,7 @@ class Topic implements Arrayable, Jsonable
             'title' => $this->topic->title,
             'description' => $this->topic->description,
             'votes' => $this->topic->votes()->count(),
+            'status' => $this->topic->status,
             'userVotedFor' => in_array($this->topic->id, Auth::user()->votes->lists('topic_id')->toArray())
         ];
     }

@@ -4,7 +4,7 @@
 <template>
     <div class="row">
         <div class="col-md-8 col-md-push-2">
-            <h2>Suggest a Topic</h2>
+            <h2>{{ verb }} a Topic</h2>
 
             <form @submit.prevent="suggestTopic">
                 <label>Title</label><br>
@@ -13,7 +13,7 @@
                 <label>Description</label><br>
                 <textarea v-model="description" class="form-control"></textarea><br>
 
-                <input type="submit" class="btn btn-primary" value="Suggest">
+                <input type="submit" class="btn btn-primary" value="{{ verb }}">
                 <a v-link="{ path: '/' }" class="btn btn-default">Cancel</a>
             </form>
         </div>
@@ -45,6 +45,11 @@
 
                     self.$route.router.go('/');
                 });
+            }
+        },
+        computed: {
+            verb: function () {
+                return Suggestive.isAdmin ? 'Add' : 'Suggest';
             }
         },
         ready: function () {

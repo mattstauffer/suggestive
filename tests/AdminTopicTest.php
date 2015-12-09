@@ -180,4 +180,21 @@ class AdminTopicTest extends TestCase
             'title' => $topic->title
         ]);
     }
+
+    public function test_admin_can_suggest_a_topic_and_it_will_be_accepted()
+    {
+        $this->be(factory(User::class, 'admin')->create());
+
+        $this->post('api/topics', [
+            'title' => 'How is Laravel 5.2 going?',
+            'description' => 'Just because I am curious'
+        ]);
+
+        $this->visit('api/topics');
+        $this->seeJson([
+            'title' => 'How is Laravel 5.2 going?',
+            'description' => 'Just because I am curious',
+            'status' => 'accepted'
+        ]);
+    }
 }

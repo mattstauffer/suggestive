@@ -13,6 +13,8 @@ if (Suggestive.isAdmin) {
 }
 var SuggestTopic = require('./components/suggest-topic.vue');
 
+Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
+
 var App = Vue.extend({
     data: function() {
         return {

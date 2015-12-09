@@ -23,7 +23,8 @@ class UserTopicTest extends TestCase
         $this->visit('api/topics');
         $this->seeJson([
             'title' => 'How is Laravel 5.2 going?',
-            'description' => 'Just because I am curious'
+            'description' => 'Just because I am curious',
+            'status' => null
         ]);
     }
 
