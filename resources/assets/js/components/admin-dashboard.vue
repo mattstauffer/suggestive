@@ -26,7 +26,7 @@
 <template>
     <div>
         <suggest-topic-button verb="Add"></suggest-topic-button>
-        <h2>Topics</h2>
+        <h2>Unflagged Topics</h2>
 
         <p v-show="unflaggedTopics.length == 0">No unflagged topics.</p>
         <div v-for="topic in unflaggedTopics" class="row">
