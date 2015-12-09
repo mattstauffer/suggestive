@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', function () {
+Route::get('/', ['middleware' => 'guest'], function () {
     return view('welcome');
 });
 
