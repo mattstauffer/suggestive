@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('role')->default('user');
 
-            $table->string('twitter_id')->unique();
-            $table->string('github_id')->unique();
+            $table->string('twitter_id')->unique()->nullable();
+            $table->string('github_id')->unique()->nullable();
             $table->string('avatar')->nullable();
 
             $table->rememberToken();
