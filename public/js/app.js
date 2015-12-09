@@ -13136,17 +13136,28 @@ exports.default = {
         });
     },
     methods: {
-        acceptTopic: function acceptTopic(topic) {
-            this.$http.patch('topics/' + topic.id, { 'status': 'accepted' }, function (data, status, request) {
-                console.log('success!');
+        flagTopic: function flagTopic(topic, status) {
+            var self = this;
+
+            this.$http.patch('topics/' + topic.id, { 'status': status }, function (data, status, request) {
+                self.unflaggedTopics.$remove(topic);
             }).error(function (data, status, request) {
                 console.log('error', data);
             });
+        },
+        acceptTopic: function acceptTopic(topic) {
+            this.flagTopic(topic, 'accepted');
+        },
+        rejectTopic: function rejectTopic(topic) {
+            this.flagTopic(topic, 'rejected');
+        },
+        markTopicAsDuplicate: function markTopicAsDuplicate(topic) {
+            this.flagTopic(topic, 'duplicate');
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <h2>Topics</h2>\n\n        <p v-show=\"unflaggedTopics.length == 0\">No unflagged topics.</p>\n        <div v-for=\"topic in unflaggedTopics\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                <div class=\"vote-count\">\n                    {{ topic.votes }}<br>\n                    <a @click.prevent=\"acceptTopic(topic)\">Accept</a><br>\n                    <a @click.prevent=\"rejectTopic(topic)\">Reject</a><br>\n                    <a @click.prevent=\"markTopicAsDuplicate(topic)\">Mark as duplicate</a><br>\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <h2>Topics</h2>\n\n        <p v-show=\"unflaggedTopics.length == 0\">No unflagged topics.</p>\n        <div v-for=\"topic in unflaggedTopics\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                <div class=\"vote-count\">\n                    {{ topic.votes }}\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n                <div class=\"btn-group\">\n                    <a @click.prevent=\"acceptTopic(topic)\" class=\"btn btn-sm btn-primary\">Accept</a>\n                    <a @click.prevent=\"rejectTopic(topic)\" class=\"btn btn-sm btn-danger\">Reject</a>\n                    <a @click.prevent=\"markTopicAsDuplicate(topic)\" class=\"btn btn-sm btn-info\">Mark as duplicate</a>\n                </div>\n                <br><br>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
