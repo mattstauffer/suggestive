@@ -41,12 +41,7 @@
                     self.title = '';
                     self.description = '';
 
-                    self.topics.push({
-                        id: data.id,
-                        title: data.title,
-                        description: data.description,
-                        votes: 0
-                    });
+                    self.topics.push(data);
 
                     self.$route.router.go('/');
                 });
