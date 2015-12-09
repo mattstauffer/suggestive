@@ -13099,7 +13099,10 @@ var App = Vue.extend({
     }
 });
 
-var router = new VueRouter();
+var router = new VueRouter({
+    history: true,
+    root: 'dashboard'
+});
 
 router.map({
     '/': {
@@ -13113,24 +13116,44 @@ router.map({
 router.start(App, '#app');
 
 },{"./components/admin-dashboard.vue":15,"./components/suggest-topic.vue":16,"./components/user-dashboard.vue":17,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n")
-"use strict";
+var __vueify_style__ = require("vueify-insert-css").insert("\n    /* Copied from user-dashboard; consider extracting to .scss */\n    .panel-heading {\n        padding: 5px 10px;\n    }\n    .panel-body {\n        padding: 10px;\n    }\n    .topic-title {\n        font-size: 1.75rem;\n        margin-bottom: 0;\n        margin-top: 0;\n    }\n    /* End copied */\n\n    .vote-count {\n        background: #ddd;\n        border-radius: 0.35em;\n        display: inline-block;\n        padding: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n")
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
 exports.default = {
-        ready: function ready() {}
+    data: function data() {
+        return {
+            unflaggedTopics: []
+        };
+    },
+    created: function created() {
+        this.$http.get('topics?unflagged=true', function (data, status, request) {
+            this.unflaggedTopics = data;
+        }).error(function (data, status, request) {
+            console.log('error', data);
+        });
+    },
+    methods: {
+        acceptTopic: function acceptTopic(topic) {
+            this.$http.patch('topics/' + topic.id, { 'status': 'accepted' }, function (data, status, request) {
+                console.log('success!');
+            }).error(function (data, status, request) {
+                console.log('error', data);
+            });
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        I am the ADMIN dashboard!\n\n        <a v-link=\"{ path: '/suggest-topic' }\">Suggest topic</a>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <h2>Topics</h2>\n\n        <p v-show=\"unflaggedTopics.length == 0\">No unflagged topics.</p>\n        <div v-for=\"topic in unflaggedTopics\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                <div class=\"vote-count\">\n                    {{ topic.votes }}<br>\n                    <a @click.prevent=\"acceptTopic(topic)\">Accept</a><br>\n                    <a @click.prevent=\"rejectTopic(topic)\">Reject</a><br>\n                    <a @click.prevent=\"markTopicAsDuplicate(topic)\">Mark as duplicate</a><br>\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/admin-dashboard.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n"] = false
+    require("vueify-insert-css").cache["\n    /* Copied from user-dashboard; consider extracting to .scss */\n    .panel-heading {\n        padding: 5px 10px;\n    }\n    .panel-body {\n        padding: 10px;\n    }\n    .topic-title {\n        font-size: 1.75rem;\n        margin-bottom: 0;\n        margin-top: 0;\n    }\n    /* End copied */\n\n    .vote-count {\n        background: #ddd;\n        border-radius: 0.35em;\n        display: inline-block;\n        padding: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

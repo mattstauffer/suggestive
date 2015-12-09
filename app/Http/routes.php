@@ -5,8 +5,10 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('dashboard', function () {
-        return view('home');
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::get('/{vue_capture?}', function () {
+            return view('home');
+        })->where('vue_capture', '[\/\w\.-]*');
     });
 });
 

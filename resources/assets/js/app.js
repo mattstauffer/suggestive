@@ -28,7 +28,10 @@ var App = Vue.extend({
     }
 });
 
-var router = new VueRouter();
+var router = new VueRouter({
+    history: true,
+    root: 'dashboard'
+});
 
 router.map({
     '/': {
