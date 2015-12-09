@@ -59,7 +59,9 @@
             <div class="content">
                 <div class="title">{{ $appName }}</div>
                 <div class="login">
-                    <a href="/auth/github" class="login-button">Log in with GitHub</a>
+                    <br>
+                    <a href="/auth/github" class="login-button">Log in with GitHub</a><br><br><br>
+                    <a href="/auth/twitter" class="login-button">Log in with Twitter</a><br>
                 </div>
             </div>
         </div>
