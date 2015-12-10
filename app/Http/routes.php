@@ -1,8 +1,8 @@
 <?php
 
-Route::get('/', ['middleware' => 'guest'], function () {
+Route::get('/', ['middleware' => 'guest', function () {
     return view('welcome');
-});
+}]);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'dashboard'], function () {
