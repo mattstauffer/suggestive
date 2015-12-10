@@ -5764,6 +5764,9 @@ body {
   margin-left: 0.2em;
   width: 0.9em; }
 
+.navbar .v-link-active {
+  color: #fff !important; }
+
 /* always present */
 .expand-transition {
   transition: all 0.5s ease; }
