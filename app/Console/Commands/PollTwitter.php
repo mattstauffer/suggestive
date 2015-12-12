@@ -42,7 +42,7 @@ class PollTwitter extends Command
         $users = User::where('role', 'owner')
                      ->whereNotNull('hashtag')
                      ->get([ 'id', 'name', 'hashtag', 'last_tweet_id', ]);
-        
+
         if ($users) {
             $twitter = app('TwitterClient');
 
