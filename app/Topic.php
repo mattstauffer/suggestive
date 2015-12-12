@@ -72,7 +72,7 @@ class Topic extends Model
 
     public function scopeUnflagged($query)
     {
-        return $query->where('status', null);
+        return $query->whereNull('status');
     }
 
     public function scopeActive($query)
