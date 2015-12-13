@@ -52,15 +52,20 @@ class PollTwitterForUsersHashtag extends Job implements SelfHandling, ShouldQueu
         $response = $this->twitter->get('search/tweets', $this->getParametersForQuery());
 
         if ($this->didHitRateLimit()) {
+            // Rather than requeuing this job, then having it endlessly poll and
+            // hit the API rate limit, delete the job. The next scheduled run
+            // of the main task will add a fresh job instance to the queue.
+            $this->delete();
+
             return false;
         }
 
         $statuses = $this->getTweetsFromResponse($response);
 
         if ($statuses->isEmpty()) {
-            Log::info('No new statuses found on Twitter', [ 'owner' => $this->user->name ]);
+            Log::info('No new statuses found on Twitter', ['owner' => $this->user->name]);
 
-            return false;
+            return true;
         }
 
         Log::info('Found new statuses for owner on Twitter', ['owner' => $this->user->name, 'count' => $statuses->count()]);
