@@ -53,8 +53,7 @@ class PollTwitter extends Command
 
                 $response = $twitter->get('search/tweets', $this->getParametersForUser($user));
 
-                Log::info('Found statuses for owner on Twitter',
-                    ['owner' => $user->name, 'count' => count($response->statuses)]);
+                Log::info('Found statuses for owner on Twitter', ['owner' => $user->name, 'count' => count($response->statuses)]);
 
                 $statuses = collect($response->statuses)->reject(function ($status) {
                     // Reject any quoted or retweeted tweets, to limit duplication
