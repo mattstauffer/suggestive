@@ -25,7 +25,7 @@ class PollTwitter extends Command
      *
      * @var string
      */
-    protected $description = 'Polls Twitter for any tweets with the configured hashtag.';
+    protected $description = "Polls Twitter for any tweets with an owner's configured hashtag.";
 
     /**
      * Create a new command instance.
@@ -43,7 +43,7 @@ class PollTwitter extends Command
      *
      * @param  TwitterOAuth  $twitter
      *
-     * @return mixed
+     * @return void
      */
     public function handle(TwitterOAuth $twitter)
     {
