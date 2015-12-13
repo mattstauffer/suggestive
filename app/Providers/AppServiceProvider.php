@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,5 +25,9 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         view()->share('appName', env('APP_NAME'));
+
+        $this->app->bind('Abraham\TwitterOAuth\TwitterOAuth', function () {
+            return new TwitterOAuth(env('TWITTER_ID'), env('TWITTER_SECRET'));
+        });
     }
 }

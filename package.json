@@ -5,7 +5,8 @@
     "laravel-elixir-vueify": "^1.0.0",
     "vue": "^1.0.10",
     "vue-resource": "^0.1.17",
-    "vue-router": "^0.7.7"
+    "vue-router": "^0.7.7",
+    "vueify": "^7.1.0"
   },
   "dependencies": {
     "laravel-elixir": "^4.0.0",

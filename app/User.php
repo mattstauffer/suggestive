@@ -20,7 +20,7 @@ class User extends Model implements AuthenticatableContract,
 
     protected $table = 'users';
 
-    protected $fillable = ['name', 'email', 'github_id', 'twitter_id', 'avatar'];
+    protected $fillable = ['name', 'email', 'hashtag', 'last_tweet_id', 'github_id', 'twitter_id', 'avatar'];
 
     protected $hidden = ['remember_token'];
 
