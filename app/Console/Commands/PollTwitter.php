@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\User;
 use Illuminate\Console\Command;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class PollTwitter extends Command
 {
