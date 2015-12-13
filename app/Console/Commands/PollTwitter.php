@@ -41,31 +41,31 @@ class PollTwitter extends Command
     {
         $users = User::where('role', 'owner')
                      ->whereNotNull('hashtag')
-                     ->get([ 'id', 'name', 'hashtag', 'last_tweet_id', ]);
+                     ->get(['id', 'name', 'hashtag', 'last_tweet_id']);
 
         if ($users) {
+            Log::info('Found owners to poll Twitter for', ['count' => $users->count()]);
+
             $twitter = app('TwitterClient');
 
-            Log::info('Found owners to poll Twitter for', [ 'count' => $users->count(), ]);
-
             $users->each(function ($user) use ($twitter) {
-                Log::info('Polling Twitter', [ 'owner' => $user->name, 'hashtag' => $user->hashtag, ]);
+                Log::info('Polling Twitter', ['owner' => $user->name, 'hashtag' => $user->hashtag]);
 
-                $response = $twitter->get('search/tweets', [ 'q' => $user->hashtag, 'since_id' => $user->last_tweet_id, ]);
+                $response = $twitter->get('search/tweets', ['q' => $user->hashtag, 'since_id' => $user->last_tweet_id]);
 
                 Log::info(
                     'Found statuses for owner on Twitter',
-                    [ 'owner' => $user->name, 'count' => count($response->statuses), ]
+                    ['owner' => $user->name, 'count' => count($response->statuses)]
                 );
 
                 $statuses = collect($response->statuses);
 
                 $statuses->each(function ($status) use ($user) {
-                    $user->topics()->create([ 'title' => $status->text, ]);
+                    $user->topics()->create(['title' => $status->text]);
                 });
 
                 if (! $statuses->isEmpty()) {
-                    $user->update([ 'last_tweet_id' => $statuses->first()->id_str, ]);
+                    $user->update(['last_tweet_id' => $statuses->first()->id_str]);
                 }
             });
         }
