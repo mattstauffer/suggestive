@@ -2,12 +2,17 @@
 
 namespace App\Console\Commands;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
+use App\Jobs\PollTwitterForUsersHashtag;
 use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Log;
 
 class PollTwitter extends Command
 {
+    use DispatchesJobs;
+
     /**
      * The name and signature of the console command.
      *
@@ -32,63 +37,25 @@ class PollTwitter extends Command
         parent::__construct();
     }
 
+
     /**
      * Execute the console command.
      *
+     * @param  TwitterOAuth  $twitter
+     *
      * @return mixed
      */
-    public function handle()
+    public function handle(TwitterOAuth $twitter)
     {
         $users = User::where('role', 'owner')
                      ->whereNotNull('hashtag')
                      ->get(['id', 'name', 'hashtag', 'last_tweet_id']);
 
-        if ($users) {
-            Log::info('Found owners to poll Twitter for', ['count' => $users->count()]);
+        Log::info('Found owners to poll Twitter for', ['count' => $users->count()]);
 
-            $twitter = app('TwitterClient');
-
-            $users->each(function ($user) use ($twitter) {
-                Log::info('Polling Twitter', ['owner' => $user->name, 'hashtag' => $user->hashtag]);
-
-                $response = $twitter->get('search/tweets', $this->getParametersForUser($user));
-
-                Log::info('Found statuses for owner on Twitter', ['owner' => $user->name, 'count' => count($response->statuses)]);
-
-                $statuses = collect($response->statuses)->reject(function ($status) {
-                    // Reject any quoted or retweeted tweets, to limit duplication
-                    return isset($status->quoted_status) || isset($status->retweeted_status);
-                });
-
-                $statuses->each(function ($status) use ($user) {
-                    $user->topics()->create(['title' => $status->text]);
-                });
-
-                if ($most_recent = $statuses->first()) {
-                    $user->update(['last_tweet_id' => $most_recent->id_str]);
-
-                    Log::info('Set last tweet for owner', ['owner' => $user->name, 'last_tweet_id' => $most_recent->id_str]);
-                }
-            });
-        };
-    }
-
-
-    /**
-     * For the given user, return an array of parameters to query Twitter for.
-     *
-     * @param  User  $user
-     *
-     * @return array
-     */
-    private function getParametersForUser(User $user)
-    {
-        $parameters = ['q' => $user->hashtag];
-
-        if (! is_null($user->last_tweet_id)) {
-            $parameters['since_id'] = $user->last_tweet_id;
-        }
-
-        return $parameters;
+        $users->each(function ($user) use ($twitter) {
+            // Queue a job to handle (potentially) locking HTTP requests on the Twitter API.
+            $this->dispatch(new PollTwitterForUsersHashtag($user, $twitter));
+        });
     }
 }

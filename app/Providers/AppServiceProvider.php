@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->share('appName', env('APP_NAME'));
 
-        $this->app->bind('TwitterClient', function () {
+        $this->app->bind('Abraham\TwitterOAuth\TwitterOAuth', function () {
             return new TwitterOAuth(env('TWITTER_ID'), env('TWITTER_SECRET'));
         });
     }
