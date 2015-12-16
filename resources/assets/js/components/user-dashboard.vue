@@ -1,17 +1,5 @@
-<style>
-    .panel-heading {
-        padding: 5px 10px;
-    }
-    .panel-body {
-        padding: 10px;
-    }
-    .topic-title {
-        font-size: 1.75rem;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .vote-button, .vote-count {
+<style scoped>
+    .vote-button, .vote-button__count {
         /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */
         margin-right: -15px;
     }
@@ -36,7 +24,7 @@
         width: 1.5em;
     }
 
-    .vote-count {
+    .vote-button__count {
         background: #ddd;
         border-radius: 0 0 0.35em 0.35em;
         display: inline-block;
@@ -63,13 +51,13 @@
                             <svg v-show="topic.userVotedFor" class="icon icon-checkmark" transition="expand"><use xlink:href="#icon-checkmark"></use></svg>
                         </div>
                     </a><br>
-                    <div class="vote-count">
+                    <div class="vote-button__count">
                         {{ topic.votes }}
                     </div>
                 </div>
                 <div class="col-xs-9 col-sm-10">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><h3 class="topic-title">{{ topic.title }}</h3></div>
+                    <div class="panel panel-default topic topic--in-list">
+                        <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
                         <div class="panel-body">
                             {{ topic.description }}
                         </div>

@@ -1,0 +1,38 @@
+<template>
+    <div>
+        <a v-link="{ path: '/episodes/create' }" class="btn btn-primary add-button pull-right">
+            Add episode
+            <svg class="icon icon-plus" style=""><use xlink:href="#icon-plus"></use></svg>
+        </a>
+        <h2>Episodes</h2>
+
+        <p v-show="episodes.length == 0">No episodes.</p>
+        <div v-for="episode in episodes | orderBy(number)" class="row">
+            <div class="col-xs-3 col-sm-2" style="text-align: right">
+                {{ episode.number }}
+            </div>
+            <div class="col-xs-9 col-sm-10">
+                <div class="panel panel-default episode episode--in-list">
+                    <div class="panel-heading"><h3 class="episode__title">{{ episode.title }}</h3></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        data: function () {
+            return {
+                episodes: []
+            };
+        },
+        created: function () {
+            this.$http.get('episodes', function (data, status, request) {
+                this.episodes = data;
+            }).error(function (data, status, request) {
+                console.log('error', data);
+            });
+        }
+    };
+</script>

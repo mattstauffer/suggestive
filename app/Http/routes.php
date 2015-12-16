@@ -16,6 +16,8 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api'], function () {
     Route::post('topics/{id}/votes', 'TopicsVoteController@store');
     Route::patch('topics/{id}', 'TopicsController@patch');
     Route::resource('topics', 'TopicsController');
+
+    Route::resource('episodes', 'EpisodesController');
 });
 
 Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {

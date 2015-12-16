@@ -30,3 +30,10 @@ $factory->define(App\Topic::class, function (Faker\Generator $faker) {
         'title' => $faker->sentence,
     ];
 });
+
+$factory->define(App\Episode::class, function (Faker\Generator $faker) {
+    return [
+        'number' => $faker->randomDigit,
+        'title' => $faker->sentence,
+    ];
+});

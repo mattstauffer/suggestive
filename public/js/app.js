@@ -13077,19 +13077,39 @@ Vue.use(require('vue-resource'));
 Vue.http.options.root = '/api';
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').getAttribute('content');
 
-if (Suggestive.isAdmin) {
-    var Dashboard = require('./components/admin-dashboard.vue');
-} else {
-    var Dashboard = require('./components/user-dashboard.vue');
-}
+var router = new VueRouter({
+    history: true,
+    root: 'dashboard'
+});
+
+router.beforeEach(function (transition) {
+    if (transition.to.adminOnly) {
+        if (!Suggestive.isAdmin) {
+            transition.abort(['YOU SHALL NOT PASS']);
+        }
+    }
+
+    if (transition.to.fullPath == '/' && Suggestive.isAdmin) {
+        transition.redirect('/suggested-topics');
+    }
+
+    return true;
+});
+
+var SuggestedTopics = require('./components/suggested-topics.vue');
+var AcceptedTopics = require('./components/accepted-topics.vue');
+var Dashboard = require('./components/user-dashboard.vue');
 var SuggestTopic = require('./components/suggest-topic.vue');
+var Episodes = require('./components/episodes.vue');
+var CreateEpisode = require('./components/create-episode.vue');
 
 Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
 
 var App = Vue.extend({
     data: function data() {
         return {
-            topics: []
+            topics: [],
+            episodes: []
         };
     },
     created: function created() {
@@ -13098,12 +13118,15 @@ var App = Vue.extend({
         }).error(function (data, status, request) {
             console.log('error', data);
         });
-    }
-});
 
-var router = new VueRouter({
-    history: true,
-    root: 'dashboard'
+        if (Suggestive.isAdmin) {
+            this.$http.get('episodes', function (data, status, request) {
+                this.episodes = data;
+            }).error(function (data, status, request) {
+                console.log('error', data);
+            });
+        }
+    }
 });
 
 router.map({
@@ -13112,13 +13135,28 @@ router.map({
     },
     '/suggest-topic': {
         component: SuggestTopic
+    },
+    '/suggested-topics': {
+        component: SuggestedTopics,
+        adminOnly: true
+    },
+    '/accepted-topics': {
+        component: AcceptedTopics,
+        adminOnly: true
+    },
+    '/episodes': {
+        component: Episodes,
+        adminOnly: true
+    },
+    '/episodes/create': {
+        component: CreateEpisode,
+        adminOnly: true
     }
 });
 
 router.start(App, '#app');
 
-},{"./components/admin-dashboard.vue":15,"./components/suggest-topic-button.vue":16,"./components/suggest-topic.vue":17,"./components/user-dashboard.vue":18,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n    /* Copied from user-dashboard; consider extracting to .scss */\n    .panel-heading {\n        padding: 5px 10px;\n    }\n    .panel-body {\n        padding: 10px;\n    }\n    .topic-title {\n        font-size: 1.75rem;\n        margin-bottom: 0;\n        margin-top: 0;\n    }\n    /* End copied */\n\n    .vote-count {\n        background: #ddd;\n        border-radius: 0.35em;\n        display: inline-block;\n        padding: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n")
+},{"./components/accepted-topics.vue":15,"./components/create-episode.vue":16,"./components/episodes.vue":17,"./components/suggest-topic-button.vue":18,"./components/suggest-topic.vue":19,"./components/suggested-topics.vue":20,"./components/user-dashboard.vue":21,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13127,46 +13165,76 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     data: function data() {
         return {
-            unflaggedTopics: []
+            acceptedTopics: []
         };
     },
     created: function created() {
-        this.$http.get('topics?unflagged=true', function (data, status, request) {
-            this.unflaggedTopics = data;
+        this.$http.get('topics?status=accepted', function (data, status, request) {
+            this.acceptedTopics = data;
         }).error(function (data, status, request) {
             console.log('error', data);
         });
-    },
-    methods: {
-        flagTopic: function flagTopic(topic, status) {
-            var self = this;
-
-            this.$http.patch('topics/' + topic.id, { 'status': status }, function (data, status, request) {
-                self.unflaggedTopics.$remove(topic);
-            }).error(function (data, status, request) {
-                console.log('error', data);
-            });
-        },
-        acceptTopic: function acceptTopic(topic) {
-            this.flagTopic(topic, 'accepted');
-        },
-        rejectTopic: function rejectTopic(topic) {
-            this.flagTopic(topic, 'rejected');
-        },
-        markTopicAsDuplicate: function markTopicAsDuplicate(topic) {
-            this.flagTopic(topic, 'duplicate');
-        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Unflagged Topics</h2>\n\n        <p v-show=\"unflaggedTopics.length == 0\">No unflagged topics.</p>\n        <div v-for=\"topic in unflaggedTopics\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                <div class=\"vote-count\">\n                    {{ topic.votes }}\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n                <div class=\"btn-group\">\n                    <a @click.prevent=\"acceptTopic(topic)\" class=\"btn btn-sm btn-primary\">Accept</a>\n                    <a @click.prevent=\"rejectTopic(topic)\" class=\"btn btn-sm btn-danger\">Reject</a>\n                    <a @click.prevent=\"markTopicAsDuplicate(topic)\" class=\"btn btn-sm btn-info\">Mark as duplicate</a>\n                </div>\n                <br><br>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Accepted Topics</h2>\n\n        <p v-show=\"acceptedTopics.length == 0\">No accepted topics.</p>\n        <div v-for=\"topic in acceptedTopics\" class=\"row\">\n\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default topic topic--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"topic__title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/admin-dashboard.vue"
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/accepted-topics.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":12,"vue-hot-reload-api":2}],16:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            title: '',
+            number: ''
+        };
+    },
+    props: {
+        episodes: {
+            sync: true
+        }
+    },
+    methods: {
+        createEpisode: function createEpisode() {
+            var self = this;
+
+            this.$http.post('episodes', { title: this.title, number: this.number }, function (data) {
+                self.title = '';
+                self.number = '';
+
+                self.episodes.push(data);
+
+                self.$route.router.go('/episodes');
+            });
+        }
+    },
+    ready: function ready() {
+        this.$els.episodeTitleInput.focus();
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Create an Episode</h2>\n\n            <form @submit.prevent=\"createEpisode\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\" length=\"255\" autofocus=\"\" v-el:episode-title-input=\"\" required=\"\"><br>\n\n                <label>Number</label><br>\n                <input type=\"text\" v-model=\"number\" class=\"form-control\" length=\"5\" required=\"\"><br>\n\n                <input type=\"submit\" class=\"btn btn-primary\" value=\"Add\">\n                <a v-link=\"{ path: '/' }\" class=\"btn btn-default\">Cancel</a>\n            </form>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/create-episode.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n    /* Copied from user-dashboard; consider extracting to .scss */\n    .panel-heading {\n        padding: 5px 10px;\n    }\n    .panel-body {\n        padding: 10px;\n    }\n    .topic-title {\n        font-size: 1.75rem;\n        margin-bottom: 0;\n        margin-top: 0;\n    }\n    /* End copied */\n\n    .vote-count {\n        background: #ddd;\n        border-radius: 0.35em;\n        display: inline-block;\n        padding: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n"] = false
+    require("vueify-insert-css").cache["\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -13175,7 +13243,40 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],16:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],17:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            episodes: []
+        };
+    },
+    created: function created() {
+        this.$http.get('episodes', function (data, status, request) {
+            this.episodes = data;
+        }).error(function (data, status, request) {
+            console.log('error', data);
+        });
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <a v-link=\"{ path: '/episodes/create' }\" class=\"btn btn-primary add-button pull-right\">\n            Add episode\n            <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n        </a>\n        <h2>Episodes</h2>\n\n        <p v-show=\"episodes.length == 0\">No episodes.</p>\n        <div v-for=\"episode in episodes | orderBy(number)\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                {{ episode.number }}\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default episode episode--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"episode__title\">{{ episode.title }}</h3></div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/episodes.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":12,"vue-hot-reload-api":2}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13201,7 +13302,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],17:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2}],19:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -13260,8 +13361,61 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],18:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n    .panel-heading {\n        padding: 5px 10px;\n    }\n    .panel-body {\n        padding: 10px;\n    }\n    .topic-title {\n        font-size: 1.75rem;\n        margin-bottom: 0;\n        margin-top: 0;\n    }\n\n    .vote-button, .vote-count {\n        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n        margin-right: -15px;\n    }\n\n    .vote-button {\n        height: 4rem;\n        overflow: hidden;\n        position: relative;\n        -webkit-transition: all 0.5s ease;\n        transition: all 0.5s ease;\n        width: 4.5rem;\n    }\n    .vote-button.disabled {\n        background: #bbb;\n        border-color: #bbb;\n        opacity: 1;\n    }\n    .vote-button .icon {\n        height: 1.5em;\n        left: 1.1rem;\n        position: absolute;\n        top: 0.6rem;\n        width: 1.5em;\n    }\n\n    .vote-count {\n        background: #ddd;\n        border-radius: 0 0 0.35em 0.35em;\n        display: inline-block;\n        margin-top: -0.5em;\n        padding-bottom: 0.1em;\n        padding-top: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n")
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],20:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            suggestedTopics: []
+        };
+    },
+    created: function created() {
+        this.$http.get('topics?unflagged=true', function (data, status, request) {
+            this.suggestedTopics = data;
+        }).error(function (data, status, request) {
+            console.log('error', data);
+        });
+    },
+    methods: {
+        flagTopic: function flagTopic(topic, status) {
+            var self = this;
+
+            this.$http.patch('topics/' + topic.id, { 'status': status }, function (data, status, request) {
+                self.suggestedTopics.$remove(topic);
+            }).error(function (data, status, request) {
+                console.log('error', data);
+            });
+        },
+        acceptTopic: function acceptTopic(topic) {
+            this.flagTopic(topic, 'accepted');
+        },
+        rejectTopic: function rejectTopic(topic) {
+            this.flagTopic(topic, 'rejected');
+        },
+        markTopicAsDuplicate: function markTopicAsDuplicate(topic) {
+            this.flagTopic(topic, 'duplicate');
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Suggested Topics</h2>\n\n        <p v-show=\"suggestedTopics.length == 0\">No suggested topics.</p>\n        <div v-for=\"topic in suggestedTopics\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                <div class=\"vote-count\">\n                    {{ topic.votes }}\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default topic topic--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"topic__title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n                <div class=\"btn-group\">\n                    <a @click.prevent=\"acceptTopic(topic)\" class=\"btn btn-sm btn-primary\">Accept</a>\n                    <a @click.prevent=\"rejectTopic(topic)\" class=\"btn btn-sm btn-danger\">Reject</a>\n                    <a @click.prevent=\"markTopicAsDuplicate(topic)\" class=\"btn btn-sm btn-info\">Mark as duplicate</a>\n                </div>\n                <br><br>\n            </div>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/suggested-topics.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":12,"vue-hot-reload-api":2}],21:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n    .vote-button[_v-23239e80], .vote-button__count[_v-23239e80] {\n        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n        margin-right: -15px;\n    }\n\n    .vote-button[_v-23239e80] {\n        height: 4rem;\n        overflow: hidden;\n        position: relative;\n        -webkit-transition: all 0.5s ease;\n        transition: all 0.5s ease;\n        width: 4.5rem;\n    }\n    .vote-button.disabled[_v-23239e80] {\n        background: #bbb;\n        border-color: #bbb;\n        opacity: 1;\n    }\n    .vote-button .icon[_v-23239e80] {\n        height: 1.5em;\n        left: 1.1rem;\n        position: absolute;\n        top: 0.6rem;\n        width: 1.5em;\n    }\n\n    .vote-button__count[_v-23239e80] {\n        background: #ddd;\n        border-radius: 0 0 0.35em 0.35em;\n        display: inline-block;\n        margin-top: -0.5em;\n        padding-bottom: 0.1em;\n        padding-top: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13290,14 +13444,14 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <suggest-topic-button></suggest-topic-button>\n            <h2>Topics</h2>\n\n            <p v-show=\"topics.length == 0\">No topics yet.</p>\n            <div v-for=\"topic in topics\" class=\"row\">\n                <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                    <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\">\n                        <div class=\"clearfix\">\n                            <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\"><use xlink:href=\"#icon-arrow-up\"></use></svg>\n                            <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\"><use xlink:href=\"#icon-checkmark\"></use></svg>\n                        </div>\n                    </a><br>\n                    <div class=\"vote-count\">\n                        {{ topic.votes }}\n                    </div>\n                </div>\n                <div class=\"col-xs-9 col-sm-10\">\n                    <div class=\"panel panel-default\">\n                        <div class=\"panel-heading\"><h3 class=\"topic-title\">{{ topic.title }}</h3></div>\n                        <div class=\"panel-body\">\n                            {{ topic.description }}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-23239e80=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-23239e80=\"\">\n            <suggest-topic-button _v-23239e80=\"\"></suggest-topic-button>\n            <h2 _v-23239e80=\"\">Topics</h2>\n\n            <p v-show=\"topics.length == 0\" _v-23239e80=\"\">No topics yet.</p>\n            <div v-for=\"topic in topics\" class=\"row\" _v-23239e80=\"\">\n                <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\" _v-23239e80=\"\">\n                    <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\" _v-23239e80=\"\">\n                        <div class=\"clearfix\" _v-23239e80=\"\">\n                            <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\" _v-23239e80=\"\"><use xlink:href=\"#icon-arrow-up\" _v-23239e80=\"\"></use></svg>\n                            <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\" _v-23239e80=\"\"><use xlink:href=\"#icon-checkmark\" _v-23239e80=\"\"></use></svg>\n                        </div>\n                    </a><br _v-23239e80=\"\">\n                    <div class=\"vote-button__count\" _v-23239e80=\"\">\n                        {{ topic.votes }}\n                    </div>\n                </div>\n                <div class=\"col-xs-9 col-sm-10\" _v-23239e80=\"\">\n                    <div class=\"panel panel-default topic topic--in-list\" _v-23239e80=\"\">\n                        <div class=\"panel-heading\" _v-23239e80=\"\"><h3 class=\"topic__title\" _v-23239e80=\"\">{{ topic.title }}</h3></div>\n                        <div class=\"panel-body\" _v-23239e80=\"\">\n                            {{ topic.description }}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/user-dashboard.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n    .panel-heading {\n        padding: 5px 10px;\n    }\n    .panel-body {\n        padding: 10px;\n    }\n    .topic-title {\n        font-size: 1.75rem;\n        margin-bottom: 0;\n        margin-top: 0;\n    }\n\n    .vote-button, .vote-count {\n        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n        margin-right: -15px;\n    }\n\n    .vote-button {\n        height: 4rem;\n        overflow: hidden;\n        position: relative;\n        -webkit-transition: all 0.5s ease;\n        transition: all 0.5s ease;\n        width: 4.5rem;\n    }\n    .vote-button.disabled {\n        background: #bbb;\n        border-color: #bbb;\n        opacity: 1;\n    }\n    .vote-button .icon {\n        height: 1.5em;\n        left: 1.1rem;\n        position: absolute;\n        top: 0.6rem;\n        width: 1.5em;\n    }\n\n    .vote-count {\n        background: #ddd;\n        border-radius: 0 0 0.35em 0.35em;\n        display: inline-block;\n        margin-top: -0.5em;\n        padding-bottom: 0.1em;\n        padding-top: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n"] = false
+    require("vueify-insert-css").cache["\n    .vote-button[_v-23239e80], .vote-button__count[_v-23239e80] {\n        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n        margin-right: -15px;\n    }\n\n    .vote-button[_v-23239e80] {\n        height: 4rem;\n        overflow: hidden;\n        position: relative;\n        -webkit-transition: all 0.5s ease;\n        transition: all 0.5s ease;\n        width: 4.5rem;\n    }\n    .vote-button.disabled[_v-23239e80] {\n        background: #bbb;\n        border-color: #bbb;\n        opacity: 1;\n    }\n    .vote-button .icon[_v-23239e80] {\n        height: 1.5em;\n        left: 1.1rem;\n        position: absolute;\n        top: 0.6rem;\n        width: 1.5em;\n    }\n\n    .vote-button__count[_v-23239e80] {\n        background: #ddd;\n        border-radius: 0 0 0.35em 0.35em;\n        display: inline-block;\n        margin-top: -0.5em;\n        padding-bottom: 0.1em;\n        padding-top: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

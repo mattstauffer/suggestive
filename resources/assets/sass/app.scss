@@ -33,3 +33,30 @@ body {
 .expand-enter, .expand-leave {
     top: 5em !important;
 }
+
+.topic {
+
+}
+
+.topic--in-list {
+    .panel-heading {
+        padding: 5px 10px;
+    }
+    .panel-body {
+        padding: 10px;
+    }
+    .topic__title {
+        font-size: 1.75rem;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+}
+
+.vote-count {
+    background: #ddd;
+    border-radius: 0.35em;
+    display: inline-block;
+    padding: 0.5em;
+    text-align: center;
+    width: 4.5rem;
+}

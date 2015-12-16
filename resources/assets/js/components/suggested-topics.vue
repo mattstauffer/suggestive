@@ -1,43 +1,18 @@
-<style>
-    /* Copied from user-dashboard; consider extracting to .scss */
-    .panel-heading {
-        padding: 5px 10px;
-    }
-    .panel-body {
-        padding: 10px;
-    }
-    .topic-title {
-        font-size: 1.75rem;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-    /* End copied */
-
-    .vote-count {
-        background: #ddd;
-        border-radius: 0.35em;
-        display: inline-block;
-        padding: 0.5em;
-        text-align: center;
-        width: 4.5rem;
-    }
-</style>
-
 <template>
     <div>
         <suggest-topic-button verb="Add"></suggest-topic-button>
-        <h2>Unflagged Topics</h2>
+        <h2>Suggested Topics</h2>
 
-        <p v-show="unflaggedTopics.length == 0">No unflagged topics.</p>
-        <div v-for="topic in unflaggedTopics" class="row">
+        <p v-show="suggestedTopics.length == 0">No suggested topics.</p>
+        <div v-for="topic in suggestedTopics" class="row">
             <div class="col-xs-3 col-sm-2" style="text-align: right">
                 <div class="vote-count">
                     {{ topic.votes }}
                 </div>
             </div>
             <div class="col-xs-9 col-sm-10">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h3 class="topic-title">{{ topic.title }}</h3></div>
+                <div class="panel panel-default topic topic--in-list">
+                    <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
                     <div class="panel-body">
                         {{ topic.description }}
                     </div>
@@ -57,12 +32,12 @@
     export default {
         data: function () {
             return {
-                unflaggedTopics: []
+                suggestedTopics: []
             };
         },
         created: function () {
             this.$http.get('topics?unflagged=true', function (data, status, request) {
-                this.unflaggedTopics = data;
+                this.suggestedTopics = data;
             }).error(function (data, status, request) {
                 console.log('error', data);
             });
@@ -72,7 +47,7 @@
                 var self = this;
 
                 this.$http.patch('topics/' + topic.id, {'status': status}, function (data, status, request) {
-                    self.unflaggedTopics.$remove(topic);
+                    self.suggestedTopics.$remove(topic);
                 }).error(function (data, status, request) {
                     console.log('error', data);
                 });

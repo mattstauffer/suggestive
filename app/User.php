@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Episode;
 use App\Topic;
 use App\Vote;
 use Illuminate\Auth\Authenticatable;
@@ -37,5 +38,10 @@ class User extends Model implements AuthenticatableContract,
     public function votes()
     {
         return $this->hasMany(Vote::class);
+    }
+
+    public function episodes()
+    {
+        return $this->hasMany(Episode::class);
     }
 }
