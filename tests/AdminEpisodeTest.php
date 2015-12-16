@@ -73,4 +73,10 @@ class AdminEpisodeTest extends TestCase
         ]);
         $this->assertResponseStatus(403);
     }
+
+    public function test_admins_can_schedule_a_topic_for_an_episode()
+    {
+        $this->markTestIncomplete();
+        // POST /api/episodes/{id}/scheduled-topics ['topic_id': 5]
+    }
 }

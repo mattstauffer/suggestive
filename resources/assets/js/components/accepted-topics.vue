@@ -13,6 +13,10 @@
                         {{ topic.description }}
                     </div>
                 </div>
+                <div class="btn-group">
+                    <topic-episode-scheduler :topic="topic" :episodes="episodes"></topic-episode-scheduler>
+                </div>
+                <br><br>
             </div>
         </div>
     </div>
@@ -22,7 +26,8 @@
     export default {
         data: function () {
             return {
-                acceptedTopics: []
+                acceptedTopics: [],
+                episodes: [],
             };
         },
         created: function () {
@@ -31,6 +36,15 @@
             }).error(function (data, status, request) {
                 console.log('error', data);
             });
+
+            this.$http.get('episodes', function (data, status, request) {
+                this.episodes = data;
+            }).error(function (data, status, request) {
+                console.log('error', data);
+            });
+        },
+        components: {
+            'topic-episode-scheduler': require('./topic-episode-scheduler.vue')
         }
     };
 </script>

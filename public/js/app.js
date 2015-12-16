@@ -13156,7 +13156,7 @@ router.map({
 
 router.start(App, '#app');
 
-},{"./components/accepted-topics.vue":15,"./components/create-episode.vue":16,"./components/episodes.vue":17,"./components/suggest-topic-button.vue":18,"./components/suggest-topic.vue":19,"./components/suggested-topics.vue":20,"./components/user-dashboard.vue":21,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
+},{"./components/accepted-topics.vue":15,"./components/create-episode.vue":16,"./components/episodes.vue":17,"./components/suggest-topic-button.vue":18,"./components/suggest-topic.vue":19,"./components/suggested-topics.vue":20,"./components/user-dashboard.vue":22,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13165,7 +13165,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     data: function data() {
         return {
-            acceptedTopics: []
+            acceptedTopics: [],
+            episodes: []
         };
     },
     created: function created() {
@@ -13174,10 +13175,19 @@ exports.default = {
         }).error(function (data, status, request) {
             console.log('error', data);
         });
+
+        this.$http.get('episodes', function (data, status, request) {
+            this.episodes = data;
+        }).error(function (data, status, request) {
+            console.log('error', data);
+        });
+    },
+    components: {
+        'topic-episode-scheduler': require('./topic-episode-scheduler.vue')
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Accepted Topics</h2>\n\n        <p v-show=\"acceptedTopics.length == 0\">No accepted topics.</p>\n        <div v-for=\"topic in acceptedTopics\" class=\"row\">\n\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default topic topic--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"topic__title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Accepted Topics</h2>\n\n        <p v-show=\"acceptedTopics.length == 0\">No accepted topics.</p>\n        <div v-for=\"topic in acceptedTopics\" class=\"row\">\n\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default topic topic--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"topic__title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n                <div class=\"btn-group\">\n                    <topic-episode-scheduler :topic=\"topic\" :episodes=\"episodes\"></topic-episode-scheduler>\n                </div>\n                <br><br>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -13189,7 +13199,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],16:[function(require,module,exports){
+},{"./topic-episode-scheduler.vue":21,"vue":12,"vue-hot-reload-api":2}],16:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -13415,6 +13425,49 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":12,"vue-hot-reload-api":2}],21:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        topic: {},
+        episodes: {}
+    },
+    data: function data() {
+        return {
+            episode: null
+        };
+    },
+    watch: {
+        'episode': function episode(val) {
+            var data = {
+                'topic_id': val
+            };
+
+            this.$http.post('episodes/' + this.episode.id + '/scheduled-topics', data, function (data, status, request) {
+                // this.$dispatch('hey parent components, i just changed the status of topic #' + topic.id);
+            }).error(function (data, status, request) {
+                console.log('error', data);
+            });
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <select v-model=\"episode\">\n        <option disabled=\"\">\n            - Schedule topic -\n        </option>\n        <option v-for=\"episode in episodes\" v-bind:value=\"episode.id\">\n            Episode {{ episode.number }}: {{ episode.title }}\n        </option>\n    </select>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/topic-episode-scheduler.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":12,"vue-hot-reload-api":2}],22:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n    .vote-button[_v-23239e80], .vote-button__count[_v-23239e80] {\n        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n        margin-right: -15px;\n    }\n\n    .vote-button[_v-23239e80] {\n        height: 4rem;\n        overflow: hidden;\n        position: relative;\n        -webkit-transition: all 0.5s ease;\n        transition: all 0.5s ease;\n        width: 4.5rem;\n    }\n    .vote-button.disabled[_v-23239e80] {\n        background: #bbb;\n        border-color: #bbb;\n        opacity: 1;\n    }\n    .vote-button .icon[_v-23239e80] {\n        height: 1.5em;\n        left: 1.1rem;\n        position: absolute;\n        top: 0.6rem;\n        width: 1.5em;\n    }\n\n    .vote-button__count[_v-23239e80] {\n        background: #ddd;\n        border-radius: 0 0 0.35em 0.35em;\n        display: inline-block;\n        margin-top: -0.5em;\n        padding-bottom: 0.1em;\n        padding-top: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n")
 'use strict';
 
