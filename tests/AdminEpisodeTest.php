@@ -1,6 +1,7 @@
 <?php
 
 use App\Episode;
+use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -76,7 +77,32 @@ class AdminEpisodeTest extends TestCase
 
     public function test_admins_can_schedule_a_topic_for_an_episode()
     {
-        $this->markTestIncomplete();
+        $user = factory(User::class, 'admin')->create();
+        $this->be($user);
+
+        $episode = factory(Episode::class)->make();
+        $user->episodes()->save($episode);
+        $episodeId = $episode->id;
+
+        $topic = factory(Topic::class)->make();
+        $topic2 = factory(Topic::class)->make();
+        $user->topics()->saveMany([$topic, $topic2]);
+        $topicId = $topic2->id;
+
+        // @todo: Assert that topic2 is present in the accepted topics list
+
+        $this->post("api/episodes/{$episodeId}/scheduled-topics", [
+            'topic_id' => $topicId,
+        ]);
+
+        $this->visit("api/episodes/{$episodeId}/scheduled-topics");
+        $this->seeJson([
+            'id' => $topicId
+        ]);
+
+        // @todo: Assert that topic2 is not present in the accepted topics list
+
         // POST /api/episodes/{id}/scheduled-topics ['topic_id': 5]
+        // See: GET /api/episodes/{id}/schedule-topics : topic_id: 5
     }
 }

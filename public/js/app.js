@@ -13096,13 +13096,6 @@ router.beforeEach(function (transition) {
     return true;
 });
 
-var SuggestedTopics = require('./components/suggested-topics.vue');
-var AcceptedTopics = require('./components/accepted-topics.vue');
-var Dashboard = require('./components/user-dashboard.vue');
-var SuggestTopic = require('./components/suggest-topic.vue');
-var Episodes = require('./components/episodes.vue');
-var CreateEpisode = require('./components/create-episode.vue');
-
 Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
 
 var App = Vue.extend({
@@ -13131,25 +13124,25 @@ var App = Vue.extend({
 
 router.map({
     '/': {
-        component: Dashboard
+        component: require('./components/user-dashboard.vue')
     },
     '/suggest-topic': {
-        component: SuggestTopic
+        component: require('./components/suggest-topic.vue')
     },
     '/suggested-topics': {
-        component: SuggestedTopics,
+        component: require('./components/suggested-topics.vue'),
         adminOnly: true
     },
     '/accepted-topics': {
-        component: AcceptedTopics,
+        component: require('./components/accepted-topics.vue'),
         adminOnly: true
     },
     '/episodes': {
-        component: Episodes,
+        component: require('./components/episodes.vue'),
         adminOnly: true
     },
     '/episodes/create': {
-        component: CreateEpisode,
+        component: require('./components/create-episode.vue'),
         adminOnly: true
     }
 });
@@ -13443,10 +13436,10 @@ exports.default = {
     watch: {
         'episode': function episode(val) {
             var data = {
-                'topic_id': val
+                'topic_id': this.topic.id
             };
 
-            this.$http.post('episodes/' + this.episode.id + '/scheduled-topics', data, function (data, status, request) {
+            this.$http.post('episodes/' + val + '/scheduled-topics', data, function (data, status, request) {
                 // this.$dispatch('hey parent components, i just changed the status of topic #' + topic.id);
             }).error(function (data, status, request) {
                 console.log('error', data);

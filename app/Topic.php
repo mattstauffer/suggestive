@@ -19,6 +19,7 @@ class Topic extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
         'archived' => 'boolean'
     ];
 

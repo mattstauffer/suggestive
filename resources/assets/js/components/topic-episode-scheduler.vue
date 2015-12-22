@@ -23,10 +23,10 @@
         watch: {
             'episode': function (val) {
                 var data = {
-                    'topic_id': val
+                    'topic_id': this.topic.id
                 };
 
-                this.$http.post('episodes/' + this.episode.id + '/scheduled-topics', data, function (data, status, request) {
+                this.$http.post('episodes/' + val + '/scheduled-topics', data, function (data, status, request) {
                     // this.$dispatch('hey parent components, i just changed the status of topic #' + topic.id);
                 }).error(function (data, status, request) {
                     console.log('error', data);

@@ -25,13 +25,6 @@ router.beforeEach(function (transition) {
     return true;
 });
 
-var SuggestedTopics = require('./components/suggested-topics.vue');
-var AcceptedTopics = require('./components/accepted-topics.vue');
-var Dashboard = require('./components/user-dashboard.vue');
-var SuggestTopic = require('./components/suggest-topic.vue');
-var Episodes = require('./components/episodes.vue');
-var CreateEpisode = require('./components/create-episode.vue');
-
 Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
 
 var App = Vue.extend({
@@ -60,25 +53,25 @@ var App = Vue.extend({
 
 router.map({
     '/': {
-        component: Dashboard
+        component: require('./components/user-dashboard.vue')
     },
     '/suggest-topic': {
-        component: SuggestTopic
+        component: require('./components/suggest-topic.vue')
     },
     '/suggested-topics': {
-        component: SuggestedTopics,
+        component: require('./components/suggested-topics.vue'),
         adminOnly: true
     },
     '/accepted-topics': {
-        component: AcceptedTopics,
+        component: require('./components/accepted-topics.vue'),
         adminOnly: true
     },
     '/episodes': {
-        component: Episodes,
+        component: require('./components/episodes.vue'),
         adminOnly: true
     },
     '/episodes/create': {
-        component: CreateEpisode,
+        component: require('./components/create-episode.vue'),
         adminOnly: true
     }
 });

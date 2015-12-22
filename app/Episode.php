@@ -14,6 +14,7 @@ class Episode extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
         'number' => 'integer'
     ];
 

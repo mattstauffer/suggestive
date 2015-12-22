@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\TopicsController;
+
 Route::get('/', ['middleware' => 'guest', function () {
     return view('welcome');
 }]);
@@ -17,6 +19,8 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api'], function () {
     Route::patch('topics/{id}', 'TopicsController@patch');
     Route::resource('topics', 'TopicsController');
 
+    Route::post('episodes/{id}/scheduled-topics', 'EpisodeScheduledTopicsController@store');
+    Route::get('episodes/{id}/scheduled-topics', 'EpisodeScheduledTopicsController@index');
     Route::resource('episodes', 'EpisodesController');
 });
 

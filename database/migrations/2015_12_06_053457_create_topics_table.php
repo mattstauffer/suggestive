@@ -17,6 +17,7 @@ class CreateTopicsTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->integer('user_id');
+            $table->integer('episode_id')->nullable();
             $table->boolean('archived')->default(false);
             $table->string('status')->nullable();
             $table->timestamps();
