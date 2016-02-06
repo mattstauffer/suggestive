@@ -11,7 +11,7 @@
                 <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:episode-title-input required><br>
 
                 <label>Number</label><br>
-                <input type="text" v-model="number" class="form-control" length="5" required><br>
+                <input type="number" v-model="number" class="form-control" length="5" required><br>
 
                 <input type="submit" class="btn btn-primary" value="Add">
                 <a v-link="{ path: '/' }" class="btn btn-default">Cancel</a>
