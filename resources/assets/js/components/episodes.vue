@@ -7,8 +7,8 @@
         <h2>Episodes</h2>
 
         <p v-show="episodes.length == 0">No episodes.</p>
-        <div v-for="episode in episodes | orderBy(number)" class="row">
-            <div class="col-xs-3 col-sm-2" style="text-align: right">
+        <div v-for="episode in episodes | orderBy 'number' -1" class="row">
+            <div class="col-xs-3 col-sm-2 episode__number--in-list" style="text-align: right">
                 {{ episode.number }}
             </div>
             <div class="col-xs-9 col-sm-10">

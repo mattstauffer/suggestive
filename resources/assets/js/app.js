@@ -26,6 +26,7 @@ router.beforeEach(function (transition) {
 });
 
 Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
+Vue.component('nav-dropdown', require('./components/nav-dropdown.vue'));
 
 var App = Vue.extend({
     data: function() {

@@ -13097,6 +13097,7 @@ router.beforeEach(function (transition) {
 });
 
 Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
+Vue.component('nav-dropdown', require('./components/nav-dropdown.vue'));
 
 var App = Vue.extend({
     data: function data() {
@@ -13149,7 +13150,7 @@ router.map({
 
 router.start(App, '#app');
 
-},{"./components/accepted-topics.vue":15,"./components/create-episode.vue":16,"./components/episodes.vue":17,"./components/suggest-topic-button.vue":18,"./components/suggest-topic.vue":19,"./components/suggested-topics.vue":20,"./components/user-dashboard.vue":22,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
+},{"./components/accepted-topics.vue":15,"./components/create-episode.vue":16,"./components/episodes.vue":17,"./components/nav-dropdown.vue":18,"./components/suggest-topic-button.vue":19,"./components/suggest-topic.vue":20,"./components/suggested-topics.vue":21,"./components/user-dashboard.vue":23,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13180,7 +13181,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Accepted Topics</h2>\n\n        <p v-show=\"acceptedTopics.length == 0\">No accepted topics.</p>\n        <div v-for=\"topic in acceptedTopics\" class=\"row\">\n\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default topic topic--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"topic__title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n                <div class=\"btn-group\">\n                    <topic-episode-scheduler :topic=\"topic\" :episodes=\"episodes\"></topic-episode-scheduler>\n                </div>\n                <br><br>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Accepted Topics</h2>\n\n        <p v-show=\"acceptedTopics.length == 0\">No accepted topics.</p>\n        <div v-for=\"topic in acceptedTopics\" class=\"row\">\n\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default topic topic--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"topic__title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                    <div class=\"panel-footer\">\n                        <div class=\"btn-group\">\n                            Covered/will cover in episode:\n                            <topic-episode-scheduler :topic=\"topic\" :episodes=\"episodes\"></topic-episode-scheduler>\n                        </div>\n                    </div>\n                </div>\n                <br>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -13192,7 +13193,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"./topic-episode-scheduler.vue":21,"vue":12,"vue-hot-reload-api":2}],16:[function(require,module,exports){
+},{"./topic-episode-scheduler.vue":22,"vue":12,"vue-hot-reload-api":2}],16:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -13267,7 +13268,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <a v-link=\"{ path: '/episodes/create' }\" class=\"btn btn-primary add-button pull-right\">\n            Add episode\n            <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n        </a>\n        <h2>Episodes</h2>\n\n        <p v-show=\"episodes.length == 0\">No episodes.</p>\n        <div v-for=\"episode in episodes | orderBy(number)\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                {{ episode.number }}\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default episode episode--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"episode__title\">{{ episode.title }}</h3></div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <a v-link=\"{ path: '/episodes/create' }\" class=\"btn btn-primary add-button pull-right\">\n            Add episode\n            <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n        </a>\n        <h2>Episodes</h2>\n\n        <p v-show=\"episodes.length == 0\">No episodes.</p>\n        <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2 episode__number--in-list\" style=\"text-align: right\">\n                {{ episode.number }}\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default episode episode--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"episode__title\">{{ episode.title }}</h3></div>\n                </div>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -13280,6 +13281,42 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":12,"vue-hot-reload-api":2}],18:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            'isToggled': null
+        };
+    },
+    methods: {
+        toggle: function toggle() {
+            this.isToggled = !this.isToggled;
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <li v-bind:class=\"['dropdown', isToggled ? 'open' : '']\" @click=\"toggle\">\n        <slot></slot>\n    </li>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/nav-dropdown.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13305,7 +13342,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],19:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2}],20:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -13364,7 +13401,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],20:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13417,7 +13454,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],21:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13460,7 +13497,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],22:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2}],23:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n    .vote-button[_v-23239e80], .vote-button__count[_v-23239e80] {\n        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n        margin-right: -15px;\n    }\n\n    .vote-button[_v-23239e80] {\n        height: 4rem;\n        overflow: hidden;\n        position: relative;\n        -webkit-transition: all 0.5s ease;\n        transition: all 0.5s ease;\n        width: 4.5rem;\n    }\n    .vote-button.disabled[_v-23239e80] {\n        background: #bbb;\n        border-color: #bbb;\n        opacity: 1;\n    }\n    .vote-button .icon[_v-23239e80] {\n        height: 1.5em;\n        left: 1.1rem;\n        position: absolute;\n        top: 0.6rem;\n        width: 1.5em;\n    }\n\n    .vote-button__count[_v-23239e80] {\n        background: #ddd;\n        border-radius: 0 0 0.35em 0.35em;\n        display: inline-block;\n        margin-top: -0.5em;\n        padding-bottom: 0.1em;\n        padding-top: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n")
 'use strict';
 

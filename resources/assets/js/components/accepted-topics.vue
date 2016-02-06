@@ -12,11 +12,14 @@
                     <div class="panel-body">
                         {{ topic.description }}
                     </div>
+                    <div class="panel-footer">
+                        <div class="btn-group">
+                            Covered/will cover in episode:
+                            <topic-episode-scheduler :topic="topic" :episodes="episodes"></topic-episode-scheduler>
+                        </div>
+                    </div>
                 </div>
-                <div class="btn-group">
-                    <topic-episode-scheduler :topic="topic" :episodes="episodes"></topic-episode-scheduler>
-                </div>
-                <br><br>
+                <br>
             </div>
         </div>
     </div>

@@ -11,9 +11,14 @@
                     <ul class="nav navbar-nav pull-right">
                         @if (Auth::user()->isAdmin())
                         <li><a v-link="{ path: '/episodes' }">Episodes</a></li>
-                        <li><a v-link="{ path: '/suggested-topics' }">Suggested Topics</a></li>
-                        <li><a v-link="{ path: '/accepted-topics' }">Accepted Topics</a></li>
-                        <li><a v-link="{ path: '/suggest-topic' }">Add Topic</a></li>
+                        <nav-dropdown>
+                            <a href="#" class="dropdown-toggle">Topics <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a v-link="{ path: '/suggested-topics' }">Suggested Topics</a></li>
+                                <li><a v-link="{ path: '/accepted-topics' }">Accepted Topics</a></li>
+                                <li><a v-link="{ path: '/suggest-topic' }">Add Topic</a></li>
+                            </ul>
+                        </nav-dropdown>
                         @else
                         <li><a v-link="{ path: '/', exact: true }">Home</a></li>
                         <li><a v-link="{ path: '/suggest-topic' }">Suggest Topic</a></li>
