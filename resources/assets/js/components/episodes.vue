@@ -31,10 +31,10 @@
 
 <script>
     export default {
-        data: function () {
-            return {
-                episodes: []
-            };
+        props: {
+            episodes: {
+                sync: true
+            }
         },
         methods: {
             deleteEpisode: function (episode) {
@@ -49,13 +49,6 @@
                     console.log('error', data);
                 });
             }
-        },
-        created: function () {
-            this.$http.get('episodes', function (data, status, request) {
-                this.episodes = data;
-            }).error(function (data, status, request) {
-                console.log('error', data);
-            });
         }
     };
 </script>

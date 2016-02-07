@@ -37,7 +37,7 @@ class TwitterOAuthController extends Controller
 
         Auth::login($authUser, true);
 
-        return redirect('dashboard/');
+        return redirect('app/');
     }
 
     /**

@@ -13079,7 +13079,7 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').
 
 var router = new VueRouter({
     history: true,
-    root: 'dashboard'
+    root: 'app'
 });
 
 router.beforeEach(function (transition) {
@@ -13090,7 +13090,7 @@ router.beforeEach(function (transition) {
     }
 
     if (transition.to.fullPath == '/' && Suggestive.isAdmin) {
-        transition.redirect('/suggested-topics');
+        transition.redirect('/admin-dashboard');
     }
 
     return true;
@@ -13127,6 +13127,9 @@ router.map({
     '/': {
         component: require('./components/user-dashboard.vue')
     },
+    '/admin-dashboard': {
+        component: require('./components/admin-dashboard.vue')
+    },
     '/suggest-topic': {
         component: require('./components/suggest-topic.vue')
     },
@@ -13150,28 +13153,26 @@ router.map({
 
 router.start(App, '#app');
 
-},{"./components/accepted-topics.vue":15,"./components/create-episode.vue":16,"./components/episodes.vue":17,"./components/nav-dropdown.vue":18,"./components/suggest-topic-button.vue":19,"./components/suggest-topic.vue":20,"./components/suggested-topics.vue":21,"./components/user-dashboard.vue":23,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
+},{"./components/accepted-topics.vue":15,"./components/admin-dashboard.vue":16,"./components/create-episode.vue":17,"./components/episodes.vue":18,"./components/nav-dropdown.vue":19,"./components/suggest-topic-button.vue":20,"./components/suggest-topic.vue":21,"./components/suggested-topics.vue":22,"./components/user-dashboard.vue":24,"vue":12,"vue-resource":4,"vue-router":11}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
+    props: {
+        episodes: {
+            sync: true
+        }
+    },
     data: function data() {
         return {
-            acceptedTopics: [],
-            episodes: []
+            acceptedTopics: []
         };
     },
     created: function created() {
         this.$http.get('topics?status=accepted', function (data, status, request) {
             this.acceptedTopics = data;
-        }).error(function (data, status, request) {
-            console.log('error', data);
-        });
-
-        this.$http.get('episodes', function (data, status, request) {
-            this.episodes = data;
         }).error(function (data, status, request) {
             console.log('error', data);
         });
@@ -13193,7 +13194,38 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"./topic-episode-scheduler.vue":22,"vue":12,"vue-hot-reload-api":2}],16:[function(require,module,exports){
+},{"./topic-episode-scheduler.vue":23,"vue":12,"vue-hot-reload-api":2}],16:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n")
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        episodes: {
+            sync: true
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-499a93d8=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-499a93d8=\"\">\n            <h2 _v-499a93d8=\"\">Episode Planner</h2>\n            <p _v-499a93d8=\"\">@todo: Show all accepted topics (and the inline ability to add new ones); allow an easy UI for creating next episode</p>\n            <a class=\"btn btn-primary\" _v-499a93d8=\"\">Create new episode</a>\n            <p _v-499a93d8=\"\">Button will disappear on click, show an input field (for naming it) with an add/cancel button</p>\n            <p _v-499a93d8=\"\">show all scheduled topics and the easy ability to move them up into the episode bucket</p>\n            <p _v-499a93d8=\"\">Show a quick-add scheduled topic adder so this can be used instead of Trello</p>\n            <p _v-499a93d8=\"\">Allow for drag and drop reordering of topics, and a save button at the button</p>\n\n            <h2 _v-499a93d8=\"\">Episodes</h2>\n            <p v-show=\"episodes.length == 0\" _v-499a93d8=\"\">No episodes.</p>\n            <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"panel panel-default episode episode--in-list\" _v-499a93d8=\"\">\n                <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"episode__title\" _v-499a93d8=\"\">{{ episode.number }}. {{ episode.title }}</h3></div>\n            </div>\n\n            <h2 _v-499a93d8=\"\">Suggested Topics (for review)</h2>\n            <p _v-499a93d8=\"\">@todo: Embed a small suggested topics review panel here</p>\n            <a v-link=\"{ path: '/suggested-topics' }\" class=\"btn btn-primary\" _v-499a93d8=\"\">Review all suggested topics</a>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/admin-dashboard.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],17:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -13247,17 +13279,17 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],17:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    data: function data() {
-        return {
-            episodes: []
-        };
+    props: {
+        episodes: {
+            sync: true
+        }
     },
     methods: {
         deleteEpisode: function deleteEpisode(episode) {
@@ -13272,13 +13304,6 @@ exports.default = {
                 console.log('error', data);
             });
         }
-    },
-    created: function created() {
-        this.$http.get('episodes', function (data, status, request) {
-            this.episodes = data;
-        }).error(function (data, status, request) {
-            console.log('error', data);
-        });
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
@@ -13294,7 +13319,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],18:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2}],19:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -13330,7 +13355,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],19:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13356,7 +13381,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],20:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2}],21:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -13415,7 +13440,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],21:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2,"vueify-insert-css":13}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13468,7 +13493,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],22:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13511,7 +13536,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":12,"vue-hot-reload-api":2}],23:[function(require,module,exports){
+},{"vue":12,"vue-hot-reload-api":2}],24:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n    .vote-button[_v-23239e80], .vote-button__count[_v-23239e80] {\n        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n        margin-right: -15px;\n    }\n\n    .vote-button[_v-23239e80] {\n        height: 4rem;\n        overflow: hidden;\n        position: relative;\n        -webkit-transition: all 0.5s ease;\n        transition: all 0.5s ease;\n        width: 4.5rem;\n    }\n    .vote-button.disabled[_v-23239e80] {\n        background: #bbb;\n        border-color: #bbb;\n        opacity: 1;\n    }\n    .vote-button .icon[_v-23239e80] {\n        height: 1.5em;\n        left: 1.1rem;\n        position: absolute;\n        top: 0.6rem;\n        width: 1.5em;\n    }\n\n    .vote-button__count[_v-23239e80] {\n        background: #ddd;\n        border-radius: 0 0 0.35em 0.35em;\n        display: inline-block;\n        margin-top: -0.5em;\n        padding-bottom: 0.1em;\n        padding-top: 0.5em;\n        text-align: center;\n        width: 4.5rem;\n    }\n")
 'use strict';
 

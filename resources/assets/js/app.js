@@ -8,7 +8,7 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').
 
 var router = new VueRouter({
     history: true,
-    root: 'dashboard'
+    root: 'app'
 });
 
 router.beforeEach(function (transition) {
@@ -19,7 +19,7 @@ router.beforeEach(function (transition) {
     }
 
     if (transition.to.fullPath == '/' && Suggestive.isAdmin) {
-        transition.redirect('/suggested-topics');
+        transition.redirect('/admin-dashboard');
     }
 
     return true;
@@ -55,6 +55,9 @@ var App = Vue.extend({
 router.map({
     '/': {
         component: require('./components/user-dashboard.vue')
+    },
+    '/admin-dashboard': {
+        component: require('./components/admin-dashboard.vue')
     },
     '/suggest-topic': {
         component: require('./components/suggest-topic.vue')

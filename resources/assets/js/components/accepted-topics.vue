@@ -27,21 +27,19 @@
 
 <script>
     export default {
+        props: {
+            episodes: {
+                sync: true
+            }
+        },
         data: function () {
             return {
-                acceptedTopics: [],
-                episodes: [],
+                acceptedTopics: []
             };
         },
         created: function () {
             this.$http.get('topics?status=accepted', function (data, status, request) {
                 this.acceptedTopics = data;
-            }).error(function (data, status, request) {
-                console.log('error', data);
-            });
-
-            this.$http.get('episodes', function (data, status, request) {
-                this.episodes = data;
             }).error(function (data, status, request) {
                 console.log('error', data);
             });
