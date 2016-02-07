@@ -24,6 +24,8 @@ class Episode implements Arrayable, Jsonable
             'id' => $this->episode->id,
             'title' => $this->episode->title,
             'number' => $this->episode->number,
+            // @todo: Figure out how to turn this off at times?
+            'topics' => $this->episode->topics->toArray(),
         ];
     }
 }

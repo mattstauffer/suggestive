@@ -7,6 +7,7 @@
         <div v-for="topic in suggestedTopics" class="row">
             <div class="col-xs-3 col-sm-2" style="text-align: right">
                 <div class="vote-count">
+                    Votes:<br>
                     {{ topic.votes }}
                 </div>
             </div>

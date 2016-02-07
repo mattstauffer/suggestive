@@ -20,7 +20,7 @@
                             </ul>
                         </nav-dropdown>
                         @else
-                        <li><a v-link="{ path: '/', exact: true }">Home</a></li>
+                        <li><a v-link="{ path: '/', exact: true }">Topics</a></li>
                         <li><a v-link="{ path: '/suggest-topic' }">Suggest Topic</a></li>
                         @endif
                         <li><a href="/logout">Log out</a></li>

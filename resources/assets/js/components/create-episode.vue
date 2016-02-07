@@ -14,7 +14,7 @@
                 <input type="number" v-model="number" class="form-control" length="5" required><br>
 
                 <input type="submit" class="btn btn-primary" value="Add">
-                <a v-link="{ path: '/' }" class="btn btn-default">Cancel</a>
+                <a v-link="{ path: '/episodes' }" class="btn btn-default">Cancel</a>
             </form>
         </div>
     </div>

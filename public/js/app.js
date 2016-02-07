@@ -13231,7 +13231,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Create an Episode</h2>\n\n            <form @submit.prevent=\"createEpisode\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\" length=\"255\" autofocus=\"\" v-el:episode-title-input=\"\" required=\"\"><br>\n\n                <label>Number</label><br>\n                <input type=\"number\" v-model=\"number\" class=\"form-control\" length=\"5\" required=\"\"><br>\n\n                <input type=\"submit\" class=\"btn btn-primary\" value=\"Add\">\n                <a v-link=\"{ path: '/' }\" class=\"btn btn-default\">Cancel</a>\n            </form>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\">\n        <div class=\"col-md-8 col-md-push-2\">\n            <h2>Create an Episode</h2>\n\n            <form @submit.prevent=\"createEpisode\">\n                <label>Title</label><br>\n                <input type=\"text\" v-model=\"title\" class=\"form-control\" length=\"255\" autofocus=\"\" v-el:episode-title-input=\"\" required=\"\"><br>\n\n                <label>Number</label><br>\n                <input type=\"number\" v-model=\"number\" class=\"form-control\" length=\"5\" required=\"\"><br>\n\n                <input type=\"submit\" class=\"btn btn-primary\" value=\"Add\">\n                <a v-link=\"{ path: '/episodes' }\" class=\"btn btn-default\">Cancel</a>\n            </form>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -13259,6 +13259,20 @@ exports.default = {
             episodes: []
         };
     },
+    methods: {
+        deleteEpisode: function deleteEpisode(episode) {
+            if (!confirm("Are you sure?")) {
+                return;
+            }
+
+            this.$http.delete('episodes/' + episode.id, function (data, status, request) {
+                console.log('BALETED');
+                this.episodes.$remove(episode);
+            }).error(function (data, status, request) {
+                console.log('error', data);
+            });
+        }
+    },
     created: function created() {
         this.$http.get('episodes', function (data, status, request) {
             this.episodes = data;
@@ -13268,7 +13282,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <a v-link=\"{ path: '/episodes/create' }\" class=\"btn btn-primary add-button pull-right\">\n            Add episode\n            <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n        </a>\n        <h2>Episodes</h2>\n\n        <p v-show=\"episodes.length == 0\">No episodes.</p>\n        <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"row\" style=\"margin-bottom: 2rem;\">\n            <div class=\"col-xs-3 col-sm-2 episode__number--in-list\" style=\"text-align: right\">\n                {{ episode.number }}\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default episode episode--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"episode__title\">{{ episode.title }}</h3></div>\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10 col-xs-push-3 col-sm-push-2\">\n                @todo: List all topics here\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <a v-link=\"{ path: '/episodes/create' }\" class=\"btn btn-primary add-button pull-right\">\n            Add episode\n            <svg class=\"icon icon-plus\" style=\"\"><use xlink:href=\"#icon-plus\"></use></svg>\n        </a>\n        <h2>Episodes</h2>\n\n        <p v-show=\"episodes.length == 0\">No episodes.</p>\n        <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"row\" style=\"margin-bottom: 3rem;\">\n            <div class=\"col-xs-3 col-sm-2 episode__number--in-list bg-primary\" style=\"text-align: right; border-radius: 0.25em;\">\n                {{ episode.number }}\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default episode episode--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"episode__title\">{{ episode.title }}</h3></div>\n                    <span @click=\"deleteEpisode(episode)\" class=\"episode__delete--in-list\">x</span>\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10 col-xs-push-3 col-sm-push-2\">\n                <h3 style=\"margin-top: 0; font-size: 1em; font-weight: bold;\">Topics</h3>\n                <ul>\n                    <li v-for=\"topic in episode.topics\">\n                        {{ topic.title }}\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -13442,7 +13456,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Suggested Topics</h2>\n\n        <p v-show=\"suggestedTopics.length == 0\">No suggested topics.</p>\n        <div v-for=\"topic in suggestedTopics\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                <div class=\"vote-count\">\n                    {{ topic.votes }}\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default topic topic--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"topic__title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n                <div class=\"btn-group\">\n                    <a @click.prevent=\"acceptTopic(topic)\" class=\"btn btn-sm btn-primary\">Accept</a>\n                    <a @click.prevent=\"rejectTopic(topic)\" class=\"btn btn-sm btn-danger\">Reject</a>\n                    <a @click.prevent=\"markTopicAsDuplicate(topic)\" class=\"btn btn-sm btn-info\">Mark as duplicate</a>\n                </div>\n                <br><br>\n            </div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div>\n        <suggest-topic-button verb=\"Add\"></suggest-topic-button>\n        <h2>Suggested Topics</h2>\n\n        <p v-show=\"suggestedTopics.length == 0\">No suggested topics.</p>\n        <div v-for=\"topic in suggestedTopics\" class=\"row\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\">\n                <div class=\"vote-count\">\n                    Votes:<br>\n                    {{ topic.votes }}\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\">\n                <div class=\"panel panel-default topic topic--in-list\">\n                    <div class=\"panel-heading\"><h3 class=\"topic__title\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n                <div class=\"btn-group\">\n                    <a @click.prevent=\"acceptTopic(topic)\" class=\"btn btn-sm btn-primary\">Accept</a>\n                    <a @click.prevent=\"rejectTopic(topic)\" class=\"btn btn-sm btn-danger\">Reject</a>\n                    <a @click.prevent=\"markTopicAsDuplicate(topic)\" class=\"btn btn-sm btn-info\">Mark as duplicate</a>\n                </div>\n                <br><br>\n            </div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -13471,7 +13485,7 @@ exports.default = {
         };
     },
     watch: {
-        'episode': function episode(val) {
+        'topic.episode_id': function topicEpisode_id(val) {
             var data = {
                 'topic_id': this.topic.id
             };
@@ -13485,7 +13499,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <select v-model=\"episode\">\n        <option disabled=\"\">\n            - Schedule topic -\n        </option>\n        <option v-for=\"episode in episodes\" v-bind:value=\"episode.id\">\n            Episode {{ episode.number }}: {{ episode.title }}\n        </option>\n    </select>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <select v-model=\"topic.episode_id\">\n        <option disabled=\"\">\n            - Schedule topic -\n        </option>\n        <option v-for=\"episode in episodes\" v-bind:value=\"episode.id\">\n            Episode {{ episode.number }}: {{ episode.title }} ({{ episode.id }})\n        </option>\n    </select>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

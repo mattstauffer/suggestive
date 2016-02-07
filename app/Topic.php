@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Episode;
 use App\User;
 use App\Vote;
 use Exception;
@@ -46,6 +47,11 @@ class Topic extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function episode()
+    {
+        return $this->belongsTo(Episode::class);
     }
 
     public function votes()

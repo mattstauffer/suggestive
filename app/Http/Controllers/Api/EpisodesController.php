@@ -48,6 +48,17 @@ class EpisodesController extends Controller
         return new ApiEpisode(Episode::findOrFail($id));
     }
 
+    public function destroy($id)
+    {
+        $episode = Episode::findOrFail($id);
+        $episode->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleted episode.'
+        ]);
+    }
+
     // public function patch($id, Request $request)
     // {
     //     $episode = Episode::findOrFail($id);

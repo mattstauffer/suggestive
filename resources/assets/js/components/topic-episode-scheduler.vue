@@ -1,10 +1,10 @@
 <template>
-    <select v-model="episode">
+    <select v-model="topic.episode_id">
         <option disabled>
             - Schedule topic -
         </option>
         <option v-for="episode in episodes" v-bind:value="episode.id">
-            Episode {{ episode.number }}: {{ episode.title }}
+            Episode {{ episode.number }}: {{ episode.title }} ({{ episode.id }})
         </option>
     </select>
 </template>
@@ -21,7 +21,7 @@
             }
         },
         watch: {
-            'episode': function (val) {
+            'topic.episode_id': function (val) {
                 var data = {
                     'topic_id': this.topic.id
                 };
