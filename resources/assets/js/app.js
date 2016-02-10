@@ -3,6 +3,8 @@ window.VueRouter = require('vue-router');
 
 Vue.use(require('vue-resource'));
 
+Vue.config.debug = true; 
+
 Vue.http.options.root = '/api';
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').getAttribute('content');
 
@@ -48,6 +50,16 @@ var App = Vue.extend({
             }).error(function (data, status, request) {
                 console.log('error', data);
             });
+        }
+    },
+    computed: { 
+        acceptedTopics: function () {
+            // @todo:
+            return this.topics;
+        },
+        suggestedTopics: function () {
+            // @todo:
+            return this.topics;
         }
     }
 });

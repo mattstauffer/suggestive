@@ -13074,6 +13074,8 @@ window.VueRouter = require('vue-router');
 
 Vue.use(require('vue-resource'));
 
+Vue.config.debug = true;
+
 Vue.http.options.root = '/api';
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').getAttribute('content');
 
@@ -13119,6 +13121,16 @@ var App = Vue.extend({
             }).error(function (data, status, request) {
                 console.log('error', data);
             });
+        }
+    },
+    computed: {
+        acceptedTopics: function acceptedTopics() {
+            // @todo:
+            return this.topics;
+        },
+        suggestedTopics: function suggestedTopics() {
+            // @todo:
+            return this.topics;
         }
     }
 });
@@ -13195,28 +13207,80 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"./topic-episode-scheduler.vue":23,"vue":12,"vue-hot-reload-api":2}],16:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n")
-"use strict";
+var __vueify_style__ = require("vueify-insert-css").insert("\n.topic--in-list[_v-499a93d8] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-499a93d8]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-499a93d8] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-499a93d8] {\n        background: #69A7DC;\n    }\n")
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
+    data: function data() {
+        return {
+            selected: [],
+            creating: false
+        };
+    },
+    ready: function ready() {
+        // @todo: How do we handle this?
+        for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
+            var topic = this.acceptedTopics[i];
+            this.selected[topic.id] = false;
+        }
+    },
     props: {
         episodes: {
             sync: true
+        },
+        acceptedTopics: {
+            sync: true
+        }
+    },
+    methods: {
+        startCreating: function startCreating() {
+            this.creating = true;
+        },
+        stopCreating: function stopCreating() {
+            this.creating = false;
+        },
+        finishCreating: function finishCreating() {
+            alert('DO ITTTTT');
+        },
+        toggleTopic: function toggleTopic(topic) {
+            this.selected.$set(topic.id, !this.selected[topic.id]);
+        },
+        topicIsSelected: function topicIsSelected(topic) {
+            return !!this.selected[topic.id];
+        },
+        addTopic: function addTopic() {
+            alert('to do');
+        }
+    },
+    computed: {
+        acceptedTopicsSelected: function acceptedTopicsSelected() {
+            // @todo: Underscore map
+            var vm = this;
+            return this.acceptedTopics.filter(function (topic) {
+                return vm.topicIsSelected(topic);
+            });
+        },
+        acceptedTopicsNotSelected: function acceptedTopicsNotSelected() {
+            // @todo: Underscore map
+            var vm = this;
+            return this.acceptedTopics.filter(function (topic) {
+                return !vm.topicIsSelected(topic);
+            });
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-499a93d8=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-499a93d8=\"\">\n            <h2 _v-499a93d8=\"\">Episode Planner</h2>\n            <p _v-499a93d8=\"\">@todo: Show all accepted topics (and the inline ability to add new ones); allow an easy UI for creating next episode</p>\n            <a class=\"btn btn-primary\" _v-499a93d8=\"\">Create new episode</a>\n            <p _v-499a93d8=\"\">Button will disappear on click, show an input field (for naming it) with an add/cancel button</p>\n            <p _v-499a93d8=\"\">show all scheduled topics and the easy ability to move them up into the episode bucket</p>\n            <p _v-499a93d8=\"\">Show a quick-add scheduled topic adder so this can be used instead of Trello</p>\n            <p _v-499a93d8=\"\">Allow for drag and drop reordering of topics, and a save button at the button</p>\n\n            <h2 _v-499a93d8=\"\">Episodes</h2>\n            <p v-show=\"episodes.length == 0\" _v-499a93d8=\"\">No episodes.</p>\n            <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"panel panel-default episode episode--in-list\" _v-499a93d8=\"\">\n                <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"episode__title\" _v-499a93d8=\"\">{{ episode.number }}. {{ episode.title }}</h3></div>\n            </div>\n\n            <h2 _v-499a93d8=\"\">Suggested Topics (for review)</h2>\n            <p _v-499a93d8=\"\">@todo: Embed a small suggested topics review panel here</p>\n            <a v-link=\"{ path: '/suggested-topics' }\" class=\"btn btn-primary\" _v-499a93d8=\"\">Review all suggested topics</a>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-499a93d8=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-499a93d8=\"\">\n            <h2 _v-499a93d8=\"\">Episode Planner</h2>\n            <div class=\"episode-planner\" v-show=\"creating\" _v-499a93d8=\"\">\n                <p v-show=\"acceptedTopics.length == 0\" _v-499a93d8=\"\">No accepted topics.</p>\n                <p v-show=\"acceptedTopics.lenght != 0\" _v-499a93d8=\"\">Pick accepted topics to cover this episode:</p>\n                <div class=\"row\" _v-499a93d8=\"\">\n                    <div class=\"col-sm-6\" _v-499a93d8=\"\">\n                        <h3 _v-499a93d8=\"\">Scheduled topics</h3>\n                        <div v-for=\"topic in acceptedTopicsSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-primary\" _v-499a93d8=\"\">\n                            <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"topic__title\" _v-499a93d8=\"\">{{ topic.title }}</h3></div>\n                        </div>\n                    </div>\n                    <div class=\"col-sm-6\" _v-499a93d8=\"\">\n                        <h3 _v-499a93d8=\"\">Available topics</h3>\n                        <div class=\"form-inline\" _v-499a93d8=\"\">\n                            <input class=\"form-control\" type=\"text\" placeholder=\"Add topic\" _v-499a93d8=\"\">\n                            <a class=\"btn btn-primary\" @click=\"addTopic\" _v-499a93d8=\"\">Add</a>\n                        </div>\n                        <div style=\"height: 20em; overflow-y: scroll; margin-top: 1em; padding-left: 0.5em; padding-right: 0.5em;\" _v-499a93d8=\"\">\n                            <div v-for=\"topic in acceptedTopicsNotSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-default\" _v-499a93d8=\"\">\n                                <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"topic__title\" _v-499a93d8=\"\">{{ topic.title }}</h3></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n            <div class=\"form-inline\" style=\"margin-top: 1em;\" _v-499a93d8=\"\">\n                <a class=\"btn btn-primary\" @click=\"startCreating\" v-show=\"!creating\" _v-499a93d8=\"\">Create new episode</a>\n                <input class=\"form-control\" type=\"text\" placeholder=\"Episode name\" v-show=\"creating\" _v-499a93d8=\"\">\n                <a class=\"btn btn-primary\" @click=\"finishCreating\" v-show=\"creating\" _v-499a93d8=\"\">Save episode</a>\n                <a class=\"btn btn-default\" @click=\"stopCreating\" v-show=\"creating\" _v-499a93d8=\"\">Cancel</a>\n            </div>\n    \n            <p _v-499a93d8=\"\">Allow for drag and drop reordering of topics, and a save button at the button</p>\n\n            <h2 _v-499a93d8=\"\">Episodes</h2>\n            <p v-show=\"episodes.length == 0\" _v-499a93d8=\"\">No episodes.</p>\n            <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"panel panel-default episode episode--in-list\" _v-499a93d8=\"\"> \n                <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"episode__title\" _v-499a93d8=\"\">{{ episode.number }}. {{ episode.title }}</h3></div>\n            </div>\n\n            <h2 _v-499a93d8=\"\">Suggested Topics (for review)</h2>\n            <p _v-499a93d8=\"\">@todo: Embed a small suggested topics review panel here</p>\n            <a v-link=\"{ path: '/suggested-topics' }\" class=\"btn btn-primary\" _v-499a93d8=\"\">Review all suggested topics</a>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   var id = "/Users/mattstauffer/Sites/suggestive/resources/assets/js/components/admin-dashboard.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n"] = false
+    require("vueify-insert-css").cache["\n.topic--in-list[_v-499a93d8] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-499a93d8]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-499a93d8] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-499a93d8] {\n        background: #69A7DC;\n    }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
