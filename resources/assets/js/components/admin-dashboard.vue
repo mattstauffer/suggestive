@@ -21,7 +21,7 @@
             <h2>Episode Planner</h2>
             <div class="episode-planner" v-show="creating">
                 <p v-show="acceptedTopics.length == 0">No accepted topics.</p>
-                <p v-show="acceptedTopics.lenght != 0">Pick accepted topics to cover this episode:</p>
+                <p v-show="acceptedTopics.length != 0">Pick accepted topics to cover this episode:</p>
                 <div class="row">
                     <div class="col-sm-6">
                         <h3>Scheduled topics</h3>
@@ -36,7 +36,7 @@
                     <div class="col-sm-6">
                         <h3>Available topics</h3>
                         <div class="form-inline">
-                            <input class="form-control" type="text" placeholder="Add topic">
+                            <input v-model="topicName" class="form-control" type="text" placeholder="Add topic">
                             <a class="btn btn-primary" @click="addTopic">Add</a>
                         </div>
                         <div style="height: 20em; overflow-y: scroll; margin-top: 1em; padding-left: 0.5em; padding-right: 0.5em;">
@@ -50,26 +50,33 @@
                         </div>
                     </div>
                 </div>
+
+                <p>NEXT STEPS: 1) Make save new episode actually work. 2) Allow for drag and drop re-ordering of topic list on the new episode panel. 3) individual routes for each episode, where you can edit/delete/reorder and change topics/etc. </p>
             </div>
 
             <div class="form-inline" style="margin-top: 1em;">
-                <a class="btn btn-primary" @click="startCreating" v-show="!creating">Create new episode</a>
+                <a class="btn btn-primary pull-right" @click="startCreating" v-show="!creating">
+                    Create new episode
+                    <svg class="icon icon-plus" style=""><use xlink:href="#icon-plus"></use></svg>
+                </a>
                 <input class="form-control" type="text" placeholder="Episode name" v-show="creating">
                 <a class="btn btn-primary" @click="finishCreating" v-show="creating">Save episode</a>
                 <a class="btn btn-default" @click="stopCreating" v-show="creating">Cancel</a>
             </div>
-    
-            <p>Allow for drag and drop reordering of topics, and a save button at the button</p>
 
-            <h2>Episodes</h2>
+            <hr style="clear: both;">
+
+            <h2>Janky to-be-improved Episodes List</h2>
             <p v-show="episodes.length == 0">No episodes.</p>
             <div v-for="episode in episodes | orderBy 'number' -1" class="panel panel-default episode episode--in-list"> 
                 <div class="panel-heading"><h3 class="episode__title">{{ episode.number }}. {{ episode.title }}</h3></div>
             </div>
 
-            <h2>Suggested Topics (for review)</h2>
-            <p>@todo: Embed a small suggested topics review panel here</p>
-            <a v-link="{ path: '/suggested-topics' }" class="btn btn-primary">Review all suggested topics</a>
+            <hr>
+
+<!--            <h2>Suggested Topics (for review)</h2>-->
+            <suggested-topics></suggested-topics>
+            <!--<a v-link="{ path: '/suggested-topics' }" class="btn btn-primary">Review all suggested topics</a>-->
         </div>
     </div>
 </template>
@@ -79,7 +86,8 @@
         data: function () {
             return {
                 selected: [],
-                creating: false
+                creating: false,
+                topicName: '',
             };
         },
         ready: function () {
@@ -114,7 +122,13 @@
                 return !!this.selected[topic.id];
             },
             addTopic: function () {
-                alert('to do');
+                var self = this;
+
+                this.$http.post('topics', { title: this.topicName }, function (data) {
+                    self.topicName = '';
+                    self.acceptedTopics.push(data);
+                    self.selected.$set(data.id, true);
+                });
             }
         },
         computed: {

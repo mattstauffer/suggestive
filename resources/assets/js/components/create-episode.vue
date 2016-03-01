@@ -5,6 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-push-2">
             <h2>Create an Episode</h2>
+            <p>@TODO: Don't use this one-- primary work on episode creation is living on the dashboard for now. Need to normalize.</p>
 
             <form @submit.prevent="createEpisode">
                 <label>Title</label><br>
