@@ -17,6 +17,8 @@
                             Covered/will cover in episode:
                             <topic-episode-scheduler :topic="topic" :episodes="episodes"></topic-episode-scheduler>
                         </div>
+                        Link:
+                        <topic-link :topic="topic"></topic-link>
                     </div>
                 </div>
                 <br>
