@@ -31921,11 +31921,17 @@ if (module.hot) {(function () {  module.hot.accept()
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
-exports.default = {};
+exports.default = {
+    props: {
+        topics: {
+            sync: true
+        }
+    }
+};
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    here is a topic\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
