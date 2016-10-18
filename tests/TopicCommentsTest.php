@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class UserTopicTest extends TestCase
+class TopicCommentsTest extends TestCase
 {
     use DatabaseMigrations;
     use WithoutMiddleware;
