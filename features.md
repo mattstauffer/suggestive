@@ -18,8 +18,14 @@
 - [x] List all episodes
 - [x] Create an episode
 
+- [ ] Make the "Janky to-be-improved Episodes list" ... not janky?
+- [ ] Make episodes page save new episode actually work
+- [ ] Allow for drag and drop re-ordering of topic list on the new episode episode planner panel
+- [ ] Add individual routes for each episode, where you can edit/delete/reorder and change topics/etc.
+
 ### NOT CORE
 - [ ] Comment on a topic
+- [ ] Show which user suggested a topic
 - [ ] Grab a smaller group of the "accepted" topics for a particular episode/etc.
 - [ ] Suggest revisions to a topic
 - [ ] Edit a topic
