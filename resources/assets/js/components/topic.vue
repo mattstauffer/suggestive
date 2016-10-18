@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-9 col-sm-10">
+            <div class="col-xs-9 col-sm-10" v-if="! loadingComments">
                 <h3>Comments</h3>
 
                 <div class="media" v-for="comment in comments">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <p class="text-muted" v-if="!loadingComments && comments.length < 1">
+                <p class="text-muted" v-if="comments.length < 1">
                     There are no comments yet. Why not post the first?
                 </p>
 
