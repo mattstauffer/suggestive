@@ -31918,7 +31918,9 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3}],26:[function(require,module,exports){
-"use strict";
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.vote-button[_v-284e9be5], .vote-button__count[_v-284e9be5] {\n    /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n    margin-right: -15px;\n}\n\n.vote-button[_v-284e9be5] {\n    height: 4rem;\n    overflow: hidden;\n    position: relative;\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n    width: 4.5rem;\n}\n.vote-button.disabled[_v-284e9be5] {\n    background: #bbb;\n    border-color: #bbb;\n    opacity: 1;\n}\n.vote-button .icon[_v-284e9be5] {\n    height: 1.5em;\n    left: 1.1rem;\n    position: absolute;\n    top: 0.6rem;\n    width: 1.5em;\n}\n\n.vote-button__count[_v-284e9be5] {\n    background: #ddd;\n    border-radius: 0 0 0.35em 0.35em;\n    display: inline-block;\n    margin-top: -0.5em;\n    padding-bottom: 0.1em;\n    padding-top: 0.5em;\n    text-align: center;\n    width: 4.5rem;\n}\n\n.media-object[_v-284e9be5] {\n    max-width: 80px;\n}\n")
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -31928,21 +31930,55 @@ exports.default = {
         topics: {
             sync: true
         }
+    },
+    data: function data() {
+        return {
+            topic: {},
+            comments: []
+        };
+    },
+    created: function created() {
+        var vm = this;
+
+        this.$http.get('topics', function (data, status, request) {
+            this.topic = _.find(this.topics, function (topic) {
+                return topic.id == vm.$route.params.topic_id;
+            });
+
+            this.storeComments();
+        }).error(function (data, status, request) {
+            console.log('error', request);
+        });
+    },
+    methods: {
+        storeComments: function storeComments() {
+            var url = 'topics/' + this.topic.id + '/comments';
+
+            this.$http.get(url, function (data, status, request) {
+                this.comments = data;
+            }).error(function (data, status, request) {
+                console.log('error', request);
+            });;
+        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    here is a topic\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"col-md-8 col-md-push-2\" v-cloak=\"\" _v-284e9be5=\"\">\n    <h2 _v-284e9be5=\"\">Viewing Topic</h2>\n\n    <div class=\"row\" _v-284e9be5=\"\">\n        <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\" _v-284e9be5=\"\">\n            <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\" _v-284e9be5=\"\">\n                <div class=\"clearfix\" _v-284e9be5=\"\">\n                    <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\" _v-284e9be5=\"\"><use xlink:href=\"#icon-arrow-up\" _v-284e9be5=\"\"></use></svg>\n                    <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\" _v-284e9be5=\"\"><use xlink:href=\"#icon-checkmark\" _v-284e9be5=\"\"></use></svg>\n                </div>\n            </a><br _v-284e9be5=\"\">\n            <div class=\"vote-button__count\" _v-284e9be5=\"\">\n                {{ topic.votes }}\n            </div>\n        </div>\n        <div class=\"col-xs-9 col-sm-10\" _v-284e9be5=\"\">\n            <div class=\"panel panel-default topic topic--in-list\" _v-284e9be5=\"\">\n                <div class=\"panel-heading\" _v-284e9be5=\"\">\n                    <h3 class=\"topic__title\" _v-284e9be5=\"\">\n                        <a v-link=\"{ path: '/topics/' + topic.id }\" _v-284e9be5=\"\">{{ topic.title }}</a>\n                    </h3>\n                </div>\n                <div class=\"panel-body\" _v-284e9be5=\"\">\n                    {{ topic.description }}\n                </div>\n            </div>\n        </div>\n        <div class=\"col-xs-9 col-sm-10\" _v-284e9be5=\"\">\n            <h3 _v-284e9be5=\"\">Comments</h3>\n\n            <div class=\"media\" v-for=\"comment in comments\" _v-284e9be5=\"\">\n                <div class=\"media-left\" _v-284e9be5=\"\">\n                    <img class=\"media-object\" :src=\"comment.user.avatar\" alt=\"{{ comment.user.name }}\" _v-284e9be5=\"\">\n                </div>\n                \n                <div class=\"media-body\" _v-284e9be5=\"\">\n                    <h4 class=\"media-heading\" _v-284e9be5=\"\">{{ comment.user.name }} said, {{ comment.time_ago }}</h4>\n                    <p _v-284e9be5=\"\">{{ comment.body }}</p>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.vote-button[_v-284e9be5], .vote-button__count[_v-284e9be5] {\n    /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n    margin-right: -15px;\n}\n\n.vote-button[_v-284e9be5] {\n    height: 4rem;\n    overflow: hidden;\n    position: relative;\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n    width: 4.5rem;\n}\n.vote-button.disabled[_v-284e9be5] {\n    background: #bbb;\n    border-color: #bbb;\n    opacity: 1;\n}\n.vote-button .icon[_v-284e9be5] {\n    height: 1.5em;\n    left: 1.1rem;\n    position: absolute;\n    top: 0.6rem;\n    width: 1.5em;\n}\n\n.vote-button__count[_v-284e9be5] {\n    background: #ddd;\n    border-radius: 0 0 0.35em 0.35em;\n    display: inline-block;\n    margin-top: -0.5em;\n    padding-bottom: 0.1em;\n    padding-top: 0.5em;\n    text-align: center;\n    width: 4.5rem;\n}\n\n.media-object[_v-284e9be5] {\n    max-width: 80px;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
   if (!module.hot.data) {
     hotAPI.createRecord("_v-284e9be5", module.exports)
   } else {
     hotAPI.update("_v-284e9be5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3}],27:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],27:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vote-button[_v-27da76cc], .vote-button__count[_v-27da76cc] {\n    /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n    margin-right: -15px;\n}\n\n.vote-button[_v-27da76cc] {\n    height: 4rem;\n    overflow: hidden;\n    position: relative;\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n    width: 4.5rem;\n}\n.vote-button.disabled[_v-27da76cc] {\n    background: #bbb;\n    border-color: #bbb;\n    opacity: 1;\n}\n.vote-button .icon[_v-27da76cc] {\n    height: 1.5em;\n    left: 1.1rem;\n    position: absolute;\n    top: 0.6rem;\n    width: 1.5em;\n}\n\n.vote-button__count[_v-27da76cc] {\n    background: #ddd;\n    border-radius: 0 0 0.35em 0.35em;\n    display: inline-block;\n    margin-top: -0.5em;\n    padding-bottom: 0.1em;\n    padding-top: 0.5em;\n    text-align: center;\n    width: 4.5rem;\n}\n")
 'use strict';

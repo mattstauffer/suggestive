@@ -1,6 +1,46 @@
 <template>
-    <div>
-        here is a topic
+    <div class="col-md-8 col-md-push-2" v-cloak>
+        <h2>Viewing Topic</h2>
+
+        <div class="row">
+            <div class="col-xs-3 col-sm-2" style="text-align: right">
+                <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
+                    <div class="clearfix">
+                        <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up" transition="expand"><use xlink:href="#icon-arrow-up"></use></svg>
+                        <svg v-show="topic.userVotedFor" class="icon icon-checkmark" transition="expand"><use xlink:href="#icon-checkmark"></use></svg>
+                    </div>
+                </a><br>
+                <div class="vote-button__count">
+                    {{ topic.votes }}
+                </div>
+            </div>
+            <div class="col-xs-9 col-sm-10">
+                <div class="panel panel-default topic topic--in-list">
+                    <div class="panel-heading">
+                        <h3 class="topic__title">
+                            <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ topic.description }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-9 col-sm-10">
+                <h3>Comments</h3>
+
+                <div class="media" v-for="comment in comments">
+                    <div class="media-left">
+                        <img class="media-object" :src="comment.user.avatar" alt="{{ comment.user.name }}">
+                    </div>
+                    
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ comment.user.name }} said, {{ comment.time_ago }}</h4>
+                        <p>{{ comment.body }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -10,6 +50,78 @@
             topics: {
                 sync: true
             }
+        },
+        data: function () {
+            return {
+                topic: {},
+                comments: []
+            };
+        },
+        created: function() {
+            var vm = this;
+
+            this.$http.get('topics', function(data, status, request) {
+                this.topic = _.find(this.topics, function (topic) {
+                    return topic.id == vm.$route.params.topic_id;
+                });
+
+                this.storeComments();
+            }).error(function(data, status, request) {
+                console.log('error', request);
+            });
+        },
+        methods: {
+            storeComments: function() {
+                var url = 'topics/' + this.topic.id + '/comments';
+
+                this.$http.get(url, function(data, status, request) {
+                    this.comments = data;
+                }).error(function(data, status, request) {
+                    console.log('error', request);
+                });;
+            }
         }
-    }
+    };
 </script>
+
+<style scoped>
+    .vote-button, .vote-button__count {
+        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */
+        margin-right: -15px;
+    }
+
+    .vote-button {
+        height: 4rem;
+        overflow: hidden;
+        position: relative;
+        transition: all 0.5s ease;
+        width: 4.5rem;
+    }
+    .vote-button.disabled {
+        background: #bbb;
+        border-color: #bbb;
+        opacity: 1;
+    }
+    .vote-button .icon {
+        height: 1.5em;
+        left: 1.1rem;
+        position: absolute;
+        top: 0.6rem;
+        width: 1.5em;
+    }
+
+    .vote-button__count {
+        background: #ddd;
+        border-radius: 0 0 0.35em 0.35em;
+        display: inline-block;
+        margin-top: -0.5em;
+        padding-bottom: 0.1em;
+        padding-top: 0.5em;
+        text-align: center;
+        width: 4.5rem;
+    }
+
+    .media-object {
+        max-width: 80px;
+    }
+</style>
