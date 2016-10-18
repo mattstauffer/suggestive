@@ -3,7 +3,7 @@ window.VueRouter = require('vue-router');
 
 Vue.use(require('vue-resource'));
 
-Vue.config.debug = true; 
+Vue.config.debug = true;
 
 Vue.http.options.root = '/api';
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').getAttribute('content');
@@ -22,6 +22,11 @@ router.beforeEach(function (transition) {
 
     if (transition.to.fullPath == '/' && Suggestive.isAdmin) {
         transition.redirect('/admin-dashboard');
+    }
+
+    if (transition.to.path == '') {
+        alert('yut');
+        transition.redirect('/');
     }
 
     return true;
@@ -53,7 +58,7 @@ var App = Vue.extend({
             });
         }
     },
-    computed: { 
+    computed: {
         acceptedTopics: function () {
             // @todo:
             return this.topics;

@@ -63,9 +63,12 @@ body {
 }
 
 .episode__number--in-list {
+    border-radius: 0.25em;
     font-size: 1.5em;
     font-weight: bold;
-    padding-top: 1em;
+    padding-bottom: 2em;
+    padding-top: 2em;
+    text-align: center;
 }
 
 .episode__delete--in-list {

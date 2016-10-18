@@ -8,22 +8,22 @@
 
         <p v-show="episodes.length == 0">No episodes.</p>
         <div v-for="episode in episodes | orderBy 'number' -1" class="row" style="margin-bottom: 3rem;">
-            <div class="col-xs-3 col-sm-2 episode__number--in-list bg-primary" style="text-align: right; border-radius: 0.25em;">
+            <div class="col-xs-3 col-sm-1 episode__number--in-list bg-primary">
                 {{ episode.number }}
             </div>
-            <div class="col-xs-9 col-sm-10">
+            <div class="col-xs-9 col-sm-11">
                 <div class="panel panel-default episode episode--in-list">
                     <div class="panel-heading"><h3 class="episode__title">{{ episode.title }}</h3></div>
+                    <div class="panel-body">
+                        <h3 style="margin-top: 0; font-size: 1em; font-weight: bold;">Topics</h3>
+                        <ul>
+                            <li v-for="topic in episode.topics">
+                                {{ topic.title }}
+                            </li>
+                        </ul>
+                    </div>
                     <span @click="deleteEpisode(episode)" class="episode__delete--in-list">x</span>
                 </div>
-            </div>
-            <div class="col-xs-9 col-sm-10 col-xs-push-3 col-sm-push-2">
-                <h3 style="margin-top: 0; font-size: 1em; font-weight: bold;">Topics</h3>
-                <ul>
-                    <li v-for="topic in episode.topics">
-                        {{ topic.title }}
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
