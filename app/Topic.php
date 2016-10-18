@@ -59,6 +59,11 @@ class Topic extends Model
         return $this->hasMany(Vote::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function flagAccepted()
     {
         $this->status = self::FLAG_ACCEPTED;
