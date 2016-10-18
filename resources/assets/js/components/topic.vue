@@ -43,6 +43,14 @@
                 <p class="text-muted" v-if="!loadingComments && comments.length < 1">
                     There are no comments yet. Why not post the first?
                 </p>
+
+                <br><br><form method="post" @submit.prevent="postComment">
+                    <div class="form-group">
+                        <textarea v-model="newComment.body" rows="3" class="form-control" placeholder="Enter a comment"></textarea>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary" value="Post Comment">
+                </form>
             </div>
         </div>
     </div>
@@ -59,7 +67,8 @@
             return {
                 topic: {},
                 comments: [],
-                loadingComments: true
+                loadingComments: true,
+                newComment: {}
             };
         },
         created: function() {
@@ -84,7 +93,22 @@
                     this.loadingComments = false;
                 }).error(function(data, status, request) {
                     console.log('error', request);
-                });;
+                });
+            },
+
+            postComment: function() {
+                var url = 'topics/' + this.topic.id + '/comments';
+
+                this.$http.post(url, this.newComment, function(data, status, request) {
+                    this.comments.push(data);
+                    this.newComment = {};
+                }).error(function(data, status, request) {
+                    if (request.status == 422) {
+                        alert('Please fill in all fields.');
+                    }
+
+                    console.log('error', request);
+                });
             }
         }
     };
