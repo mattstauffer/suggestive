@@ -39,6 +39,10 @@
                         <p>{{ comment.body }}</p>
                     </div>
                 </div>
+
+                <p class="text-muted" v-if="!loadingComments && comments.length < 1">
+                    There are no comments yet. Why not post the first?
+                </p>
             </div>
         </div>
     </div>
@@ -54,7 +58,8 @@
         data: function () {
             return {
                 topic: {},
-                comments: []
+                comments: [],
+                loadingComments: true
             };
         },
         created: function() {
@@ -76,6 +81,7 @@
 
                 this.$http.get(url, function(data, status, request) {
                     this.comments = data;
+                    this.loadingComments = false;
                 }).error(function(data, status, request) {
                     console.log('error', request);
                 });;
