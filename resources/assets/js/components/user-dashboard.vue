@@ -60,6 +60,10 @@
                         <div class="panel-heading">
                             <h3 class="topic__title">
                                 <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
+                                <small>
+                                    ({{ topic.comment_count }}
+                                    {{ topic.comment_count == 1 ? 'comment' : 'comments' }})
+                                </small>
                             </h3>
                         </div>
                         <div class="panel-body">
