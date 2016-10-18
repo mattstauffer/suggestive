@@ -14351,12 +14351,12 @@ router.beforeEach(function (transition) {
         }
     }
 
-    if (transition.to.fullPath == '/' && Suggestive.isAdmin) {
+    if (transition.to.path == '/' && Suggestive.isAdmin) {
         transition.redirect('/admin-dashboard');
     }
 
+    // Catch vue-router bug
     if (transition.to.path == '') {
-        alert('yut');
         transition.redirect('/');
     }
 
