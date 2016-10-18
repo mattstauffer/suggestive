@@ -152,6 +152,6 @@
     }
 
     .media-object {
-        max-width: 80px;
+        max-width: 50px;
     }
 </style>
