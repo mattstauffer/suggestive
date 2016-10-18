@@ -75,6 +75,9 @@ router.map({
     '/': {
         component: require('./components/user-dashboard.vue')
     },
+    '/topics/:topic_id': {
+        component: require('./components/topic.vue')
+    },
     '/admin-dashboard': {
         component: require('./components/admin-dashboard.vue')
     },

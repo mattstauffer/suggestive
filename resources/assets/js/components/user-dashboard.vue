@@ -57,7 +57,11 @@
                 </div>
                 <div class="col-xs-9 col-sm-10">
                     <div class="panel panel-default topic topic--in-list">
-                        <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
+                        <div class="panel-heading">
+                            <h3 class="topic__title">
+                                <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
+                            </h3>
+                        </div>
                         <div class="panel-body">
                             {{ topic.description }}
                         </div>

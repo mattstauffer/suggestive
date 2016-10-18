@@ -31392,6 +31392,9 @@ router.map({
     '/': {
         component: require('./components/user-dashboard.vue')
     },
+    '/topics/:topic_id': {
+        component: require('./components/topic.vue')
+    },
     '/admin-dashboard': {
         component: require('./components/admin-dashboard.vue')
     },
@@ -31422,7 +31425,7 @@ router.map({
 
 router.start(App, '#app');
 
-},{"./components/accepted-topics.vue":16,"./components/admin-dashboard.vue":17,"./components/create-episode.vue":18,"./components/episode.vue":19,"./components/episodes.vue":20,"./components/nav-dropdown.vue":21,"./components/suggest-topic-button.vue":22,"./components/suggest-topic.vue":23,"./components/suggested-topics.vue":24,"./components/user-dashboard.vue":26,"lodash":1,"vue":13,"vue-resource":5,"vue-router":12}],16:[function(require,module,exports){
+},{"./components/accepted-topics.vue":16,"./components/admin-dashboard.vue":17,"./components/create-episode.vue":18,"./components/episode.vue":19,"./components/episodes.vue":20,"./components/nav-dropdown.vue":21,"./components/suggest-topic-button.vue":22,"./components/suggest-topic.vue":23,"./components/suggested-topics.vue":24,"./components/topic.vue":26,"./components/user-dashboard.vue":27,"lodash":1,"vue":13,"vue-resource":5,"vue-router":12}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31457,14 +31460,14 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-70a00a4c", module.exports)
+    hotAPI.createRecord("_v-64bc85c0", module.exports)
   } else {
-    hotAPI.update("_v-70a00a4c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-64bc85c0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./topic-episode-scheduler.vue":25,"vue":13,"vue-hot-reload-api":3}],17:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.topic--in-list[_v-499a93d8] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-499a93d8]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-499a93d8] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-499a93d8] {\n        background: #69A7DC;\n    }\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.topic--in-list[_v-3db70f4c] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-3db70f4c]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-3db70f4c] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-3db70f4c] {\n        background: #69A7DC;\n    }\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31537,19 +31540,19 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-499a93d8=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-499a93d8=\"\">\n            <h2 _v-499a93d8=\"\">Episode Planner</h2>\n            <div class=\"episode-planner\" v-show=\"creating\" _v-499a93d8=\"\">\n                <p v-show=\"acceptedTopics.length == 0\" _v-499a93d8=\"\">No accepted topics.</p>\n                <p v-show=\"acceptedTopics.length != 0\" _v-499a93d8=\"\">Pick accepted topics to cover this episode:</p>\n                <div class=\"row\" _v-499a93d8=\"\">\n                    <div class=\"col-sm-6\" _v-499a93d8=\"\">\n                        <h3 _v-499a93d8=\"\">Scheduled topics</h3>\n                        <div v-for=\"topic in acceptedTopicsSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-primary\" _v-499a93d8=\"\">\n                            <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"topic__title\" _v-499a93d8=\"\">{{ topic.title }}</h3></div>\n                        </div>\n                    </div>\n                    <div class=\"col-sm-6\" _v-499a93d8=\"\">\n                        <h3 _v-499a93d8=\"\">Available topics</h3>\n                        <div class=\"form-inline\" _v-499a93d8=\"\">\n                            <input v-model=\"topicName\" class=\"form-control\" type=\"text\" placeholder=\"Add topic\" _v-499a93d8=\"\">\n                            <a class=\"btn btn-primary\" @click=\"addTopic\" _v-499a93d8=\"\">Add</a>\n                        </div>\n                        <div style=\"height: 20em; overflow-y: scroll; margin-top: 1em; padding-left: 0.5em; padding-right: 0.5em;\" _v-499a93d8=\"\">\n                            <div v-for=\"topic in acceptedTopicsNotSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-default\" _v-499a93d8=\"\">\n                                <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"topic__title\" _v-499a93d8=\"\">{{ topic.title }}</h3></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n                <p _v-499a93d8=\"\">NEXT STEPS: 1) Make save new episode actually work. 2) Allow for drag and drop re-ordering of topic list on the new episode panel. 3) individual routes for each episode, where you can edit/delete/reorder and change topics/etc. </p>\n            </div>\n\n            <div class=\"form-inline\" style=\"margin-top: 1em;\" _v-499a93d8=\"\">\n                <a class=\"btn btn-primary pull-right\" @click=\"startCreating\" v-show=\"!creating\" _v-499a93d8=\"\">\n                    Create new episode\n                    <svg class=\"icon icon-plus\" style=\"\" _v-499a93d8=\"\"><use xlink:href=\"#icon-plus\" _v-499a93d8=\"\"></use></svg>\n                </a>\n                <input class=\"form-control\" type=\"text\" placeholder=\"Episode name\" v-show=\"creating\" _v-499a93d8=\"\">\n                <a class=\"btn btn-primary\" @click=\"finishCreating\" v-show=\"creating\" _v-499a93d8=\"\">Save episode</a>\n                <a class=\"btn btn-default\" @click=\"stopCreating\" v-show=\"creating\" _v-499a93d8=\"\">Cancel</a>\n            </div>\n\n            <hr style=\"clear: both;\" _v-499a93d8=\"\">\n\n            <h2 _v-499a93d8=\"\">Janky to-be-improved Episodes List</h2>\n            <p v-show=\"episodes.length == 0\" _v-499a93d8=\"\">No episodes.</p>\n            <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"panel panel-default episode episode--in-list\" _v-499a93d8=\"\"> \n                <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"episode__title\" _v-499a93d8=\"\">{{ episode.number }}. {{ episode.title }}</h3></div>\n            </div>\n\n            <hr _v-499a93d8=\"\">\n\n<!--            <h2>Suggested Topics (for review)</h2>-->\n            <suggested-topics _v-499a93d8=\"\"></suggested-topics>\n            <!--<a v-link=\"{ path: '/suggested-topics' }\" class=\"btn btn-primary\">Review all suggested topics</a>-->\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-3db70f4c=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-3db70f4c=\"\">\n            <h2 _v-3db70f4c=\"\">Episode Planner</h2>\n            <div class=\"episode-planner\" v-show=\"creating\" _v-3db70f4c=\"\">\n                <p v-show=\"acceptedTopics.length == 0\" _v-3db70f4c=\"\">No accepted topics.</p>\n                <p v-show=\"acceptedTopics.length != 0\" _v-3db70f4c=\"\">Pick accepted topics to cover this episode:</p>\n                <div class=\"row\" _v-3db70f4c=\"\">\n                    <div class=\"col-sm-6\" _v-3db70f4c=\"\">\n                        <h3 _v-3db70f4c=\"\">Scheduled topics</h3>\n                        <div v-for=\"topic in acceptedTopicsSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-primary\" _v-3db70f4c=\"\">\n                            <div class=\"panel-heading\" _v-3db70f4c=\"\"><h3 class=\"topic__title\" _v-3db70f4c=\"\">{{ topic.title }}</h3></div>\n                        </div>\n                    </div>\n                    <div class=\"col-sm-6\" _v-3db70f4c=\"\">\n                        <h3 _v-3db70f4c=\"\">Available topics</h3>\n                        <div class=\"form-inline\" _v-3db70f4c=\"\">\n                            <input v-model=\"topicName\" class=\"form-control\" type=\"text\" placeholder=\"Add topic\" _v-3db70f4c=\"\">\n                            <a class=\"btn btn-primary\" @click=\"addTopic\" _v-3db70f4c=\"\">Add</a>\n                        </div>\n                        <div style=\"height: 20em; overflow-y: scroll; margin-top: 1em; padding-left: 0.5em; padding-right: 0.5em;\" _v-3db70f4c=\"\">\n                            <div v-for=\"topic in acceptedTopicsNotSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-default\" _v-3db70f4c=\"\">\n                                <div class=\"panel-heading\" _v-3db70f4c=\"\"><h3 class=\"topic__title\" _v-3db70f4c=\"\">{{ topic.title }}</h3></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n                <p _v-3db70f4c=\"\">NEXT STEPS: 1) Make save new episode actually work. 2) Allow for drag and drop re-ordering of topic list on the new episode panel. 3) individual routes for each episode, where you can edit/delete/reorder and change topics/etc. </p>\n            </div>\n\n            <div class=\"form-inline\" style=\"margin-top: 1em;\" _v-3db70f4c=\"\">\n                <a class=\"btn btn-primary pull-right\" @click=\"startCreating\" v-show=\"!creating\" _v-3db70f4c=\"\">\n                    Create new episode\n                    <svg class=\"icon icon-plus\" style=\"\" _v-3db70f4c=\"\"><use xlink:href=\"#icon-plus\" _v-3db70f4c=\"\"></use></svg>\n                </a>\n                <input class=\"form-control\" type=\"text\" placeholder=\"Episode name\" v-show=\"creating\" _v-3db70f4c=\"\">\n                <a class=\"btn btn-primary\" @click=\"finishCreating\" v-show=\"creating\" _v-3db70f4c=\"\">Save episode</a>\n                <a class=\"btn btn-default\" @click=\"stopCreating\" v-show=\"creating\" _v-3db70f4c=\"\">Cancel</a>\n            </div>\n\n            <hr style=\"clear: both;\" _v-3db70f4c=\"\">\n\n            <h2 _v-3db70f4c=\"\">Janky to-be-improved Episodes List</h2>\n            <p v-show=\"episodes.length == 0\" _v-3db70f4c=\"\">No episodes.</p>\n            <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"panel panel-default episode episode--in-list\" _v-3db70f4c=\"\"> \n                <div class=\"panel-heading\" _v-3db70f4c=\"\"><h3 class=\"episode__title\" _v-3db70f4c=\"\">{{ episode.number }}. {{ episode.title }}</h3></div>\n            </div>\n\n            <hr _v-3db70f4c=\"\">\n\n<!--            <h2>Suggested Topics (for review)</h2>-->\n            <suggested-topics _v-3db70f4c=\"\"></suggested-topics>\n            <!--<a v-link=\"{ path: '/suggested-topics' }\" class=\"btn btn-primary\">Review all suggested topics</a>-->\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.topic--in-list[_v-499a93d8] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-499a93d8]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-499a93d8] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-499a93d8] {\n        background: #69A7DC;\n    }\n"] = false
+    __vueify_insert__.cache["\n.topic--in-list[_v-3db70f4c] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-3db70f4c]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-3db70f4c] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-3db70f4c] {\n        background: #69A7DC;\n    }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-499a93d8", module.exports)
+    hotAPI.createRecord("_v-3db70f4c", module.exports)
   } else {
-    hotAPI.update("_v-499a93d8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-3db70f4c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],18:[function(require,module,exports){
@@ -31601,9 +31604,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-62609850", module.exports)
+    hotAPI.createRecord("_v-083bf9e4", module.exports)
   } else {
-    hotAPI.update("_v-62609850", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-083bf9e4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],19:[function(require,module,exports){
@@ -31656,9 +31659,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-630ea7bd", module.exports)
+    hotAPI.createRecord("_v-60c7d731", module.exports)
   } else {
-    hotAPI.update("_v-630ea7bd", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-60c7d731", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3}],20:[function(require,module,exports){
@@ -31695,9 +31698,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-0271f106", module.exports)
+    hotAPI.createRecord("_v-88429fdc", module.exports)
   } else {
-    hotAPI.update("_v-0271f106", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-88429fdc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3}],21:[function(require,module,exports){
@@ -31731,9 +31734,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-ab823fae", module.exports)
+    hotAPI.createRecord("_v-51dd3935", module.exports)
   } else {
-    hotAPI.update("_v-ab823fae", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-51dd3935", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],22:[function(require,module,exports){
@@ -31756,9 +31759,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-b8eada32", module.exports)
+    hotAPI.createRecord("_v-ea15c01a", module.exports)
   } else {
-    hotAPI.update("_v-b8eada32", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-ea15c01a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3}],23:[function(require,module,exports){
@@ -31815,9 +31818,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-74691268", module.exports)
+    hotAPI.createRecord("_v-7ed44a48", module.exports)
   } else {
-    hotAPI.update("_v-74691268", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-7ed44a48", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],24:[function(require,module,exports){
@@ -31867,9 +31870,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-80e46d88", module.exports)
+    hotAPI.createRecord("_v-4f00bc48", module.exports)
   } else {
-    hotAPI.update("_v-80e46d88", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-4f00bc48", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3}],25:[function(require,module,exports){
@@ -31909,14 +31912,33 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2f6b500d", module.exports)
+    hotAPI.createRecord("_v-57df1781", module.exports)
   } else {
-    hotAPI.update("_v-2f6b500d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-57df1781", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3}],26:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-284e9be5", module.exports)
+  } else {
+    hotAPI.update("_v-284e9be5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":13,"vue-hot-reload-api":3}],27:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.vote-button[_v-23239e80], .vote-button__count[_v-23239e80] {\n    /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n    margin-right: -15px;\n}\n\n.vote-button[_v-23239e80] {\n    height: 4rem;\n    overflow: hidden;\n    position: relative;\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n    width: 4.5rem;\n}\n.vote-button.disabled[_v-23239e80] {\n    background: #bbb;\n    border-color: #bbb;\n    opacity: 1;\n}\n.vote-button .icon[_v-23239e80] {\n    height: 1.5em;\n    left: 1.1rem;\n    position: absolute;\n    top: 0.6rem;\n    width: 1.5em;\n}\n\n.vote-button__count[_v-23239e80] {\n    background: #ddd;\n    border-radius: 0 0 0.35em 0.35em;\n    display: inline-block;\n    margin-top: -0.5em;\n    padding-bottom: 0.1em;\n    padding-top: 0.5em;\n    text-align: center;\n    width: 4.5rem;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.vote-button[_v-27da76cc], .vote-button__count[_v-27da76cc] {\n    /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n    margin-right: -15px;\n}\n\n.vote-button[_v-27da76cc] {\n    height: 4rem;\n    overflow: hidden;\n    position: relative;\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n    width: 4.5rem;\n}\n.vote-button.disabled[_v-27da76cc] {\n    background: #bbb;\n    border-color: #bbb;\n    opacity: 1;\n}\n.vote-button .icon[_v-27da76cc] {\n    height: 1.5em;\n    left: 1.1rem;\n    position: absolute;\n    top: 0.6rem;\n    width: 1.5em;\n}\n\n.vote-button__count[_v-27da76cc] {\n    background: #ddd;\n    border-radius: 0 0 0.35em 0.35em;\n    display: inline-block;\n    margin-top: -0.5em;\n    padding-bottom: 0.1em;\n    padding-top: 0.5em;\n    text-align: center;\n    width: 4.5rem;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31945,19 +31967,19 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-23239e80=\"\">\n    <div class=\"col-md-8 col-md-push-2\" _v-23239e80=\"\">\n        <suggest-topic-button _v-23239e80=\"\"></suggest-topic-button>\n        <h2 _v-23239e80=\"\">Topics</h2>\n\n        <p v-show=\"topics.length == 0\" _v-23239e80=\"\">No topics yet.</p>\n        <div v-for=\"topic in topics\" class=\"row\" _v-23239e80=\"\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\" _v-23239e80=\"\">\n                <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\" _v-23239e80=\"\">\n                    <div class=\"clearfix\" _v-23239e80=\"\">\n                        <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\" _v-23239e80=\"\"><use xlink:href=\"#icon-arrow-up\" _v-23239e80=\"\"></use></svg>\n                        <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\" _v-23239e80=\"\"><use xlink:href=\"#icon-checkmark\" _v-23239e80=\"\"></use></svg>\n                    </div>\n                </a><br _v-23239e80=\"\">\n                <div class=\"vote-button__count\" _v-23239e80=\"\">\n                    {{ topic.votes }}\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\" _v-23239e80=\"\">\n                <div class=\"panel panel-default topic topic--in-list\" _v-23239e80=\"\">\n                    <div class=\"panel-heading\" _v-23239e80=\"\"><h3 class=\"topic__title\" _v-23239e80=\"\">{{ topic.title }}</h3></div>\n                    <div class=\"panel-body\" _v-23239e80=\"\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-27da76cc=\"\">\n    <div class=\"col-md-8 col-md-push-2\" _v-27da76cc=\"\">\n        <suggest-topic-button _v-27da76cc=\"\"></suggest-topic-button>\n        <h2 _v-27da76cc=\"\">Topics</h2>\n\n        <p v-show=\"topics.length == 0\" _v-27da76cc=\"\">No topics yet.</p>\n        <div v-for=\"topic in topics\" class=\"row\" _v-27da76cc=\"\">\n            <div class=\"col-xs-3 col-sm-2\" style=\"text-align: right\" _v-27da76cc=\"\">\n                <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\" _v-27da76cc=\"\">\n                    <div class=\"clearfix\" _v-27da76cc=\"\">\n                        <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\" _v-27da76cc=\"\"><use xlink:href=\"#icon-arrow-up\" _v-27da76cc=\"\"></use></svg>\n                        <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\" _v-27da76cc=\"\"><use xlink:href=\"#icon-checkmark\" _v-27da76cc=\"\"></use></svg>\n                    </div>\n                </a><br _v-27da76cc=\"\">\n                <div class=\"vote-button__count\" _v-27da76cc=\"\">\n                    {{ topic.votes }}\n                </div>\n            </div>\n            <div class=\"col-xs-9 col-sm-10\" _v-27da76cc=\"\">\n                <div class=\"panel panel-default topic topic--in-list\" _v-27da76cc=\"\">\n                    <div class=\"panel-heading\" _v-27da76cc=\"\">\n                        <h3 class=\"topic__title\" _v-27da76cc=\"\">\n                            <a v-link=\"{ path: '/topics/' + topic.id }\" _v-27da76cc=\"\">{{ topic.title }}</a>\n                        </h3>\n                    </div>\n                    <div class=\"panel-body\" _v-27da76cc=\"\">\n                        {{ topic.description }}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.vote-button[_v-23239e80], .vote-button__count[_v-23239e80] {\n    /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n    margin-right: -15px;\n}\n\n.vote-button[_v-23239e80] {\n    height: 4rem;\n    overflow: hidden;\n    position: relative;\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n    width: 4.5rem;\n}\n.vote-button.disabled[_v-23239e80] {\n    background: #bbb;\n    border-color: #bbb;\n    opacity: 1;\n}\n.vote-button .icon[_v-23239e80] {\n    height: 1.5em;\n    left: 1.1rem;\n    position: absolute;\n    top: 0.6rem;\n    width: 1.5em;\n}\n\n.vote-button__count[_v-23239e80] {\n    background: #ddd;\n    border-radius: 0 0 0.35em 0.35em;\n    display: inline-block;\n    margin-top: -0.5em;\n    padding-bottom: 0.1em;\n    padding-top: 0.5em;\n    text-align: center;\n    width: 4.5rem;\n}\n"] = false
+    __vueify_insert__.cache["\n.vote-button[_v-27da76cc], .vote-button__count[_v-27da76cc] {\n    /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n    margin-right: -15px;\n}\n\n.vote-button[_v-27da76cc] {\n    height: 4rem;\n    overflow: hidden;\n    position: relative;\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n    width: 4.5rem;\n}\n.vote-button.disabled[_v-27da76cc] {\n    background: #bbb;\n    border-color: #bbb;\n    opacity: 1;\n}\n.vote-button .icon[_v-27da76cc] {\n    height: 1.5em;\n    left: 1.1rem;\n    position: absolute;\n    top: 0.6rem;\n    width: 1.5em;\n}\n\n.vote-button__count[_v-27da76cc] {\n    background: #ddd;\n    border-radius: 0 0 0.35em 0.35em;\n    display: inline-block;\n    margin-top: -0.5em;\n    padding-bottom: 0.1em;\n    padding-top: 0.5em;\n    text-align: center;\n    width: 4.5rem;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-23239e80", module.exports)
+    hotAPI.createRecord("_v-27da76cc", module.exports)
   } else {
-    hotAPI.update("_v-23239e80", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-27da76cc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}]},{},[15]);
