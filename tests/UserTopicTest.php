@@ -106,4 +106,15 @@ class UserTopicTest extends TestCase
             'title' => $topic->title
         ]);
     }
+
+    public function test_user_can_view_a_topic()
+    {
+        $user = factory(User::class)->create();
+        $topic = factory(Topic::class)->create(['user_id' => $user->id]);
+
+        $this->be($user);
+
+        $this->visit('api/topics/' . $topic->id);
+        $this->seeJson(['id' => $topic->id]);
+    }
 }
