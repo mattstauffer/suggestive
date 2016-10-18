@@ -1,5 +1,6 @@
 window.Vue = require('vue');
 window.VueRouter = require('vue-router');
+window._ = require('lodash');
 
 Vue.use(require('vue-resource'));
 
@@ -95,7 +96,11 @@ router.map({
     '/episodes/create': {
         component: require('./components/create-episode.vue'),
         adminOnly: true
-    }
+    },
+    '/episodes/:episode_number': {
+        component: require('./components/episode.vue'),
+        adminOnly: true
+    },
 });
 
 router.start(App, '#app')
