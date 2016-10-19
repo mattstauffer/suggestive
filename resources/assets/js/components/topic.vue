@@ -35,7 +35,10 @@
                     </div>
                     
                     <div class="media-body">
-                        <h4 class="media-heading">{{ comment.user.name }} said, {{ comment.time_ago }}</h4>
+                        <h4 class="media-heading">
+                            {{ comment.user.name }} said,
+                            {{ comment.created_at }}
+                        </h4>
                         <p>{{ comment.body }}</p>
                     </div>
                 </div>
@@ -89,7 +92,12 @@
                 var url = 'topics/' + this.topic.id + '/comments';
 
                 this.$http.get(url, function(data, status, request) {
-                    this.comments = data;
+                    this.comments = data.map(comment => {
+                        comment.created_at = moment(comment.created_at.date).fromNow();
+
+                        return comment;
+                    });
+
                     this.loadingComments = false;
                 }).error(function(data, status, request) {
                     console.log('error', request);
@@ -100,6 +108,8 @@
                 var url = 'topics/' + this.topic.id + '/comments';
 
                 this.$http.post(url, this.newComment, function(data, status, request) {
+                    data.created_at = moment(data.created_at.date).fromNow();
+
                     this.comments.push(data);
                     this.newComment = {};
                 }).error(function(data, status, request) {

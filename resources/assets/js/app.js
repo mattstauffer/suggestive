@@ -1,6 +1,7 @@
 window.Vue = require('vue');
 window.VueRouter = require('vue-router');
 window._ = require('lodash');
+window.moment = require('moment');
 
 Vue.use(require('vue-resource'));
 

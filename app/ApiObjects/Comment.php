@@ -27,8 +27,7 @@ class Comment implements Arrayable, Jsonable
             'user_id' => (integer) $this->comment->user_id,
             'user' => $this->getUser(),
             'topic_id' => (integer) $this->comment->topic_id,
-            'created_at' => $this->comment->created_at,
-            'time_ago' => $this->comment->created_at->diffForHumans()
+            'created_at' => $this->comment->created_at
         ];
     }
 
