@@ -13,6 +13,29 @@
     .topic--in-list.panel-primary:hover > .panel-heading {
         background: #69A7DC;
     }
+
+.topic-selector {
+    background: #fafafa;
+    border: 4px solid #ddd;
+    border-radius: 0.25em;
+    padding: 1em;
+}
+    .topic-selector__column-head {
+        border-bottom: 1px solid #ddd;
+        font-size: 1.5em;
+        margin-top: 0;
+        padding-bottom: 0.25em;
+    }
+
+    .topic-selector__available-topics {
+        height: 20em;
+        overflow-y: scroll;
+        margin-left: -0.5em;
+        margin-right: -0.5em;
+        margin-bottom: 1em;
+        margin-top: 1em;
+        padding: 0.5em;
+    }
 </style>
 
 <template>
@@ -22,21 +45,22 @@
             <div class="col-md-8 col-md-push-2">
                 <h2>Create an Episode</h2>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <label>Title</label><br>
-                        <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:episode-title-input required><br>
-
-                        <label>Number</label><br>
-                        <input type="number" v-model="number" class="form-control" length="5" required><br><br>
-
-                        <p v-show="acceptedTopics.length == 0">No accepted topics.</p>
-                        <p v-show="acceptedTopics.length != 0">Pick accepted topics to cover this episode:</p>
-                    </div>
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:episode-title-input required placeholder="The one about hats">
                 </div>
-                <div class="row">
+
+                <div class="form-group">
+                    <label>Number</label>
+                    <input type="number" v-model="number" class="form-control" length="5" required placeholder="42">
+                </div>
+
+                <p v-show="acceptedTopics.length == 0">No accepted topics.</p>
+                <p v-show="acceptedTopics.length != 0">Pick accepted topics to cover this episode:</p>
+
+                <div class="row topic-selector">
                     <div class="col-sm-6">
-                        <h3>Scheduled topics</h3>
+                        <h3 class="topic-selector__column-head">Scheduled topics</h3>
                         <div
                             v-for="topic in acceptedTopicsSelected"
                             @click="toggleTopic(topic)"
@@ -44,14 +68,11 @@
                             >
                             <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
                         </div>
+                        <p v-show="acceptedTopicsSelected.length == 0">Select a few topics to cover!</p>
                     </div>
                     <div class="col-sm-6">
-                        <h3>Available topics</h3>
-                        <div class="form-inline">
-                            <input v-model="topicName" class="form-control" type="text" placeholder="Add topic">
-                            <a class="btn btn-primary" @click="addTopic">Add</a>
-                        </div>
-                        <div style="height: 20em; overflow-y: scroll; margin-top: 1em; padding-left: 0.5em; padding-right: 0.5em;">
+                        <h3 class="topic-selector__column-head">Available topics</h3>
+                        <div class="topic-selector__available-topics">
                             <div
                                 v-for="topic in acceptedTopicsNotSelected"
                                 @click="toggleTopic(topic)"
@@ -59,6 +80,10 @@
                                 >
                                 <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
                             </div>
+                        </div>
+                        <div class="form-inline">
+                            <input v-model="topicName" class="form-control" type="text" placeholder="Add topic">
+                            <a class="btn btn-primary" @click="addTopic">Add</a>
                         </div>
                     </div>
                 </div>
@@ -68,8 +93,8 @@
         </div>
         <div class="row">
             <div class="col-md-8 col-md-push-2">
-                <div class="form-inline" style="margin-top: 1em;">
-                        <input type="submit" class="btn btn-primary" value="Create Episode">
+                <div class="form-inline">
+                    <input type="submit" class="btn btn-primary" value="Create Episode">
                 </div>
             </div>
         </div>
@@ -91,7 +116,8 @@
             return {
                 selected: [],
                 title: '',
-                number: ''
+                number: '',
+                topicName: ''
             };
         },
         ready: function () {
