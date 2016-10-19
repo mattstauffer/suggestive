@@ -64,6 +64,7 @@
                                     ({{ topic.commentCount }}
                                     {{ topic.commentCount == 1 ? 'comment' : 'comments' }})
                                 </small>
+                                <small class="pull-right">{{ topic.status }}</small>
                             </h3>
                         </div>
                         <div class="panel-body">
