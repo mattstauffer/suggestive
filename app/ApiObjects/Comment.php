@@ -32,7 +32,7 @@ class Comment implements Arrayable, Jsonable
         ];
     }
 
-    public function getUser()
+    protected function getUser()
     {
         return (new ApiUser($this->comment->user))->toArray();
     }
