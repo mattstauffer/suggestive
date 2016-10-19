@@ -31353,6 +31353,7 @@ router.beforeEach(function (transition) {
 Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
 Vue.component('suggested-topics', require('./components/suggested-topics.vue'));
 Vue.component('nav-dropdown', require('./components/nav-dropdown.vue'));
+Vue.component('create-episode-form', require('./components/create-episode-form.vue'));
 
 var App = Vue.extend({
     data: function data() {
@@ -31422,7 +31423,7 @@ router.map({
 
 router.start(App, '#app');
 
-},{"./components/accepted-topics.vue":16,"./components/admin-dashboard.vue":17,"./components/create-episode.vue":18,"./components/episode.vue":19,"./components/episodes.vue":20,"./components/nav-dropdown.vue":21,"./components/suggest-topic-button.vue":22,"./components/suggest-topic.vue":23,"./components/suggested-topics.vue":24,"./components/user-dashboard.vue":26,"lodash":1,"vue":13,"vue-resource":5,"vue-router":12}],16:[function(require,module,exports){
+},{"./components/accepted-topics.vue":16,"./components/admin-dashboard.vue":17,"./components/create-episode-form.vue":18,"./components/create-episode.vue":19,"./components/episode.vue":20,"./components/episodes.vue":21,"./components/nav-dropdown.vue":22,"./components/suggest-topic-button.vue":23,"./components/suggest-topic.vue":24,"./components/suggested-topics.vue":25,"./components/user-dashboard.vue":27,"lodash":1,"vue":13,"vue-resource":5,"vue-router":12}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31462,9 +31463,9 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-70a00a4c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./topic-episode-scheduler.vue":25,"vue":13,"vue-hot-reload-api":3}],17:[function(require,module,exports){
+},{"./topic-episode-scheduler.vue":26,"vue":13,"vue-hot-reload-api":3}],17:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.topic--in-list[_v-499a93d8] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-499a93d8]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-499a93d8] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-499a93d8] {\n        background: #69A7DC;\n    }\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31473,18 +31474,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     data: function data() {
         return {
-            selected: [],
             creating: false,
             topicName: ''
         };
     },
-    ready: function ready() {
-        // @todo: How do we handle this?
-        for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
-            var topic = this.acceptedTopics[i];
-            this.selected[topic.id] = false;
-        }
-    },
+    ready: function ready() {},
     props: {
         episodes: {
             sync: true
@@ -31499,9 +31493,70 @@ exports.default = {
         },
         stopCreating: function stopCreating() {
             this.creating = false;
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-499a93d8=\"\">\n    <div class=\"col-md-8 col-md-push-2\" _v-499a93d8=\"\">\n        <h2 _v-499a93d8=\"\">Episode Planner</h2>\n\n        <div v-show=\"creating\" _v-499a93d8=\"\">\n            <create-episode-form :accepted-topics=\"acceptedTopics\" _v-499a93d8=\"\"></create-episode-form>\n        </div>\n\n        <div class=\"form-inline\" style=\"margin-top: 1em;\" _v-499a93d8=\"\">\n            <a class=\"btn btn-primary pull-right\" @click=\"startCreating\" v-show=\"!creating\" _v-499a93d8=\"\">\n                Create new episode\n                <svg class=\"icon icon-plus\" style=\"\" _v-499a93d8=\"\"><use xlink:href=\"#icon-plus\" _v-499a93d8=\"\"></use></svg>\n            </a>\n        </div>\n\n        <hr style=\"clear: both;\" _v-499a93d8=\"\">\n\n        <h2 _v-499a93d8=\"\">Janky to-be-improved Episodes List</h2>\n        <p v-show=\"episodes.length == 0\" _v-499a93d8=\"\">No episodes.</p>\n        <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"panel panel-default episode episode--in-list\" _v-499a93d8=\"\">\n            <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 v-link=\"{ path: '/episodes/' + episode.number }\" class=\"episode__title\" style=\"cursor: pointer;\" _v-499a93d8=\"\">{{ episode.number }}. {{ episode.title }}</h3></div>\n        </div>\n\n        <hr _v-499a93d8=\"\">\n\n        <suggested-topics _v-499a93d8=\"\"></suggested-topics>\n    </div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-499a93d8", module.exports)
+  } else {
+    hotAPI.update("_v-499a93d8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],18:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.topic--in-list[_v-69aff16e] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-69aff16e]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-69aff16e] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-69aff16e] {\n        background: #69A7DC;\n    }\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            selected: [],
+            title: '',
+            number: ''
+        };
+    },
+    ready: function ready() {
+        // @todo: How do we handle this?
+        for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
+            var topic = this.acceptedTopics[i];
+            this.selected[topic.id] = false;
+        }
+
+        this.$els.episodeTitleInput.focus();
+    },
+    props: {
+        acceptedTopics: {
+            sync: true
         },
-        finishCreating: function finishCreating() {
-            alert('DO ITTTTT');
+        episodes: {
+            sync: true
+        }
+    },
+    methods: {
+        createEpisode: function createEpisode() {
+            var vm = this;
+
+            this.$http.post('episodes', { title: this.title, number: this.number }, function (data) {
+                vm.title = '';
+                vm.number = '';
+
+                vm.episodes.push(data);
+
+                vm.$route.router.go('/episodes');
+            });
         },
         toggleTopic: function toggleTopic(topic) {
             this.selected.$set(topic.id, !this.selected[topic.id]);
@@ -31510,12 +31565,12 @@ exports.default = {
             return !!this.selected[topic.id];
         },
         addTopic: function addTopic() {
-            var self = this;
+            var vm = this;
 
             this.$http.post('topics', { title: this.topicName }, function (data) {
-                self.topicName = '';
-                self.acceptedTopics.push(data);
-                self.selected.$set(data.id, true);
+                vm.topicName = '';
+                vm.acceptedTopics.push(data);
+                vm.selected.$set(data.id, true);
             });
         }
     },
@@ -31537,61 +31592,41 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-499a93d8=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-499a93d8=\"\">\n            <h2 _v-499a93d8=\"\">Episode Planner</h2>\n            <div class=\"episode-planner\" v-show=\"creating\" _v-499a93d8=\"\">\n                <p v-show=\"acceptedTopics.length == 0\" _v-499a93d8=\"\">No accepted topics.</p>\n                <p v-show=\"acceptedTopics.length != 0\" _v-499a93d8=\"\">Pick accepted topics to cover this episode:</p>\n                <div class=\"row\" _v-499a93d8=\"\">\n                    <div class=\"col-sm-6\" _v-499a93d8=\"\">\n                        <h3 _v-499a93d8=\"\">Scheduled topics</h3>\n                        <div v-for=\"topic in acceptedTopicsSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-primary\" _v-499a93d8=\"\">\n                            <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"topic__title\" _v-499a93d8=\"\">{{ topic.title }}</h3></div>\n                        </div>\n                    </div>\n                    <div class=\"col-sm-6\" _v-499a93d8=\"\">\n                        <h3 _v-499a93d8=\"\">Available topics</h3>\n                        <div class=\"form-inline\" _v-499a93d8=\"\">\n                            <input v-model=\"topicName\" class=\"form-control\" type=\"text\" placeholder=\"Add topic\" _v-499a93d8=\"\">\n                            <a class=\"btn btn-primary\" @click=\"addTopic\" _v-499a93d8=\"\">Add</a>\n                        </div>\n                        <div style=\"height: 20em; overflow-y: scroll; margin-top: 1em; padding-left: 0.5em; padding-right: 0.5em;\" _v-499a93d8=\"\">\n                            <div v-for=\"topic in acceptedTopicsNotSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-default\" _v-499a93d8=\"\">\n                                <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 class=\"topic__title\" _v-499a93d8=\"\">{{ topic.title }}</h3></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n                <p _v-499a93d8=\"\">NEXT STEPS: 1) Make save new episode actually work. 2) Allow for drag and drop re-ordering of topic list on the new episode panel. 3) individual routes for each episode, where you can edit/delete/reorder and change topics/etc. </p>\n            </div>\n\n            <div class=\"form-inline\" style=\"margin-top: 1em;\" _v-499a93d8=\"\">\n                <a class=\"btn btn-primary pull-right\" @click=\"startCreating\" v-show=\"!creating\" _v-499a93d8=\"\">\n                    Create new episode\n                    <svg class=\"icon icon-plus\" style=\"\" _v-499a93d8=\"\"><use xlink:href=\"#icon-plus\" _v-499a93d8=\"\"></use></svg>\n                </a>\n                <input class=\"form-control\" type=\"text\" placeholder=\"Episode name\" v-show=\"creating\" _v-499a93d8=\"\">\n                <a class=\"btn btn-primary\" @click=\"finishCreating\" v-show=\"creating\" _v-499a93d8=\"\">Save episode</a>\n                <a class=\"btn btn-default\" @click=\"stopCreating\" v-show=\"creating\" _v-499a93d8=\"\">Cancel</a>\n            </div>\n\n            <hr style=\"clear: both;\" _v-499a93d8=\"\">\n\n            <h2 _v-499a93d8=\"\">Janky to-be-improved Episodes List</h2>\n            <p v-show=\"episodes.length == 0\" _v-499a93d8=\"\">No episodes.</p>\n            <div v-for=\"episode in episodes | orderBy 'number' -1\" class=\"panel panel-default episode episode--in-list\" _v-499a93d8=\"\">\n                <div class=\"panel-heading\" _v-499a93d8=\"\"><h3 v-link=\"{ path: '/episodes/' + episode.number }\" class=\"episode__title\" style=\"cursor: pointer;\" _v-499a93d8=\"\">{{ episode.number }}. {{ episode.title }}</h3></div>\n            </div>\n\n            <hr _v-499a93d8=\"\">\n\n<!--            <h2>Suggested Topics (for review)</h2>-->\n            <suggested-topics _v-499a93d8=\"\"></suggested-topics>\n            <!--<a v-link=\"{ path: '/suggested-topics' }\" class=\"btn btn-primary\">Review all suggested topics</a>-->\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"episode-planner\" _v-69aff16e=\"\">\n    <form @submit.prevent=\"createEpisode\" _v-69aff16e=\"\">\n    <div class=\"row\" _v-69aff16e=\"\">\n        <div class=\"col-sm-12\" _v-69aff16e=\"\">\n            <label _v-69aff16e=\"\">Title</label><br _v-69aff16e=\"\">\n            <input type=\"text\" v-model=\"title\" class=\"form-control\" length=\"255\" autofocus=\"\" v-el:episode-title-input=\"\" required=\"\" _v-69aff16e=\"\"><br _v-69aff16e=\"\">\n\n            <label _v-69aff16e=\"\">Number</label><br _v-69aff16e=\"\">\n            <input type=\"number\" v-model=\"number\" class=\"form-control\" length=\"5\" required=\"\" _v-69aff16e=\"\"><br _v-69aff16e=\"\"><br _v-69aff16e=\"\">\n\n            <p v-show=\"acceptedTopics.length == 0\" _v-69aff16e=\"\">No accepted topics.</p>\n            <p v-show=\"acceptedTopics.length != 0\" _v-69aff16e=\"\">Pick accepted topics to cover this episode:</p>\n        </div>\n    </div>\n    <div class=\"row\" _v-69aff16e=\"\">\n        <div class=\"col-sm-6\" _v-69aff16e=\"\">\n            <h3 _v-69aff16e=\"\">Scheduled topics</h3>\n            <div v-for=\"topic in acceptedTopicsSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-primary\" _v-69aff16e=\"\">\n                <div class=\"panel-heading\" _v-69aff16e=\"\"><h3 class=\"topic__title\" _v-69aff16e=\"\">{{ topic.title }}</h3></div>\n            </div>\n        </div>\n        <div class=\"col-sm-6\" _v-69aff16e=\"\">\n            <h3 _v-69aff16e=\"\">Available topics</h3>\n            <div class=\"form-inline\" _v-69aff16e=\"\">\n                <input v-model=\"topicName\" class=\"form-control\" type=\"text\" placeholder=\"Add topic\" _v-69aff16e=\"\">\n                <a class=\"btn btn-primary\" @click=\"addTopic\" _v-69aff16e=\"\">Add</a>\n            </div>\n            <div style=\"height: 20em; overflow-y: scroll; margin-top: 1em; padding-left: 0.5em; padding-right: 0.5em;\" _v-69aff16e=\"\">\n                <div v-for=\"topic in acceptedTopicsNotSelected\" @click=\"toggleTopic(topic)\" class=\"panel topic topic--in-list panel-default\" _v-69aff16e=\"\">\n                    <div class=\"panel-heading\" _v-69aff16e=\"\"><h3 class=\"topic__title\" _v-69aff16e=\"\">{{ topic.title }}</h3></div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <p _v-69aff16e=\"\">NEXT STEPS:<br _v-69aff16e=\"\"><br _v-69aff16e=\"\">1) Make save new episode actually work.<br _v-69aff16e=\"\">2) Allow for drag and drop re-ordering of topic list on the new episode panel.<br _v-69aff16e=\"\">3) individual routes for each episode, where you can edit/delete/reorder and change topics/etc. </p>\n</form></div>\n<div class=\"form-inline\" style=\"margin-top: 1em;\" _v-69aff16e=\"\">\n        <input type=\"submit\" class=\"btn btn-primary\" value=\"Add\" _v-69aff16e=\"\">\n        <a v-link=\"{ path: '/episodes' }\" class=\"btn btn-default\" _v-69aff16e=\"\">Cancel</a>\n    \n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.topic--in-list[_v-499a93d8] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-499a93d8]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-499a93d8] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-499a93d8] {\n        background: #69A7DC;\n    }\n"] = false
+    __vueify_insert__.cache["\n.topic--in-list[_v-69aff16e] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n    .topic--in-list[_v-69aff16e]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n    }\n\n    .topic--in-list.panel-default:hover > .panel-heading[_v-69aff16e] {\n        background: #fff;\n    }\n    .topic--in-list.panel-primary:hover > .panel-heading[_v-69aff16e] {\n        background: #69A7DC;\n    }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-499a93d8", module.exports)
+    hotAPI.createRecord("_v-69aff16e", module.exports)
   } else {
-    hotAPI.update("_v-499a93d8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-69aff16e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],18:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],19:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    data: function data() {
-        return {
-            title: '',
-            number: ''
-        };
-    },
     props: {
         episodes: {
             sync: true
+        },
+        acceptedTopics: {
+            sync: true
         }
-    },
-    methods: {
-        createEpisode: function createEpisode() {
-            var self = this;
-
-            this.$http.post('episodes', { title: this.title, number: this.number }, function (data) {
-                self.title = '';
-                self.number = '';
-
-                self.episodes.push(data);
-
-                self.$route.router.go('/episodes');
-            });
-        }
-    },
-    ready: function ready() {
-        this.$els.episodeTitleInput.focus();
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <div class=\"col-md-8 col-md-push-2\">\n        <h2>Create an Episode</h2>\n        <p>@TODO: Don't use this one-- primary work on episode creation is living on the dashboard for now. Need to normalize.</p>\n\n        <form @submit.prevent=\"createEpisode\">\n            <label>Title</label><br>\n            <input type=\"text\" v-model=\"title\" class=\"form-control\" length=\"255\" autofocus=\"\" v-el:episode-title-input=\"\" required=\"\"><br>\n\n            <label>Number</label><br>\n            <input type=\"number\" v-model=\"number\" class=\"form-control\" length=\"5\" required=\"\"><br>\n\n            <input type=\"submit\" class=\"btn btn-primary\" value=\"Add\">\n            <a v-link=\"{ path: '/episodes' }\" class=\"btn btn-default\">Cancel</a>\n        </form>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n    <div class=\"col-md-8 col-md-push-2\">\n        <h2>Create an Episode</h2>\n\n        <create-episode-form :accepted-topics=\"acceptedTopics\" :episodes=\"episodes\"></create-episode-form>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -31606,7 +31641,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-62609850", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],19:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31661,7 +31696,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-630ea7bd", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3}],20:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31700,7 +31735,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-0271f106", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3}],21:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3}],22:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -31736,7 +31771,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-ab823fae", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],22:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31761,7 +31796,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-b8eada32", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3}],23:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3}],24:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -31820,7 +31855,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-74691268", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],24:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3,"vueify/lib/insert-css":14}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31872,7 +31907,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-80e46d88", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3}],25:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31914,7 +31949,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2f6b500d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":13,"vue-hot-reload-api":3}],26:[function(require,module,exports){
+},{"vue":13,"vue-hot-reload-api":3}],27:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vote-button[_v-23239e80], .vote-button__count[_v-23239e80] {\n    /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */\n    margin-right: -15px;\n}\n\n.vote-button[_v-23239e80] {\n    height: 4rem;\n    overflow: hidden;\n    position: relative;\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n    width: 4.5rem;\n}\n.vote-button.disabled[_v-23239e80] {\n    background: #bbb;\n    border-color: #bbb;\n    opacity: 1;\n}\n.vote-button .icon[_v-23239e80] {\n    height: 1.5em;\n    left: 1.1rem;\n    position: absolute;\n    top: 0.6rem;\n    width: 1.5em;\n}\n\n.vote-button__count[_v-23239e80] {\n    background: #ddd;\n    border-radius: 0 0 0.35em 0.35em;\n    display: inline-block;\n    margin-top: -0.5em;\n    padding-bottom: 0.1em;\n    padding-top: 0.5em;\n    text-align: center;\n    width: 4.5rem;\n}\n")
 'use strict';
