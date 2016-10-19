@@ -15,7 +15,7 @@
             </div>
             <div class="col-xs-9 col-sm-11">
                 <div class="panel panel-default episode episode--in-list">
-                    <div class="panel-heading"><h3 v-link="{ path: '/episodes/' + episode.number }" class="episode__title">{{ episode.title }}</h3></div>
+                    <div class="panel-heading"><h3 v-link="{ path: '/episodes/' + episode.number }" class="episode__title" style="cursor: pointer">{{ episode.title }}</h3></div>
                     <div class="panel-body">
                         <h3 style="margin-top: 0; font-size: 1em; font-weight: bold;">Topics</h3>
                         <ul>
