@@ -1,25 +1,152 @@
 <style>
+.topic--in-list {
+    cursor: pointer;
+    margin-bottom: 0.25em;
+}
+    .topic--in-list:hover {
+        transform: rotate(-0.5deg) scale(1.04);
+    }
+
+    .topic--in-list.panel-default:hover > .panel-heading {
+        background: #fff;
+    }
+    .topic--in-list.panel-primary:hover > .panel-heading {
+        background: #69A7DC;
+    }
 </style>
 
 <template>
-    <div class="row">
-        <div class="col-md-8 col-md-push-2">
-            <h2>Create an Episode</h2>
+    <div>
+        <form @submit.prevent="createEpisode">
+        <div class="row">
+            <div class="col-md-8 col-md-push-2">
+                <h2>Create an Episode</h2>
 
-            <create-episode-form :accepted-topics="acceptedTopics" :episodes="episodes"></create-episode-form>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Title</label><br>
+                        <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:episode-title-input required><br>
+
+                        <label>Number</label><br>
+                        <input type="number" v-model="number" class="form-control" length="5" required><br><br>
+
+                        <p v-show="acceptedTopics.length == 0">No accepted topics.</p>
+                        <p v-show="acceptedTopics.length != 0">Pick accepted topics to cover this episode:</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3>Scheduled topics</h3>
+                        <div
+                            v-for="topic in acceptedTopicsSelected"
+                            @click="toggleTopic(topic)"
+                            class="panel topic topic--in-list panel-primary"
+                            >
+                            <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <h3>Available topics</h3>
+                        <div class="form-inline">
+                            <input v-model="topicName" class="form-control" type="text" placeholder="Add topic">
+                            <a class="btn btn-primary" @click="addTopic">Add</a>
+                        </div>
+                        <div style="height: 20em; overflow-y: scroll; margin-top: 1em; padding-left: 0.5em; padding-right: 0.5em;">
+                            <div
+                                v-for="topic in acceptedTopicsNotSelected"
+                                @click="toggleTopic(topic)"
+                                class="panel topic topic--in-list panel-default"
+                                >
+                                <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>NEXT STEPS:<br><br>1) Make save new episode actually work.<br>2) Allow for drag and drop re-ordering of topic list on the new episode panel.<br>3) individual routes for each episode, where you can edit/delete/reorder and change topics/etc. </p>
+            </div>
         </div>
+        <div class="row">
+            <div class="col-md-8 col-md-push-2">
+                <div class="form-inline" style="margin-top: 1em;">
+                        <input type="submit" class="btn btn-primary" value="Create Episode">
+                </div>
+            </div>
+        </div>
+        </form>
     </div>
 </template>
 
 <script>
     export default {
         props: {
-            episodes: {
-                sync: true
-            },
             acceptedTopics: {
                 sync: true
+            },
+            episodes: {
+                sync: true
             }
+        },
+        data: function () {
+            return {
+                selected: [],
+                title: '',
+                number: ''
+            };
+        },
+        ready: function () {
+            // @todo: How do we handle this?
+            for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
+                var topic = this.acceptedTopics[i];
+                this.selected[topic.id] = false;
+            }
+
+            this.$els.episodeTitleInput.focus();
+        },
+        methods: {
+            createEpisode: function () {
+                var vm = this;
+
+                this.$http.post('episodes', { title: this.title, number: this.number }, function (data) {
+                    vm.title = '';
+                    vm.number = '';
+
+                    vm.episodes.push(data);
+
+                    vm.$route.router.go('/episodes');
+                });
+            },
+            toggleTopic: function (topic) {
+                this.selected.$set(topic.id, !this.selected[topic.id]);
+            },
+            topicIsSelected: function (topic) {
+                return !!this.selected[topic.id];
+            },
+            addTopic: function () {
+                var vm = this;
+
+                this.$http.post('topics', { title: this.topicName }, function (data) {
+                    vm.topicName = '';
+                    vm.acceptedTopics.push(data);
+                    vm.selected.$set(data.id, true);
+                });
+            }
+        },
+        computed: {
+            acceptedTopicsSelected: function () {
+                // @todo: Underscore map
+                var vm = this;
+                return this.acceptedTopics.filter(function (topic) {
+                    return vm.topicIsSelected(topic);
+                });
+            },
+            acceptedTopicsNotSelected: function () {
+                // @todo: Underscore map
+                var vm = this;
+                return this.acceptedTopics.filter(function (topic) {
+                    return ! vm.topicIsSelected(topic);
+                });
+            },
         }
     };
 </script>
