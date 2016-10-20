@@ -93,7 +93,7 @@
 
                 this.$http.get(url, function(data, status, request) {
                     this.comments = data.map(comment => {
-                        comment.created_at = moment(comment.created_at.date).fromNow();
+                        comment.created_at = moment(comment.created_at.date).local().fromNow();
 
                         return comment;
                     });
