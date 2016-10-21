@@ -33,7 +33,7 @@
                     <div class="media-left">
                         <img class="media-object" :src="comment.user.avatar" alt="{{ comment.user.name }}">
                     </div>
-                    
+
                     <div class="media-body">
                         <h4 class="media-heading">
                             {{ comment.user.name }} said,
@@ -93,7 +93,7 @@
 
                 this.$http.get(url, function(data, status, request) {
                     this.comments = data.map(comment => {
-                        comment.created_at = moment(comment.created_at.date).local().fromNow();
+                        comment.created_at = moment.utc(comment.created_at.date).fromNow();
 
                         return comment;
                     });
