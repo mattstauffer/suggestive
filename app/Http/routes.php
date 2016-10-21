@@ -18,6 +18,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api'], function () {
     Route::post('topics/{id}/votes', 'TopicsVoteController@store');
     Route::patch('topics/{id}', 'TopicsController@patch');
     Route::resource('topics', 'TopicsController');
+    Route::resource('topics/{id}/comments', 'TopicCommentsController');
 
     Route::post('episodes/{id}/scheduled-topics', 'EpisodeScheduledTopicsController@store');
     Route::get('episodes/{id}/scheduled-topics', 'EpisodeScheduledTopicsController@index');

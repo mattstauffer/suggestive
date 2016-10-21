@@ -1,6 +1,7 @@
 window.Vue = require('vue');
 window.VueRouter = require('vue-router');
 window._ = require('lodash');
+window.moment = require('moment');
 
 Vue.use(require('vue-resource'));
 
@@ -74,6 +75,9 @@ var App = Vue.extend({
 router.map({
     '/': {
         component: require('./components/user-dashboard.vue')
+    },
+    '/topics/:topic_id': {
+        component: require('./components/topic.vue')
     },
     '/admin-dashboard': {
         component: require('./components/admin-dashboard.vue')

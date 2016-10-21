@@ -1,5 +1,9 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+[v-cloak] {
+    display: none;
+}
+
 body {
     padding-top: 70px;
 }

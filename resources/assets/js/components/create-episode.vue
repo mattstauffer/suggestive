@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .topic--in-list {
     cursor: pointer;
     margin-bottom: 0.25em;

@@ -5730,6 +5730,9 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+[v-cloak] {
+  display: none; }
+
 body {
   padding-top: 70px; }
 
