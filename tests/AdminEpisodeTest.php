@@ -8,10 +8,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class AdminEpisodeTest extends TestCase
 {
-    use DatabaseMigrations;
-    use WithoutMiddleware;
+    use DatabaseMigrations, WithoutMiddleware;
 
-    public function test_it_can_show_all_episodes()
+    /** @test */
+    function it_can_show_all_episodes()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);
@@ -33,7 +33,8 @@ class AdminEpisodeTest extends TestCase
         ]);
     }
 
-    public function test_non_admins_cannot_see_episodes()
+    /** @test */
+    function non_admins_cannot_see_episodes()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -46,7 +47,8 @@ class AdminEpisodeTest extends TestCase
         $this->assertResponseStatus(403);
     }
 
-    public function test_admins_can_create_episodes()
+    /** @test */
+    function admins_can_create_episodes()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);
@@ -63,7 +65,8 @@ class AdminEpisodeTest extends TestCase
         ]);
     }
 
-    public function test_non_admins_cannot_create_episodes()
+    /** @test */
+    function non_admins_cannot_create_episodes()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -75,7 +78,8 @@ class AdminEpisodeTest extends TestCase
         $this->assertResponseStatus(403);
     }
 
-    public function test_admins_can_schedule_a_topic_for_an_episode()
+    /** @test */
+    function admins_can_schedule_a_topic_for_an_episode()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);

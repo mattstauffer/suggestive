@@ -8,10 +8,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class TopicCommentsTest extends TestCase
 {
-    use DatabaseMigrations;
-    use WithoutMiddleware;
+    use DatabaseMigrations, WithoutMiddleware;
 
-    public function test_comments_can_be_created()
+    /** @test */
+    function comments_can_be_created()
     {
         $user = factory(User::class)->create();
         $topic = factory(Topic::class)->create(['user_id' => $user->id]);

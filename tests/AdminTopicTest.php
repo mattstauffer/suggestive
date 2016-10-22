@@ -8,10 +8,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class AdminTopicTest extends TestCase
 {
-    use DatabaseMigrations;
-    use WithoutMiddleware;
+    use DatabaseMigrations, WithoutMiddleware;
 
-    public function test_it_can_show_all_unflagged_topics()
+    /** @test */
+    function it_can_show_all_unflagged_topics()
     {
         $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
@@ -39,7 +39,8 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_unflagged_topics_dont_show_up_in_accepted()
+    /** @test */
+    function unflagged_topics_dont_show_up_in_accepted()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -54,7 +55,8 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_it_can_show_all_accepted_topics()
+    /** @test */
+    function it_can_show_all_accepted_topics()
     {
         $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
@@ -83,7 +85,8 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_admins_can_flag_topics_as_accepted()
+    /** @test */
+    function admins_can_flag_topics_as_accepted()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);
@@ -107,7 +110,8 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_admins_can_flag_topics_as_duplicate()
+    /** @test */
+    function admins_can_flag_topics_as_duplicate()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);
@@ -131,7 +135,8 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_admins_can_flag_topics_as_rejected()
+    /** @test */
+    function admins_can_flag_topics_as_rejected()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);
@@ -155,7 +160,8 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_admins_can_archive_topics()
+    /** @test */
+    function admins_can_archive_topics()
     {
         $user = factory(User::class, 'admin')->create();
         $this->be($user);
@@ -181,7 +187,8 @@ class AdminTopicTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_suggest_a_topic_and_it_will_be_accepted()
+    /** @test */
+    function admin_can_suggest_a_topic_and_it_will_be_accepted()
     {
         $this->be(factory(User::class, 'admin')->create());
 

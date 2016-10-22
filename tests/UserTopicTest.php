@@ -8,10 +8,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class UserTopicTest extends TestCase
 {
-    use DatabaseMigrations;
-    use WithoutMiddleware;
+    use DatabaseMigrations, WithoutMiddleware;
 
-    public function test_user_can_suggest_a_topic()
+    /** @test */
+    function user_can_suggest_a_topic()
     {
         $this->be(factory(User::class)->create());
 
@@ -28,7 +28,8 @@ class UserTopicTest extends TestCase
         ]);
     }
 
-    public function test_upon_creating_a_topic_return_contains_all_relevant_data()
+    /** @test */
+    function upon_creating_a_topic_return_contains_all_relevant_data()
     {
         $this->be(factory(User::class)->create());
 
@@ -45,7 +46,8 @@ class UserTopicTest extends TestCase
         ]);
     }
 
-    public function test_user_can_see_list_of_suggested_topics()
+    /** @test */
+    function user_can_see_list_of_suggested_topics()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -67,7 +69,8 @@ class UserTopicTest extends TestCase
         ]);
     }
 
-    public function test_user_can_upvote_a_topic()
+    /** @test */
+    function user_can_upvote_a_topic()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -83,7 +86,8 @@ class UserTopicTest extends TestCase
         ]);
     }
 
-    public function test_users_cant_flag_topics()
+    /** @test */
+    function users_cant_flag_topics()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -107,7 +111,8 @@ class UserTopicTest extends TestCase
         ]);
     }
 
-    public function test_user_can_view_a_topic()
+    /** @test */
+    function user_can_view_a_topic()
     {
         $user = factory(User::class)->create();
         $topic = factory(Topic::class)->create(['user_id' => $user->id]);
