@@ -5734,6 +5734,7 @@ button.close {
   display: none; }
 
 body {
+  background: #fafafa;
   padding-top: 70px; }
 
 .icon {

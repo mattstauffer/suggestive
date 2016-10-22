@@ -40,23 +40,55 @@
     }
 
     .topic-row {
-        border-top: 1px solid #ddd;
+        background: #fff;
+        border: 1px solid #ddd;
         padding-bottom: 1em;
         padding-top: 1em;
     }
+        .topic-row:not(:last-child) {
+            border-bottom: 0;
+        }
+
+    .filter-boxes {
+        margin-top: 1em;
+    }
+
+        .filter-box {
+            background: #fcfcfc;
+            border: 1px solid #ddd;
+            color: #333;
+            display: inline-block;
+            padding: 0.5em 1em;
+        }
+
+        .filter-box:not(:last-child) {
+            border-right: 0;
+        }
+
+        .filter-box:hover {
+            background: #eee;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .filter-box.current-filter {
+            background: #fff;
+            font-weight: bold;
+        }
 </style>
 
 <template>
     <div class="row">
         <div class="col-md-8 col-md-push-2">
-            <suggest-topic-button></suggest-topic-button>
-            <h2>Topics</h2>
+            <suggest-topic-inline></suggest-topic-inline>
 
-            <span v-for="filterOption in filters">
-                <a @click="changeFilter(filterOption.filter)" style="cursor: pointer;" v-bind:class="{ 'current-filter': filterOption.filter == filter }">
+            <div class="filter-boxes pull-right">
+                <a v-for="filterOption in filters"  v-bind:class="{ 'current-filter': filterOption.filter == filter, 'filter-box': true }" @click="changeFilter(filterOption.filter)" style="cursor: pointer;">
                     {{ filterOption.label }}
-                </a> |
-            </span><br><br>
+                </a>
+            </div>
+
+            <h2>Topics</h2>
 
             <p v-show="filteredTopics.length == 0">No topics matching this filter.</p>
             <div v-for="topic in filteredTopics" class="row topic-row">
