@@ -38,6 +38,12 @@
     .current-filter {
         font-weight: bold;
     }
+
+    .topic-row {
+        border-top: 1px solid #ddd;
+        padding-bottom: 1em;
+        padding-top: 1em;
+    }
 </style>
 
 <template>
@@ -53,7 +59,7 @@
             </span><br><br>
 
             <p v-show="filteredTopics.length == 0">No topics matching this filter.</p>
-            <div v-for="topic in filteredTopics" class="row">
+            <div v-for="topic in filteredTopics" class="row topic-row">
                 <div class="col-xs-3 col-sm-2 col-md-1" style="text-align: right">
                     <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
                         <div class="clearfix">
@@ -66,18 +72,17 @@
                     </div>
                 </div>
                 <div class="col-xs-9 col-sm-10 col-md-11">
-                    <div class="panel panel-default topic topic--in-list">
-                        <div class="panel-heading">
+                    <div class="topic topic--in-list">
+                        <div class="">
                             <h3 class="topic__title">
                                 <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
-                                <small>
+                                <small class="pull-right" style="text-align: right;">Status: {{ topic.status }}<br>
                                     ({{ topic.commentCount }}
                                     {{ topic.commentCount == 1 ? 'comment' : 'comments' }})
                                 </small>
-                                <small class="pull-right">{{ topic.status }}</small>
                             </h3>
                         </div>
-                        <div class="panel-body">
+                        <div class="">
                             {{ topic.description }}
                         </div>
                     </div>
@@ -144,8 +149,6 @@
                     if (vm.filter === null) {
                         return true;
                     }
-
-                    console.log(vm.filter, topic);
 
                     return topic.status === vm.filter;
                 });
