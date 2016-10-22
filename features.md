@@ -26,13 +26,13 @@
 ### NOT CORE
 - [x] Comment on a topic
 - [ ] Show which user suggested a topic
-- [ ] Grab a smaller group of the "accepted" topics for a particular episode/etc.
+- [x] Grab a smaller group of the "accepted" topics for a particular episode/etc.
 - [ ] Suggest revisions to a topic
 - [ ] Edit a topic
 - [ ] Delete an episode
 - [ ] Edit an episode
-- [ ] List all "rejected" topics
-- [ ] List all "done" topics
+- [x] List all "rejected" topics
+- [x] List all "done" topics
 - [ ] List all "duplicate" topics
 - [ ] List all archived topics
 - [ ] When flagging duplicate, allow for linking to other topic

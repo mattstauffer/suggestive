@@ -34,6 +34,10 @@
         text-align: center;
         width: 4.5rem;
     }
+
+    .current-filter {
+        font-weight: bold;
+    }
 </style>
 
 <template>
@@ -42,9 +46,15 @@
             <suggest-topic-button></suggest-topic-button>
             <h2>Topics</h2>
 
-            <p v-show="topics.length == 0">No topics yet.</p>
-            <div v-for="topic in topics" class="row">
-                <div class="col-xs-3 col-sm-2" style="text-align: right">
+            <span v-for="filterOption in filters">
+                <a @click="changeFilter(filterOption.filter)" style="cursor: pointer;" v-bind:class="{ 'current-filter': filterOption.filter == filter }">
+                    {{ filterOption.label }}
+                </a> |
+            </span><br><br>
+
+            <p v-show="filteredTopics.length == 0">No topics matching this filter.</p>
+            <div v-for="topic in filteredTopics" class="row">
+                <div class="col-xs-3 col-sm-2 col-md-1" style="text-align: right">
                     <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
                         <div class="clearfix">
                             <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up" transition="expand"><use xlink:href="#icon-arrow-up"></use></svg>
@@ -55,7 +65,7 @@
                         {{ topic.votes }}
                     </div>
                 </div>
-                <div class="col-xs-9 col-sm-10">
+                <div class="col-xs-9 col-sm-10 col-md-11">
                     <div class="panel panel-default topic topic--in-list">
                         <div class="panel-heading">
                             <h3 class="topic__title">
@@ -84,6 +94,29 @@
                 sync: true
             }
         },
+        data: function () {
+            return {
+                filter: 'suggested',
+                filters: [
+                    {
+                        "label": "All topics",
+                        "filter": null
+                    },
+                    {
+                        "label": "Suggested",
+                        "filter": 'suggested'
+                    },
+                    {
+                        "label": "Accepted",
+                        "filter": 'accepted'
+                    },
+                    {
+                        "label": "Rejected",
+                        "filter": 'rejected'
+                    }
+                ]
+            };
+        },
         ready: function () {
         },
         methods: {
@@ -97,6 +130,24 @@
                     topic.userVotedFor = true;
                 }).error(function (data, status, request) {
                     console.log('error', data, status);
+                });
+            },
+            changeFilter: function (filter) {
+                this.filter = filter;
+            }
+        },
+        computed: {
+            filteredTopics: function () {
+                var vm = this;
+
+                return _.filter(this.topics, function (topic) {
+                    if (vm.filter === null) {
+                        return true;
+                    }
+
+                    console.log(vm.filter, topic);
+
+                    return topic.status === vm.filter;
                 });
             }
         }

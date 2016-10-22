@@ -60,9 +60,8 @@ class TopicsController extends Controller
         $topic = new Topic;
         $topic->title = $request->get('title');
         $topic->description = $request->get('description');
-        if (Auth::user()->isAdmin()) {
-            $topic->status = 'accepted';
-        }
+        $topic->status = Auth::user()->isAdmin() ? 'accepted' : 'suggested';
+
         Auth::user()->topics()->save($topic);
 
         return response()->json(new ApiTopic($topic), 201);

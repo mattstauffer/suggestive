@@ -3,7 +3,7 @@
         <h2>Viewing Topic</h2>
 
         <div class="row">
-            <div class="col-xs-3 col-sm-2" style="text-align: right">
+            <div class="col-xs-3 col-sm-2 col-md-1" style="text-align: right">
                 <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
                     <div class="clearfix">
                         <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up" transition="expand"><use xlink:href="#icon-arrow-up"></use></svg>
@@ -14,7 +14,7 @@
                     {{ topic.votes }}
                 </div>
             </div>
-            <div class="col-xs-9 col-sm-10">
+            <div class="col-xs-9 col-sm-10 col-md-11">
                 <div class="panel panel-default topic topic--in-list">
                     <div class="panel-heading">
                         <h3 class="topic__title">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-9 col-sm-10" v-if="! loadingComments">
+            <div class="col-xs-9 col-sm-10 col-md-11" v-if="! loadingComments">
                 <h3>Comments</h3>
 
                 <div class="media" v-for="comment in comments">

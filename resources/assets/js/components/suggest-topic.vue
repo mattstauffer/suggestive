@@ -3,7 +3,7 @@
 
 <template>
     <div class="row">
-        <div class="col-md-8 col-md-push-2">
+        <div class="col-md-6 col-md-push-3">
             <h2>{{ verb }} a Topic</h2>
 
             <form @submit.prevent="suggestTopic">
