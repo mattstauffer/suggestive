@@ -1,40 +1,4 @@
 <style scoped>
-    .vote-button, .vote-button__count {
-        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */
-        margin-right: -15px;
-    }
-
-    .vote-button {
-        height: 4rem;
-        overflow: hidden;
-        position: relative;
-        transition: all 0.5s ease;
-        width: 4.5rem;
-    }
-    .vote-button.disabled {
-        background: #bbb;
-        border-color: #bbb;
-        opacity: 1;
-    }
-    .vote-button .icon {
-        height: 1.5em;
-        left: 1.1rem;
-        position: absolute;
-        top: 0.6rem;
-        width: 1.5em;
-    }
-
-    .vote-button__count {
-        background: #ddd;
-        border-radius: 0 0 0.35em 0.35em;
-        display: inline-block;
-        margin-top: -0.5em;
-        padding-bottom: 0.1em;
-        padding-top: 0.5em;
-        text-align: center;
-        width: 4.5rem;
-    }
-
     .current-filter {
         font-weight: bold;
     }
@@ -56,6 +20,7 @@
         .filter-box {
             background: #fcfcfc;
             border: 1px solid #ddd;
+            cursor: pointer;
             color: #333;
             display: inline-block;
             padding: 0.5em 1em;
@@ -87,9 +52,12 @@
         </div>
         <div class="row">
             <div class="col-md-8 col-md-push-2">
-
                 <div class="filter-boxes pull-right">
-                    <a v-for="filterOption in filters"  v-bind:class="{ 'current-filter': filterOption.filter == filter, 'filter-box': true }" @click="changeFilter(filterOption.filter)" style="cursor: pointer;">
+                    <a
+                        v-for="filterOption in filters"
+                        v-bind:class="{ 'current-filter': filterOption.filter == filter, 'filter-box': true }"
+                        @click="changeFilter(filterOption.filter)"
+                        >
                         {{ filterOption.label }}
                     </a>
                 </div>
@@ -114,9 +82,9 @@
                             <div class="">
                                 <h3 class="topic__title">
                                     <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
-                                    <small class="pull-right" style="text-align: right;">Status: {{ topic.status }}<br>
-                                        ({{ topic.commentCount }}
-                                        {{ topic.commentCount == 1 ? 'comment' : 'comments' }})
+                                    <small class="pull-right" style="text-align: right;"><span style="text-transform: uppercase">{{ topic.status }}</span><br>
+                                        <a v-link="{ path: '/topics/' + topic.id }">({{ topic.commentCount }}
+                                        {{ topic.commentCount == 1 ? 'comment' : 'comments' }})</a>
                                     </small>
                                 </h3>
                             </div>

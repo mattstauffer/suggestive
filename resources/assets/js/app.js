@@ -39,7 +39,6 @@ Vue.component('suggested-topics', require('./components/suggested-topics.vue'));
 Vue.component('nav-dropdown', require('./components/nav-dropdown.vue'));
 Vue.component('suggest-topic-inline', require('./components/suggest-topic-inline.vue'));
 
-
 var App = Vue.extend({
     data: function() {
         return {
@@ -62,14 +61,9 @@ var App = Vue.extend({
             });
         }
     },
-    computed: {
-        acceptedTopics: function () {
-            // @todo:
-            return this.topics;
-        },
-        suggestedTopics: function () {
-            // @todo:
-            return this.topics;
+    events: {
+        'topics.created': function (topic) {
+            this.topics.push(topic);
         }
     }
 });

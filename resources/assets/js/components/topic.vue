@@ -1,6 +1,11 @@
 <template>
     <div class="col-md-8 col-md-push-2" v-cloak>
-        <h2>Viewing Topic</h2>
+        <button v-link="{ path: '/' }" type="button" class="btn btn-default" aria-label="All Topics">
+            <svg class="icon icon-back" style=""><use xlink:href="#icon-back"></use></svg>
+            All Topics
+        </button>
+
+        <h2>Topic: {{ topic.title }}</h2>
 
         <div class="row">
             <div class="col-xs-3 col-sm-2 col-md-1" style="text-align: right">
@@ -16,11 +21,6 @@
             </div>
             <div class="col-xs-9 col-sm-10 col-md-11">
                 <div class="panel panel-default topic topic--in-list">
-                    <div class="panel-heading">
-                        <h3 class="topic__title">
-                            <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
-                        </h3>
-                    </div>
                     <div class="panel-body">
                         {{ topic.description }}
                     </div>
@@ -47,7 +47,7 @@
                     There are no comments yet. Why not post the first?
                 </p>
 
-                <br><br><form method="post" @submit.prevent="postComment">
+                <form method="post" @submit.prevent="postComment" class="comment-form">
                     <div class="form-group">
                         <textarea v-model="newComment.body" rows="3" class="form-control" placeholder="Enter a comment"></textarea>
                     </div>
@@ -125,43 +125,11 @@
 </script>
 
 <style scoped>
-    .vote-button, .vote-button__count {
-        /* Cheat the column system; come to think of it, let's just make this whole thing Flexbox... */
-        margin-right: -15px;
-    }
+.comment-form {
+    margin-top: 2em;
+}
 
-    .vote-button {
-        height: 4rem;
-        overflow: hidden;
-        position: relative;
-        transition: all 0.5s ease;
-        width: 4.5rem;
-    }
-    .vote-button.disabled {
-        background: #bbb;
-        border-color: #bbb;
-        opacity: 1;
-    }
-    .vote-button .icon {
-        height: 1.5em;
-        left: 1.1rem;
-        position: absolute;
-        top: 0.6rem;
-        width: 1.5em;
-    }
-
-    .vote-button__count {
-        background: #ddd;
-        border-radius: 0 0 0.35em 0.35em;
-        display: inline-block;
-        margin-top: -0.5em;
-        padding-bottom: 0.1em;
-        padding-top: 0.5em;
-        text-align: center;
-        width: 4.5rem;
-    }
-
-    .media-object {
-        max-width: 50px;
-    }
+.media-object {
+    max-width: 50px;
+}
 </style>

@@ -43,15 +43,15 @@
         },
         methods: {
             suggestTopic: function () {
-                var self = this;
+                var vm = this;
 
                 this.$http.post('topics', { title: this.title, description: this.description }, function (data) {
-                    self.title = '';
-                    self.description = '';
+                    vm.title = '';
+                    vm.description = '';
 
-                    self.topics.push(data);
+                    vm.$dispatch('topics.created', data);
 
-                    self.$route.router.go('/');
+                    vm.$route.router.go('/');
                 });
             }
         },
