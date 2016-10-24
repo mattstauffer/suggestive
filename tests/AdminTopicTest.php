@@ -11,7 +11,7 @@ class AdminTopicTest extends TestCase
     use DatabaseMigrations, WithoutMiddleware;
 
     /** @test */
-    function it_can_show_all_unflagged_topics()
+    function it_can_show_all_suggested_topics()
     {
         $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
@@ -27,7 +27,7 @@ class AdminTopicTest extends TestCase
 
         $topic2->flagAccepted();
 
-        $this->visit('api/topics?unflagged=true');
+        $this->visit('api/topics?status=suggested');
         $this->seeJson([
             'title' => $topic1->title
         ]);
@@ -40,7 +40,7 @@ class AdminTopicTest extends TestCase
     }
 
     /** @test */
-    function unflagged_topics_dont_show_up_in_accepted()
+    function suggested_topics_dont_show_up_in_accepted()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -104,7 +104,7 @@ class AdminTopicTest extends TestCase
             'title' => $topic->title
         ]);
 
-        $this->visit('api/topics?unflagged=true');
+        $this->visit('api/topics?status=suggested');
         $this->dontSeeJson([
             'title' => $topic->title
         ]);
@@ -129,7 +129,7 @@ class AdminTopicTest extends TestCase
             'title' => $topic->title
         ]);
 
-        $this->visit('api/topics?unflagged=true');
+        $this->visit('api/topics?status=suggested');
         $this->dontSeeJson([
             'title' => $topic->title
         ]);
@@ -154,7 +154,7 @@ class AdminTopicTest extends TestCase
             'title' => $topic->title
         ]);
 
-        $this->visit('api/topics?unflagged=true');
+        $this->visit('api/topics?status=suggested');
         $this->dontSeeJson([
             'title' => $topic->title
         ]);
@@ -181,7 +181,7 @@ class AdminTopicTest extends TestCase
             'title' => $topic->title
         ]);
 
-        $this->visit('api/topics?unflagged=true');
+        $this->visit('api/topics?status=suggested');
         $this->dontSeeJson([
             'title' => $topic->title
         ]);
@@ -193,13 +193,13 @@ class AdminTopicTest extends TestCase
         $this->be(factory(User::class, 'admin')->create());
 
         $this->post('api/topics', [
-            'title' => 'How is Laravel 5.2 going?',
+            'title' => 'How is Laravel 5.4 going?',
             'description' => 'Just because I am curious'
         ]);
 
         $this->visit('api/topics');
         $this->seeJson([
-            'title' => 'How is Laravel 5.2 going?',
+            'title' => 'How is Laravel 5.4 going?',
             'description' => 'Just because I am curious',
             'status' => 'accepted'
         ]);

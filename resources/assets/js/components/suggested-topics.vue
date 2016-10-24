@@ -37,7 +37,7 @@
             };
         },
         created: function () {
-            this.$http.get('topics?unflagged=true', function (data, status, request) {
+            this.$http.get('topics?status=suggested', function (data, status, request) {
                 this.suggestedTopics = data;
             }).error(function (data, status, request) {
                 console.log('error', data);
@@ -45,10 +45,10 @@
         },
         methods: {
             flagTopic: function (topic, status) {
-                var self = this;
+                var vm = this;
 
                 this.$http.patch('topics/' + topic.id, {'status': status}, function (data, status, request) {
-                    self.suggestedTopics.$remove(topic);
+                    vm.suggestedTopics.$remove(topic);
                 }).error(function (data, status, request) {
                     console.log('error', data);
                 });

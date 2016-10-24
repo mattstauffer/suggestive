@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
 {
+    const FLAG_SUGGESTED = 'suggested';
     const FLAG_ACCEPTED = 'accepted';
     const FLAG_DUPLICATE = 'duplicate';
     const FLAG_REJECTED = 'rejected';
@@ -33,6 +34,7 @@ class Topic extends Model
     public static function validStatuses()
     {
         return [
+            self::FLAG_SUGGESTED,
             self::FLAG_ACCEPTED,
             self::FLAG_DUPLICATE,
             self::FLAG_REJECTED
@@ -41,7 +43,7 @@ class Topic extends Model
 
     public static function isValidStatus($status)
     {
-        return $status === null || in_array($status, self::validStatuses());
+        return in_array($status, self::validStatuses());
     }
 
     public function user()
@@ -104,4 +106,15 @@ class Topic extends Model
 
         $this->save();
     }
+
+   public static function boot()
+   {
+        parent::boot();
+
+        static::creating(function ($topic) {
+            if (! isset($topic->status)) {
+                $topic->status = self::FLAG_SUGGESTED;
+            }
+        });
+   }
 }

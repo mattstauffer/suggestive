@@ -14,10 +14,6 @@ class TopicsController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('unflagged')) {
-            return $this->unflaggedIndex();
-        }
-
         if ($request->get('status')) {
             return $this->indexByStatus($request->get('status'));
         }
@@ -60,7 +56,7 @@ class TopicsController extends Controller
         $topic = new Topic;
         $topic->title = $request->get('title');
         $topic->description = $request->get('description');
-        $topic->status = Auth::user()->isAdmin() ? 'accepted' : 'suggested';
+        $topic->status = Auth::user()->isAdmin() ? Topic::FLAG_ACCEPTED : Topic::FLAG_SUGGESTED;
 
         Auth::user()->topics()->save($topic);
 
