@@ -72,50 +72,57 @@
         }
 
         .filter-box.current-filter {
-            background: #fff;
+            background: #337ab7;
+            color: #fff;
             font-weight: bold;
         }
 </style>
 
 <template>
-    <div class="row">
-        <div class="col-md-8 col-md-push-2">
-            <suggest-topic-inline></suggest-topic-inline>
-
-            <div class="filter-boxes pull-right">
-                <a v-for="filterOption in filters"  v-bind:class="{ 'current-filter': filterOption.filter == filter, 'filter-box': true }" @click="changeFilter(filterOption.filter)" style="cursor: pointer;">
-                    {{ filterOption.label }}
-                </a>
+    <div>
+        <div class="row">
+            <div class="col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
+                <suggest-topic-inline></suggest-topic-inline>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-push-2">
 
-            <h2>Topics</h2>
-
-            <p v-show="filteredTopics.length == 0">No topics matching this filter.</p>
-            <div v-for="topic in filteredTopics" class="row topic-row">
-                <div class="col-xs-3 col-sm-2 col-md-1" style="text-align: right">
-                    <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
-                        <div class="clearfix">
-                            <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up" transition="expand"><use xlink:href="#icon-arrow-up"></use></svg>
-                            <svg v-show="topic.userVotedFor" class="icon icon-checkmark" transition="expand"><use xlink:href="#icon-checkmark"></use></svg>
-                        </div>
-                    </a><br>
-                    <div class="vote-button__count">
-                        {{ topic.votes }}
-                    </div>
+                <div class="filter-boxes pull-right">
+                    <a v-for="filterOption in filters"  v-bind:class="{ 'current-filter': filterOption.filter == filter, 'filter-box': true }" @click="changeFilter(filterOption.filter)" style="cursor: pointer;">
+                        {{ filterOption.label }}
+                    </a>
                 </div>
-                <div class="col-xs-9 col-sm-10 col-md-11">
-                    <div class="topic topic--in-list">
-                        <div class="">
-                            <h3 class="topic__title">
-                                <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
-                                <small class="pull-right" style="text-align: right;">Status: {{ topic.status }}<br>
-                                    ({{ topic.commentCount }}
-                                    {{ topic.commentCount == 1 ? 'comment' : 'comments' }})
-                                </small>
-                            </h3>
+
+                <h2>Topics</h2>
+
+                <p v-show="filteredTopics.length == 0">No topics matching this filter.</p>
+                <div v-for="topic in filteredTopics" class="row topic-row">
+                    <div class="col-xs-3 col-sm-2 col-md-1" style="text-align: right">
+                        <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
+                            <div class="clearfix">
+                                <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up" transition="expand"><use xlink:href="#icon-arrow-up"></use></svg>
+                                <svg v-show="topic.userVotedFor" class="icon icon-checkmark" transition="expand"><use xlink:href="#icon-checkmark"></use></svg>
+                            </div>
+                        </a><br>
+                        <div class="vote-button__count">
+                            {{ topic.votes }}
                         </div>
-                        <div class="">
-                            {{ topic.description }}
+                    </div>
+                    <div class="col-xs-9 col-sm-10 col-md-11">
+                        <div class="topic topic--in-list">
+                            <div class="">
+                                <h3 class="topic__title">
+                                    <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
+                                    <small class="pull-right" style="text-align: right;">Status: {{ topic.status }}<br>
+                                        ({{ topic.commentCount }}
+                                        {{ topic.commentCount == 1 ? 'comment' : 'comments' }})
+                                    </small>
+                                </h3>
+                            </div>
+                            <div class="">
+                                {{ topic.description }}
+                            </div>
                         </div>
                     </div>
                 </div>
