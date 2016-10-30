@@ -3,7 +3,7 @@
     <head>
         <title>{{ $appName }}</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
 
         <style>
             html, body {
@@ -11,18 +11,15 @@
             }
 
             body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
                 font-family: 'Lato';
+                margin: 6em 2em;
+                padding: 2em;
             }
 
             .container {
+                margin: 0 auto;
+                max-width: 1000px;
                 text-align: center;
-                display: table-cell;
-                vertical-align: middle;
             }
 
             .content {
@@ -31,24 +28,33 @@
             }
 
             .title {
-                font-size: 96px;
+                font-size: 6em;
+                font-weight: 500;
             }
 
             .login {
                 font-size: 1.5rem;
+                margin-top: 2em;
             }
 
             .login-button {
                 background: #fafafa;
-                border: 1px solid #444;
-                border-radius: 0.5rem;
+                border: 2px solid #444;
+                border-radius: 0.25rem;
                 color: #444;
-                font-weight: bold;
+                display: inline-block;
+                font-weight: 700;
+                margin: 0 0.5em;
                 padding: 0.5rem 1.75rem;
                 text-decoration: none;
             }
 
             .login-button:hover {
+                background: #444;
+                color: #fff;
+            }
+
+            .login-button:active {
                 background: #fff;
                 color: #000;
             }
@@ -59,9 +65,8 @@
             <div class="content">
                 <div class="title">{{ $appName }}</div>
                 <div class="login">
-                    <br>
-                    <a href="/auth/github" class="login-button">Log in with GitHub</a><br><br><br>
-                    <a href="/auth/twitter" class="login-button">Log in with Twitter</a><br>
+                    <a href="/auth/github" class="login-button">Log in with GitHub</a>
+                    <a href="/auth/twitter" class="login-button">Log in with Twitter</a>
                 </div>
             </div>
         </div>
