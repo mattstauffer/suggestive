@@ -26,12 +26,27 @@ body {
 }
 
 .navbar .v-link-active {
-    color: #fff !important;
+    // color: #fff !important;
 }
     .navbar .dropdown .v-link-active {
-        color: #333 !important;
+        // color: #333 !important;
         font-weight: bold;
     }
+
+.navbar-inverse .navbar-brand {
+    &, &:visited, &:focus {
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.75);
+        color: #000;
+        transform: scale(1.2);
+        transform-origin: center left;
+    }
+
+    &:hover, &:active {
+        background: #eee;
+        color: #000;
+    }
+}
 
 // Vue Transitions
 /* always present */

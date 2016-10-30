@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="row">
+    <div class="row">
+        <div class="col-md-8 col-md-push-2">
             <button v-link="{ path: '/episodes/' }" type="button" class="btn btn-default" aria-label="All Episodes">
                 <svg class="icon icon-back" style=""><use xlink:href="#icon-back"></use></svg>
                 All Episodes
