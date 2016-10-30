@@ -28,11 +28,7 @@
                 description: ''
             };
         },
-        props: {
-            topics: {
-                sync: true
-            }
-        },
+        props: ['topics'],
         methods: {
             suggestTopic: function () {
                 var vm = this;
@@ -41,7 +37,6 @@
                     vm.title = '';
                     vm.description = '';
 
-                    console.log(data);
                     vm.$dispatch('topics.created', data);
 
                     vm.$route.router.go('/');
