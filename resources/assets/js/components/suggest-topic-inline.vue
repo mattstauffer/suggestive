@@ -36,11 +36,7 @@
                 description: ''
             };
         },
-        props: {
-            topics: {
-                sync: true
-            }
-        },
+        props: ['topics'],
         methods: {
             suggestTopic: function () {
                 var vm = this;
