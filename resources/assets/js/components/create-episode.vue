@@ -105,9 +105,6 @@
 <script>
     export default {
         props: {
-            acceptedTopics: {
-                sync: true
-            },
             episodes: {
                 sync: true
             }
@@ -117,15 +114,22 @@
                 selected: [],
                 title: '',
                 number: '',
-                topicName: ''
+                topicName: '',
+                acceptedTopics: []
             };
         },
         ready: function () {
-            // @todo: How do we handle this?
-            for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
-                var topic = this.acceptedTopics[i];
-                this.selected[topic.id] = false;
-            }
+            this.$http.get('topics?status=accepted', function (data, status, request) {
+                this.acceptedTopics = data;
+
+                // @todo: How do we handle this?
+                for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
+                    var topic = this.acceptedTopics[i];
+                    this.selected[topic.id] = false;
+                }
+            }).error(function (data, status, request) {
+                console.log('error', data);
+            });
 
             this.$els.episodeTitleInput.focus();
         },
