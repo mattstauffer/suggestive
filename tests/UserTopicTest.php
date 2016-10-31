@@ -122,4 +122,16 @@ class UserTopicTest extends TestCase
         $this->visit('api/topics/' . $topic->id);
         $this->seeJson(['id' => $topic->id]);
     }
+
+    /** @test */
+    function topics_contain_suggestor_username()
+    {
+        $user = factory(User::class)->create();
+        $topic = factory(Topic::class)->create(['user_id' => $user->id]);
+
+        $this->be($user);
+
+        $this->visit('api/topics/' . $topic->id);
+        $this->seeJson(['suggestor' => $user->name]);
+    }
 }

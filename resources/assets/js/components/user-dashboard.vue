@@ -41,6 +41,12 @@
             color: #fff;
             font-weight: bold;
         }
+
+    .topic__meta {
+        font-size: 0.6em;
+        font-weight: normal;
+        line-height: 1.4;
+    }
 </style>
 
 <template>
@@ -82,10 +88,11 @@
                             <div class="">
                                 <h3 class="topic__title">
                                     <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
-                                    <small class="pull-right" style="text-align: right;"><span style="text-transform: uppercase">{{ topic.status }}</span><br>
+                                    <div class="pull-right topic__meta" style="text-align: right;"><span style="text-transform: uppercase">{{ topic.status }}</span><br>
+                                        by: {{ topic.suggestor }}<br>
                                         <a v-link="{ path: '/topics/' + topic.id }">({{ topic.commentCount }}
                                         {{ topic.commentCount == 1 ? 'comment' : 'comments' }})</a>
-                                    </small>
+                                    </div>
                                 </h3>
                             </div>
                             <div class="">
