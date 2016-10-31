@@ -23,8 +23,13 @@
             cursor: pointer;
             color: #333;
             display: inline-block;
-            padding: 0.5em 1em;
+            padding: 0.4em 0.6em;
         }
+            @media only screen and (min-width: 500px) {
+                .filter-box {
+                    padding: 0.5em 1em;
+                }
+            }
 
         .filter-box:not(:last-child) {
             border-right: 0;
