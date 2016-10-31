@@ -64,6 +64,9 @@ var App = Vue.extend({
     events: {
         'topics.created': function (topic) {
             this.topics.push(topic);
+        },
+        'testing': function () {
+            // console.log('abc');
         }
     }
 });
