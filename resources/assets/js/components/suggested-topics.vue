@@ -32,28 +32,27 @@
 </template>
 
 <script>
+    import Topics from './../topics.js';
+
     export default {
-        data: function () {
-            return {
-                suggestedTopics: []
-            };
+        data: () => ({
+           topics: []
+        }),
+        computed: {
+            suggestedTopics: function() {
+                return this.topics.filter((topic) => {
+                    return topic.status == "suggested";
+                });
+            }
         },
-        created: function () {
-            this.$http.get('topics?status=suggested', function (data, status, request) {
-                this.suggestedTopics = data;
-            }).error(function (data, status, request) {
-                console.log('error', data);
+        created() {
+            Topics.all().then((topics) => {
+                this.topics = topics;
             });
         },
         methods: {
             flagTopic: function (topic, status) {
-                var vm = this;
-
-                this.$http.patch('topics/' + topic.id, {'status': status}, function (data, status, request) {
-                    vm.suggestedTopics.$remove(topic);
-                }).error(function (data, status, request) {
-                    console.log('error', data);
-                });
+                Topics.flag(topic, status);
             },
             acceptTopic: function (topic) {
                 this.flagTopic(topic, 'accepted');

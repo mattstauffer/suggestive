@@ -19,9 +19,9 @@
         <div class="suggestor-box__title">{{ verb }} a Topic</div>
 
         <form @submit.prevent="suggestTopic">
-            <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:topic-title-input required placeholder="Topic" style="margin-bottom: 0.5em">
+            <input type="text" v-model="topic.title" class="form-control" length="255" autofocus v-el:topic-title-input required placeholder="Topic" style="margin-bottom: 0.5em">
 
-            <textarea v-model="description" class="form-control" placeholder="Description" style="margin-bottom: 0.5em"></textarea>
+            <textarea v-model="topic.description" class="form-control" placeholder="Description" style="margin-bottom: 0.5em"></textarea>
 
             <input type="submit" class="btn btn-primary" value="{{ verb }}" style="width: 100%;">
         </form>
@@ -29,26 +29,30 @@
 </template>
 
 <script>
+    import Topics from './../topics.js';
+
     export default {
         data: function () {
             return {
-                title: '',
-                description: ''
+                topic: {
+                    title: '',
+                    description: '',
+                }
             };
         },
-        props: ['topics'],
         methods: {
             suggestTopic: function () {
                 var vm = this;
 
-                this.$http.post('topics', { title: this.title, description: this.description }, function (data) {
-                    vm.title = '';
-                    vm.description = '';
-
-                    vm.$dispatch('topics.created', data);
-
-                    vm.$route.router.go('/');
-                });
+                Topics.add(vm.topic).then(
+                    () => {
+                        vm.topic.title = '';
+                        vm.topic.description = '';
+                    },
+                    (response) => {
+                        console.log('error', response);
+                    }
+                );
             }
         },
         computed: {
