@@ -35,4 +35,7 @@ Demo of current progress:
     ```bash
     php -S localhost:8080 -t public
     ```
-7. Run tests with `./vendor/bin/phpunit`.
+7. Run `php artisan key:generate`
+
+8. Run tests with `./vendor/bin/phpunit`.
+
