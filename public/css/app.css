@@ -5756,8 +5756,10 @@ body {
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.75);
   color: #000;
-  transform: scale(1.2);
   transform-origin: center left; }
+  @media only screen and (min-width: 500px) {
+    .navbar-inverse .navbar-brand, .navbar-inverse .navbar-brand:visited, .navbar-inverse .navbar-brand:focus {
+      transform: scale(1.2); } }
 
 .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:active {
   background: #eee;

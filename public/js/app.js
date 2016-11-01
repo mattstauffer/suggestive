@@ -35611,23 +35611,12 @@ var App = Vue.extend({
             _this.topics = topics;
         });
 
-        // this.$http.get('topics', function (data, status, request) {
-        //     this.topics = data;
-        // }).error(function (data, status, request) {
-        //     console.log('error', data);
-        // });
-        //
         if (Suggestive.isAdmin) {
             this.$http.get('episodes', function (data, status, request) {
                 this.episodes = data;
             }).error(function (data, status, request) {
                 console.log('error', data);
             });
-        }
-    },
-    events: {
-        'topics.created': function topicsCreated(topic) {
-            this.topics.push(topic);
         }
     }
 });
@@ -35946,8 +35935,6 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":14,"vue-hot-reload-api":4}],22:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35956,32 +35943,43 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     data: function data() {
         return {
-            'isToggled': null
+            'isOpen': false
         };
     },
     methods: {
-        toggle: function toggle() {
-            this.isToggled = !this.isToggled;
+        handleClick: function handleClick(event) {
+            if (this.isOpen) {
+                return;
+            }
+
+            event.stopPropagation();
+            this.bindListeners();
+            this.isOpen = true;
+        },
+        bindListeners: function bindListeners() {
+            var vm = this,
+                body = document.getElementsByTagName('body')[0];
+
+            body.addEventListener('click', function dropdownDismiss() {
+                body.removeEventListener('click', dropdownDismiss);
+                vm.isOpen = false;
+            });
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li v-bind:class=\"['dropdown', isToggled ? 'open' : '']\" @click=\"toggle\">\n    <slot></slot>\n</li>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<li v-bind:class=\"['dropdown', isOpen ? 'open' : '']\" @click=\"handleClick\">\n    <slot></slot>\n</li>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
   if (!module.hot.data) {
     hotAPI.createRecord("_v-0b15de46", module.exports)
   } else {
     hotAPI.update("_v-0b15de46", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":14,"vue-hot-reload-api":4,"vueify/lib/insert-css":15}],23:[function(require,module,exports){
+},{"vue":14,"vue-hot-reload-api":4}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36320,7 +36318,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":14,"vue-hot-reload-api":4,"vueify/lib/insert-css":15}],29:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.current-filter[_v-09db0474] {\n    font-weight: bold;\n}\n\n.topic-row[_v-09db0474] {\n    background: #fff;\n    border: 1px solid #ddd;\n    padding-bottom: 1em;\n    padding-top: 1em;\n}\n    .topic-row[_v-09db0474]:not(:last-child) {\n        border-bottom: 0;\n    }\n\n.filter-boxes[_v-09db0474] {\n    margin-top: 1em;\n}\n\n    .filter-box[_v-09db0474] {\n        background: #fcfcfc;\n        border: 1px solid #ddd;\n        cursor: pointer;\n        color: #333;\n        display: inline-block;\n        padding: 0.5em 1em;\n    }\n\n    .filter-box[_v-09db0474]:not(:last-child) {\n        border-right: 0;\n    }\n\n    .filter-box[_v-09db0474]:hover {\n        background: #eee;\n        color: #000;\n        text-decoration: none;\n    }\n\n    .filter-box.current-filter[_v-09db0474] {\n        background: #337ab7;\n        color: #fff;\n        font-weight: bold;\n    }\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.current-filter[_v-09db0474] {\n    font-weight: bold;\n}\n\n.topic-row[_v-09db0474] {\n    background: #fff;\n    border: 1px solid #ddd;\n    padding-bottom: 1em;\n    padding-top: 1em;\n}\n    .topic-row[_v-09db0474]:not(:last-child) {\n        border-bottom: 0;\n    }\n\n.filter-boxes[_v-09db0474] {\n    margin-top: 1em;\n}\n\n    .filter-box[_v-09db0474] {\n        background: #fcfcfc;\n        border: 1px solid #ddd;\n        cursor: pointer;\n        color: #333;\n        display: inline-block;\n        padding: 0.4em 0.6em;\n    }\n        @media only screen and (min-width: 500px) {\n            .filter-box[_v-09db0474] {\n                padding: 0.5em 1em;\n            }\n        }\n\n    .filter-box[_v-09db0474]:not(:last-child) {\n        border-right: 0;\n    }\n\n    .filter-box[_v-09db0474]:hover {\n        background: #eee;\n        color: #000;\n        text-decoration: none;\n    }\n\n    .filter-box.current-filter[_v-09db0474] {\n        background: #337ab7;\n        color: #fff;\n        font-weight: bold;\n    }\n\n.topic__meta[_v-09db0474] {\n    font-size: 0.6em;\n    font-weight: normal;\n    line-height: 1.4;\n}\n\n.topic__status[_v-09db0474] {\n    font-weight: bold;\n    text-transform: uppercase;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36383,13 +36381,13 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-09db0474=\"\">\n    <div class=\"row\" _v-09db0474=\"\">\n        <div class=\"col-md-4 col-md-push-4 col-sm-6 col-sm-push-3\" _v-09db0474=\"\">\n            <suggest-topic-inline _v-09db0474=\"\"></suggest-topic-inline>\n        </div>\n    </div>\n    <div class=\"row\" _v-09db0474=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-09db0474=\"\">\n            <div class=\"filter-boxes pull-right\" _v-09db0474=\"\">\n                <a v-for=\"filterOption in filters\" v-bind:class=\"{ 'current-filter': filterOption.filter == filter, 'filter-box': true }\" @click=\"changeFilter(filterOption.filter)\" _v-09db0474=\"\">\n                    {{ filterOption.label }}\n                </a>\n            </div>\n\n            <h2 _v-09db0474=\"\">Topics</h2>\n\n            <p v-show=\"filteredTopics.length == 0\" _v-09db0474=\"\">No topics matching this filter.</p>\n            <div v-for=\"topic in filteredTopics\" class=\"row topic-row\" _v-09db0474=\"\">\n                <div class=\"col-xs-3 col-sm-2 col-md-1\" style=\"text-align: right\" _v-09db0474=\"\">\n                    <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\" _v-09db0474=\"\">\n                        <div class=\"clearfix\" _v-09db0474=\"\">\n                            <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\" _v-09db0474=\"\"><use xlink:href=\"#icon-arrow-up\" _v-09db0474=\"\"></use></svg>\n                            <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\" _v-09db0474=\"\"><use xlink:href=\"#icon-checkmark\" _v-09db0474=\"\"></use></svg>\n                        </div>\n                    </a><br _v-09db0474=\"\">\n                    <div class=\"vote-button__count\" _v-09db0474=\"\">\n                        {{ topic.votes }}\n                    </div>\n                </div>\n                <div class=\"col-xs-9 col-sm-10 col-md-11\" _v-09db0474=\"\">\n                    <div class=\"topic topic--in-list\" _v-09db0474=\"\">\n                        <div class=\"\" _v-09db0474=\"\">\n                            <h3 class=\"topic__title\" _v-09db0474=\"\">\n                                <a v-link=\"{ path: '/topics/' + topic.id }\" _v-09db0474=\"\">{{ topic.title }}</a>\n                                <small class=\"pull-right\" style=\"text-align: right;\" _v-09db0474=\"\"><span style=\"text-transform: uppercase\" _v-09db0474=\"\">{{ topic.status }}</span><br _v-09db0474=\"\">\n                                    <a v-link=\"{ path: '/topics/' + topic.id }\" _v-09db0474=\"\">({{ topic.commentCount }}\n                                    {{ topic.commentCount == 1 ? 'comment' : 'comments' }})</a>\n                                </small>\n                            </h3>\n                        </div>\n                        <div class=\"\" _v-09db0474=\"\">\n                            {{ topic.description }}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-09db0474=\"\">\n    <div class=\"row\" _v-09db0474=\"\">\n        <div class=\"col-md-4 col-md-push-4 col-sm-6 col-sm-push-3\" _v-09db0474=\"\">\n            <suggest-topic-inline _v-09db0474=\"\"></suggest-topic-inline>\n        </div>\n    </div>\n    <div class=\"row\" _v-09db0474=\"\">\n        <div class=\"col-md-8 col-md-push-2\" _v-09db0474=\"\">\n            <div class=\"filter-boxes pull-right\" _v-09db0474=\"\">\n                <a v-for=\"filterOption in filters\" v-bind:class=\"{ 'current-filter': filterOption.filter == filter, 'filter-box': true }\" @click=\"changeFilter(filterOption.filter)\" _v-09db0474=\"\">\n                    {{ filterOption.label }}\n                </a>\n            </div>\n\n            <h2 _v-09db0474=\"\">Topics</h2>\n\n            <p v-show=\"filteredTopics.length == 0\" _v-09db0474=\"\">No topics matching this filter.</p>\n            <div v-for=\"topic in filteredTopics\" class=\"row topic-row\" _v-09db0474=\"\">\n                <div class=\"col-xs-3 col-sm-2 col-md-1\" style=\"text-align: right\" _v-09db0474=\"\">\n                    <a @click.prevent=\"voteFor(topic)\" v-bind:class=\"[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]\" _v-09db0474=\"\">\n                        <div class=\"clearfix\" _v-09db0474=\"\">\n                            <svg v-show=\"! topic.userVotedFor\" class=\"icon icon-arrow-up\" transition=\"expand\" _v-09db0474=\"\"><use xlink:href=\"#icon-arrow-up\" _v-09db0474=\"\"></use></svg>\n                            <svg v-show=\"topic.userVotedFor\" class=\"icon icon-checkmark\" transition=\"expand\" _v-09db0474=\"\"><use xlink:href=\"#icon-checkmark\" _v-09db0474=\"\"></use></svg>\n                        </div>\n                    </a><br _v-09db0474=\"\">\n                    <div class=\"vote-button__count\" _v-09db0474=\"\">\n                        {{ topic.votes }}\n                    </div>\n                </div>\n                <div class=\"col-xs-9 col-sm-10 col-md-11\" _v-09db0474=\"\">\n                    <div class=\"topic topic--in-list\" _v-09db0474=\"\">\n                        <div class=\"\" _v-09db0474=\"\">\n                            <h3 class=\"topic__title\" _v-09db0474=\"\">\n                                <a v-link=\"{ path: '/topics/' + topic.id }\" _v-09db0474=\"\">{{ topic.title }}</a>\n                                <div class=\"pull-right topic__meta\" style=\"text-align: right;\" _v-09db0474=\"\">\n                                    <span class=\"topic__status\" _v-09db0474=\"\">{{ topic.status }}</span><br _v-09db0474=\"\">\n                                    {{ topic.suggestor }}<br _v-09db0474=\"\">\n                                    <a v-link=\"{ path: '/topics/' + topic.id }\" _v-09db0474=\"\">({{ topic.commentCount }}\n                                    {{ topic.commentCount == 1 ? 'comment' : 'comments' }})</a>\n                                </div>\n                            </h3>\n                        </div>\n                        <div class=\"\" _v-09db0474=\"\">\n                            {{ topic.description }}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.current-filter[_v-09db0474] {\n    font-weight: bold;\n}\n\n.topic-row[_v-09db0474] {\n    background: #fff;\n    border: 1px solid #ddd;\n    padding-bottom: 1em;\n    padding-top: 1em;\n}\n    .topic-row[_v-09db0474]:not(:last-child) {\n        border-bottom: 0;\n    }\n\n.filter-boxes[_v-09db0474] {\n    margin-top: 1em;\n}\n\n    .filter-box[_v-09db0474] {\n        background: #fcfcfc;\n        border: 1px solid #ddd;\n        cursor: pointer;\n        color: #333;\n        display: inline-block;\n        padding: 0.5em 1em;\n    }\n\n    .filter-box[_v-09db0474]:not(:last-child) {\n        border-right: 0;\n    }\n\n    .filter-box[_v-09db0474]:hover {\n        background: #eee;\n        color: #000;\n        text-decoration: none;\n    }\n\n    .filter-box.current-filter[_v-09db0474] {\n        background: #337ab7;\n        color: #fff;\n        font-weight: bold;\n    }\n"] = false
+    __vueify_insert__.cache["\n.current-filter[_v-09db0474] {\n    font-weight: bold;\n}\n\n.topic-row[_v-09db0474] {\n    background: #fff;\n    border: 1px solid #ddd;\n    padding-bottom: 1em;\n    padding-top: 1em;\n}\n    .topic-row[_v-09db0474]:not(:last-child) {\n        border-bottom: 0;\n    }\n\n.filter-boxes[_v-09db0474] {\n    margin-top: 1em;\n}\n\n    .filter-box[_v-09db0474] {\n        background: #fcfcfc;\n        border: 1px solid #ddd;\n        cursor: pointer;\n        color: #333;\n        display: inline-block;\n        padding: 0.4em 0.6em;\n    }\n        @media only screen and (min-width: 500px) {\n            .filter-box[_v-09db0474] {\n                padding: 0.5em 1em;\n            }\n        }\n\n    .filter-box[_v-09db0474]:not(:last-child) {\n        border-right: 0;\n    }\n\n    .filter-box[_v-09db0474]:hover {\n        background: #eee;\n        color: #000;\n        text-decoration: none;\n    }\n\n    .filter-box.current-filter[_v-09db0474] {\n        background: #337ab7;\n        color: #fff;\n        font-weight: bold;\n    }\n\n.topic__meta[_v-09db0474] {\n    font-size: 0.6em;\n    font-weight: normal;\n    line-height: 1.4;\n}\n\n.topic__status[_v-09db0474] {\n    font-weight: bold;\n    text-transform: uppercase;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

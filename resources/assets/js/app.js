@@ -49,16 +49,11 @@ var App = Vue.extend({
         };
     },
     created: function () {
+
         Topics.all().then((topics) => {
             this.topics = topics;
         });
 
-        // this.$http.get('topics', function (data, status, request) {
-        //     this.topics = data;
-        // }).error(function (data, status, request) {
-        //     console.log('error', data);
-        // });
-        //
         if (Suggestive.isAdmin) {
             this.$http.get('episodes', function (data, status, request) {
                 this.episodes = data;
@@ -67,19 +62,6 @@ var App = Vue.extend({
             });
         }
     },
-    events: {
-        'topics.created': function (topic) {
-            this.topics.push(topic);
-        },
-        // 'topics.flagged': function (data) {
-        //     const topic = this.topics.find(function (candidate) {
-        //         return candidate.id == data.topic.id
-        //     })
-        //
-        //     topic.status = data.status
-        //     data.topic.status = data.status;
-        // },
-    }
 });
 
 router.map({

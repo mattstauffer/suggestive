@@ -28,7 +28,8 @@ class Topic implements Arrayable, Jsonable
             'status' => $this->topic->status,
             'episode_id' => $this->topic->episode? $this->topic->episode->id : null,
             'userVotedFor' => in_array($this->topic->id, Auth::user()->votes->lists('topic_id')->toArray()),
-            'commentCount' => $this->topic->comments->count()
+            'commentCount' => $this->topic->comments->count(),
+            'suggestor' => $this->topic->user->name,
         ];
     }
 }
