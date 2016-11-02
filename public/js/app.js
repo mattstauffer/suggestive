@@ -36013,7 +36013,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _topics = require('./../topics.js');
+var _topics = require('../topics.js');
 
 var _topics2 = _interopRequireDefault(_topics);
 
@@ -36032,7 +36032,7 @@ exports.default = {
         suggestTopic: function suggestTopic() {
             var vm = this;
 
-            _topics2.default.add(vm.topic).then(function () {
+            _topics2.default.add(vm.topic).then(function (response) {
                 vm.topic.title = '';
                 vm.topic.description = '';
             }, function (response) {
@@ -36065,7 +36065,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-e89f80fc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./../topics.js":30,"vue":14,"vue-hot-reload-api":4,"vueify/lib/insert-css":15}],25:[function(require,module,exports){
+},{"../topics.js":30,"vue":14,"vue-hot-reload-api":4,"vueify/lib/insert-css":15}],25:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n")
 'use strict';
@@ -36417,8 +36417,8 @@ exports.default = {
                 topics = response.data;
                 resolve(topics);
             }, function (response) {
-                reject();
                 console.log('error', response);
+                reject();
             });
         });
     },
@@ -36426,36 +36426,46 @@ exports.default = {
         return new Promise(function (resolve, reject) {
             Vue.http.post('topics', { title: topic.title, description: topic.description }).then(function (response) {
                 topics.push(response.data);
-                resolve(response);
+                resolve(topics);
             }, function (response) {
-                reject(response);
                 console.log('error', response);
+                reject(response);
             });
         });
     },
     flag: function flag(topic, status) {
-        Vue.http.patch('topics/' + topic.id, { status: status }).then(function () {
-            var matchedTopic = topics.find(function (candidate) {
-                return candidate.id == topic.id;
-            });
-            matchedTopic.status = status;
-        }, function (response) {
-            console.log('error', response);
-        });
-    },
-    voteFor: function voteFor(topic) {
-        Vue.http.post('topics/' + topic.id + '/votes', []).then(function (response) {
-            // New vote
-            if (response.status == 200) {
+        return new Promise(function (resolve, reject) {
+            Vue.http.patch('topics/' + topic.id, { status: status }).then(function (response) {
                 var matchedTopic = topics.find(function (candidate) {
                     return candidate.id == topic.id;
                 });
-                matchedTopic.votes++;
-            }
+                matchedTopic.status = status;
+                resolve(matchedTopic);
+            }, function (response) {
+                console.log('error', response);
+                reject(response);
+            });
+        });
+    },
+    voteFor: function voteFor(topic) {
+        return new Promise(function (resolve, reject) {
 
-            topic.userVotedFor = true;
-        }, function (response) {
-            console.log('error', response);
+            Vue.http.post('topics/' + topic.id + '/votes', []).then(function (response) {
+                var matchedTopic = topics.find(function (candidate) {
+                    return candidate.id == topic.id;
+                });
+
+                if (response.status == 200) {
+                    matchedTopic.votes++;
+                }
+
+                matchedTopic.userVotedFor = true;
+
+                resolve(matchedTopic);
+            }, function (response) {
+                console.log('error', response);
+                reject(response);
+            });
         });
     }
 };
