@@ -46,7 +46,7 @@
             }
         },
         created() {
-            Topics.all().then((topics) => {
+            Topics.all().then(topics => {
                 this.topics = topics;
             });
         },

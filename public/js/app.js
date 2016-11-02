@@ -37260,7 +37260,7 @@ exports.default = {
         suggestTopic: function suggestTopic() {
             var vm = this;
 
-            _topics2.default.add(vm.topic).then(function () {
+            _topics2.default.add(vm.topic).then(function (topic) {
                 vm.topic.title = '';
                 vm.topic.description = '';
                 vm.$route.router.go('/');

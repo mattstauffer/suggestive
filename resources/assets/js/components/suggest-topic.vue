@@ -37,12 +37,12 @@
                 var vm = this;
 
                 Topics.add(vm.topic).then(
-                        () => {
+                        topic => {
                             vm.topic.title = '';
                             vm.topic.description = '';
                             vm.$route.router.go('/');
                         },
-                        (response) => {
+                        response => {
                             console.log('error', response);
                         }
                 );

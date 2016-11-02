@@ -146,7 +146,7 @@
             };
         },
         created: function() {
-            Topics.all().then((topics) => {
+            Topics.all().then(topics => {
                 this.topics = topics;
             });
         },
