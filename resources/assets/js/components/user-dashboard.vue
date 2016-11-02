@@ -1,4 +1,3 @@
-<!--suppress UnnecessaryLabelJS -->
 <style scoped>
     .current-filter {
         font-weight: bold;
