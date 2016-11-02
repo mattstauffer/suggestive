@@ -1,3 +1,4 @@
+require('es6-promise/auto');
 window.Vue = require('vue');
 window.VueRouter = require('vue-router');
 window._ = require('lodash');
