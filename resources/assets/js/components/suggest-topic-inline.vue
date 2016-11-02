@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import Topics from './../topics.js';
+    import Topics from '../topics.js';
 
     export default {
         data: function () {
@@ -45,11 +45,11 @@
                 var vm = this;
 
                 Topics.add(vm.topic).then(
-                    () => {
+                    response => {
                         vm.topic.title = '';
                         vm.topic.description = '';
                     },
-                    (response) => {
+                    response => {
                         console.log('error', response);
                     }
                 );
