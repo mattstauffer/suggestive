@@ -25,17 +25,18 @@ Demo of current progress:
 2. Clone the repository locally
 3. [Install dependencies](https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies) with `composer install`
 4. Copy [`.env.example`](https://github.com/mattstauffer/suggestive/blob/master/.env.example) to `.env` and modify its contents to reflect your local environment.
-5. [Run database migrations](http://laravel.com/docs/5.1/migrations#running-migrations). If you want to include seed data, add a `--seed` flag.
+5. Setup [test Twitter Application](https://apps.twitter.com/app/new) or [test Github application](https://github.com/settings/applications/new) and copy credentials and redirect to `.env`
+6. [Run database migrations](http://laravel.com/docs/5.1/migrations#running-migrations). If you want to include seed data, add a `--seed` flag.
 
     ```bash
     php artisan migrate --env=local
     ```
-6. Configure a web server, such as the [built-in PHP web server](http://php.net/manual/en/features.commandline.webserver.php), to use the `public` directory as the document root.
+7. Configure a web server, such as the [built-in PHP web server](http://php.net/manual/en/features.commandline.webserver.php), to use the `public` directory as the document root.
 
     ```bash
     php -S localhost:8080 -t public
     ```
-7. Run `php artisan key:generate`
+8. Run `php artisan key:generate`
 
-8. Run tests with `./vendor/bin/phpunit`.
+9. Run tests with `./vendor/bin/phpunit`.
 
