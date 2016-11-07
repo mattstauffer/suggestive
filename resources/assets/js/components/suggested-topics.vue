@@ -40,7 +40,7 @@
         }),
         computed: {
             suggestedTopics: function() {
-                return this.topics.filter((topic) => {
+                return this.topics.filter(topic => {
                     return topic.status == "suggested";
                 });
             }
