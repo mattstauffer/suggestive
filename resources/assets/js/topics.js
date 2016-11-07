@@ -3,12 +3,12 @@ let topics = null;
 export default {
     all() {
         if (topics !== null) {
-            return new Promise(function (resolve) {
+            return new Promise( (resolve, reject) => {
                 resolve(topics);
             });
         }
 
-        return new Promise(function (resolve, reject) {
+        return new Promise( (resolve, reject) => {
             Vue.http.get('topics')
                 .then(
                     response => {
@@ -17,7 +17,23 @@ export default {
                     },
                     response => {
                         console.log('error', response);
-                        reject();
+                        reject(response);
+                    }
+                );
+        });
+    },
+
+    find(topicId) {
+        return new Promise( (resolve, reject) => {
+            this.all()
+                .then(
+                    topics => {
+                        const matchedTopic = topics.find(candidate => candidate.id == topicId);
+                        resolve(matchedTopic);
+                    },
+                    response => {
+                        console.log('error', response);
+                        reject(response);
                     }
                 );
         });
