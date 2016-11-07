@@ -60,12 +60,9 @@
 </template>
 
 <script>
+    import Topics from './../topics.js';
+
     export default {
-        props: {
-            topics: {
-                sync: true
-            }
-        },
         data: function () {
             return {
                 topic: {},
@@ -75,17 +72,16 @@
             };
         },
         created: function() {
-            var vm = this;
-
-            this.$http.get('topics', function(data, status, request) {
-                this.topic = _.find(this.topics, function (topic) {
-                    return topic.id == vm.$route.params.topic_id;
-                });
-
-                this.storeComments();
-            }).error(function(data, status, request) {
-                console.log('error', request);
-            });
+            Topics.find(this.$route.params.topic_id)
+                .then(
+                    topic => {
+                        this.topic = topic;
+                        this.storeComments();
+                    },
+                    request => {
+                        console.log('error', request);
+                    }
+            );
         },
         methods: {
             storeComments: function() {
