@@ -32,8 +32,6 @@
                 <router-view
                     :topics="topics"
                     :episodes="episodes"
-                    :accepted-topics="acceptedTopics"
-                    :suggested-topics="suggestedTopics"
                  ></router-view>
             </div>
         </div>
