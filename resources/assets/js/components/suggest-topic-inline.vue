@@ -32,22 +32,21 @@
     import Topics from '../topics.js';
 
     export default {
-        data: function () {
+        data() {
             return {
                 topic: {
                     title: '',
                     description: '',
                 }
-            };
+            }
         },
         methods: {
-            suggestTopic: function () {
-                var vm = this;
+            suggestTopic() {
 
-                Topics.add(vm.topic).then(
+                Topics.add(this.topic).then(
                     response => {
-                        vm.topic.title = '';
-                        vm.topic.description = '';
+                        this.topic.title = '';
+                        this.topic.description = '';
                     },
                     response => {
                         console.log('error', response);
@@ -56,11 +55,11 @@
             }
         },
         computed: {
-            verb: function () {
+            verb() {
                 return Suggestive.isAdmin ? 'Add' : 'Suggest';
             }
         },
-        ready: function () {
+        ready() {
             this.$els.topicTitleInput.focus();
         }
     };
