@@ -35,11 +35,13 @@
     import Topics from './../topics.js';
 
     export default {
-        data: () => ({
-           topics: []
-        }),
+        data() {
+            return {
+                topics: [],
+            }
+        },
         computed: {
-            suggestedTopics: function() {
+            suggestedTopics() {
                 return this.topics.filter(topic => {
                     return topic.status == "suggested";
                 });
@@ -51,16 +53,16 @@
             });
         },
         methods: {
-            flagTopic: function (topic, status) {
+            flagTopic(topic, status) {
                 Topics.flag(topic, status);
             },
-            acceptTopic: function (topic) {
+            acceptTopic(topic) {
                 this.flagTopic(topic, 'accepted');
             },
-            rejectTopic: function (topic) {
+            rejectTopic(topic) {
                 this.flagTopic(topic, 'rejected');
             },
-            markTopicAsDuplicate: function (topic) {
+            markTopicAsDuplicate(topic) {
                 this.flagTopic(topic, 'duplicate');
             },
         }
