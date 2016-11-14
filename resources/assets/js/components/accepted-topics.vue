@@ -36,12 +36,14 @@
                 sync: true
             }
         },
-        data: () => ({
-            topics: []
-        }),
+        data() {
+            return {
+                topics: []
+            }
+        },
         computed: {
-            acceptedTopics: function() {
-                return this.topics.filter((topic) => {
+            acceptedTopics() {
+                return this.topics.filter(topic => {
                     return topic.status == "accepted";
                 });
             }
