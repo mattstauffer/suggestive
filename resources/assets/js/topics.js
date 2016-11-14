@@ -1,19 +1,19 @@
-let topics = null;
-
 export default {
+    topics: null,
+
     all() {
-        if (topics !== null) {
-            return new Promise( (resolve, reject) => {
-                resolve(topics);
+        if (this.topics !== null) {
+            return new Promise((resolve, reject) => {
+                resolve(this.topics);
             });
         }
 
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             Vue.http.get('topics')
                 .then(
                     response => {
-                        topics = response.data;
-                        resolve(topics);
+                        this.topics = response.data;
+                        resolve(this.topics);
                     },
                     response => {
                         console.log('error', response);
@@ -24,11 +24,11 @@ export default {
     },
 
     find(topicId) {
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.all()
                 .then(
                     topics => {
-                        const matchedTopic = topics.find(candidate => candidate.id == topicId);
+                        const matchedTopic = this.topics.find(candidate => candidate.id == topicId);
                         resolve(matchedTopic);
                     },
                     response => {
@@ -40,12 +40,12 @@ export default {
     },
 
     add(topic) {
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             Vue.http.post('topics', {title: topic.title, description: topic.description})
                 .then(
                     response => {
-                        topics.push(response.data);
-                        resolve(topics);
+                        this.topics.push(response.data);
+                        resolve(response);
                     },
                     response => {
                         console.log('error', response);
@@ -57,11 +57,11 @@ export default {
     },
 
     flag(topic, status) {
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             Vue.http.patch('topics/' + topic.id, {status: status})
                 .then(
                     response => {
-                        const matchedTopic = topics.find(candidate => candidate.id == topic.id);
+                        const matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
                         matchedTopic.status = status;
                         resolve(matchedTopic);
                     },
@@ -74,12 +74,12 @@ export default {
     },
 
     voteFor(topic) {
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
             Vue.http.post('topics/' + topic.id + '/votes', [])
                 .then(
                     response => {
-                        const matchedTopic = topics.find(candidate => candidate.id == topic.id);
+                        const matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
 
                         if (response.status == 200) {
                             matchedTopic.votes++;
