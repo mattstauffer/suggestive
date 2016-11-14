@@ -43,13 +43,13 @@ Vue.component('suggest-topic-inline', require('./components/suggest-topic-inline
 import Topics from './topics.js';
 
 var App = Vue.extend({
-    data: function() {
+    data() {
         return {
             topics: [],
-            episodes: []
-        };
+            episodes: [],
+        }
     },
-    created: function () {
+    created() {
 
         Topics.all().then(topics => {
             this.topics = topics;
@@ -100,4 +100,4 @@ router.map({
     },
 });
 
-router.start(App, '#app')
+router.start(App, '#app');
