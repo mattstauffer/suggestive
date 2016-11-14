@@ -121,7 +121,7 @@
     import Topics from './../topics.js';
 
     export default {
-        data: function() {
+        data() {
             return {
                 topics: [],
                 filter: 'suggested',
@@ -142,33 +142,33 @@
                         "label": "Rejected",
                         "filter": 'rejected'
                     }
-                ]
-            };
+                ],
+            }
         },
-        created: function() {
+        created() {
             Topics.all().then(topics => {
                 this.topics = topics;
             });
         },
         methods: {
-            voteFor: function (topic) {
+            voteFor(topic) {
                 Topics.voteFor(topic);
             },
-            changeFilter: function (filter) {
+            changeFilter(filter) {
                 this.filter = filter;
             }
         },
         computed: {
-            filteredTopics: function () {
-                var vm = this;
+            filteredTopics() {
 
-                return _.filter(vm.topics, function (topic) {
-                    if (vm.filter === null) {
+                return this.topics.filter(topic => {
+                    if (this.filter === null) {
                         return true;
                     }
 
-                    return topic.status === vm.filter;
+                    return topic.status === this.filter;
                 });
+
             }
         }
     };
