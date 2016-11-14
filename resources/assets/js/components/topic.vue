@@ -63,15 +63,15 @@
     import Topics from './../topics.js';
 
     export default {
-        data: function () {
+        data() {
             return {
                 topic: {},
                 comments: [],
                 loadingComments: true,
                 newComment: {}
-            };
+            }
         },
-        created: function() {
+        created() {
             Topics.find(this.$route.params.topic_id)
                 .then(
                     topic => {
@@ -84,10 +84,11 @@
             );
         },
         methods: {
-            storeComments: function() {
+            storeComments() {
                 var url = 'topics/' + this.topic.id + '/comments';
 
-                this.$http.get(url, function(data, status, request) {
+                this.$http.get(url, (data, status, request) => {
+
                     this.comments = data.map(comment => {
                         comment.created_at = moment.utc(comment.created_at.date).fromNow();
 
@@ -95,27 +96,31 @@
                     });
 
                     this.loadingComments = false;
-                }).error(function(data, status, request) {
+                }).error((data, status, request) => {
                     console.log('error', request);
                 });
             },
 
-            postComment: function() {
+            postComment() {
                 var url = 'topics/' + this.topic.id + '/comments';
 
-                this.$http.post(url, this.newComment, function(data, status, request) {
+                this.$http.post(url, this.newComment, (data, status, request) => {
                     data.created_at = moment(data.created_at.date).fromNow();
 
                     this.comments.push(data);
                     this.newComment = {};
-                }).error(function(data, status, request) {
+                }).error((data, status, request) => {
                     if (request.status == 422) {
                         alert('Please fill in all fields.');
                     }
 
                     console.log('error', request);
                 });
-            }
+            },
+
+            voteFor(topic) {
+                Topics.voteFor(topic);
+            },
         }
     };
 </script>
