@@ -34,9 +34,6 @@
             episodes: {
                 sync: true
             },
-            acceptedTopics: {
-                sync: true
-            }
         },
         methods: {
             startCreating: function () {

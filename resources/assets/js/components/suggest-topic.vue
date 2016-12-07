@@ -8,10 +8,10 @@
 
             <form @submit.prevent="suggestTopic">
                 <label>Title</label><br>
-                <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:topic-title-input required><br>
+                <input type="text" v-model="topic.title" class="form-control" length="255" autofocus v-el:topic-title-input required><br>
 
                 <label>Description</label><br>
-                <textarea v-model="description" class="form-control"></textarea><br>
+                <textarea v-model="topic.description" class="form-control"></textarea><br>
 
                 <input type="submit" class="btn btn-primary" value="{{ verb }}">
                 <a v-link="{ path: '/' }" class="btn btn-default">Cancel</a>
@@ -21,34 +21,38 @@
 </template>
 
 <script>
+    import Topics from './../topics.js';
+
     export default {
-        data: function () {
+        data() {
             return {
-                title: '',
-                description: ''
-            };
+                topic: {
+                    title: '',
+                    description: '',
+                }
+            }
         },
-        props: ['topics'],
         methods: {
-            suggestTopic: function () {
-                var vm = this;
+            suggestTopic() {
 
-                this.$http.post('topics', { title: this.title, description: this.description }, function (data) {
-                    vm.title = '';
-                    vm.description = '';
-
-                    vm.$dispatch('topics.created', data);
-
-                    vm.$route.router.go('/');
-                });
+                Topics.add(this.topic).then(
+                    response => {
+                        this.topic.title = '';
+                        this.topic.description = '';
+                        this.$route.router.go('/');
+                    },
+                    response => {
+                        console.log('error', response);
+                    }
+                );
             }
         },
         computed: {
-            verb: function () {
+            verb() {
                 return Suggestive.isAdmin ? 'Add' : 'Suggest';
             }
         },
-        ready: function () {
+        ready() {
             this.$els.topicTitleInput.focus();
         }
     };

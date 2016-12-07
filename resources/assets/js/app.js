@@ -1,3 +1,4 @@
+require('es6-promise/auto');
 window.Vue = require('vue');
 window.VueRouter = require('vue-router');
 window._ = require('lodash');
@@ -39,18 +40,19 @@ Vue.component('suggested-topics', require('./components/suggested-topics.vue'));
 Vue.component('nav-dropdown', require('./components/nav-dropdown.vue'));
 Vue.component('suggest-topic-inline', require('./components/suggest-topic-inline.vue'));
 
+import Topics from './topics.js';
+
 var App = Vue.extend({
-    data: function() {
+    data() {
         return {
             topics: [],
-            episodes: []
-        };
+            episodes: [],
+        }
     },
-    created: function () {
-        this.$http.get('topics', function (data, status, request) {
-            this.topics = data;
-        }).error(function (data, status, request) {
-            console.log('error', data);
+    created() {
+
+        Topics.all().then(topics => {
+            this.topics = topics;
         });
 
         if (Suggestive.isAdmin) {
@@ -61,14 +63,6 @@ var App = Vue.extend({
             });
         }
     },
-    events: {
-        'topics.created': function (topic) {
-            this.topics.push(topic);
-        },
-        'testing': function () {
-            // console.log('abc');
-        }
-    }
 });
 
 router.map({
@@ -106,4 +100,4 @@ router.map({
     },
 });
 
-router.start(App, '#app')
+router.start(App, '#app');

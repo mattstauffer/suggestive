@@ -28,22 +28,29 @@
 </template>
 
 <script>
+    import Topics from './../topics.js';
+
     export default {
         props: {
             episodes: {
                 sync: true
             }
         },
-        data: function () {
+        data() {
             return {
-                acceptedTopics: []
-            };
+                topics: []
+            }
         },
-        created: function () {
-            this.$http.get('topics?status=accepted', function (data, status, request) {
-                this.acceptedTopics = data;
-            }).error(function (data, status, request) {
-                console.log('error', data);
+        computed: {
+            acceptedTopics() {
+                return this.topics.filter(topic => {
+                    return topic.status == "accepted";
+                });
+            }
+        },
+        created() {
+            Topics.all().then(topics => {
+                this.topics = topics;
             });
         },
         components: {

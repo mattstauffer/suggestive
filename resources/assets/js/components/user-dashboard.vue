@@ -118,14 +118,12 @@
 </template>
 
 <script>
+    import Topics from './../topics.js';
+
     export default {
-        props: {
-            topics: {
-                sync: true
-            }
-        },
-        data: function () {
+        data() {
             return {
+                topics: [],
                 filter: 'suggested',
                 filters: [
                     {
@@ -144,39 +142,33 @@
                         "label": "Rejected",
                         "filter": 'rejected'
                     }
-                ]
-            };
+                ],
+            }
         },
-        ready: function () {
+        created() {
+            Topics.all().then(topics => {
+                this.topics = topics;
+            });
         },
         methods: {
-            voteFor: function (topic) {
-                this.$http.post('topics/' + topic.id + '/votes', [], function (data, status, request) {
-                    // New vote
-                    if (status == 200) {
-                        topic.votes++;
-                    }
-
-                    topic.userVotedFor = true;
-                }).error(function (data, status, request) {
-                    console.log('error', data, status);
-                });
+            voteFor(topic) {
+                Topics.voteFor(topic);
             },
-            changeFilter: function (filter) {
+            changeFilter(filter) {
                 this.filter = filter;
             }
         },
         computed: {
-            filteredTopics: function () {
-                var vm = this;
+            filteredTopics() {
 
-                return _.filter(this.topics, function (topic) {
-                    if (vm.filter === null) {
+                return this.topics.filter(topic => {
+                    if (this.filter === null) {
                         return true;
                     }
 
-                    return topic.status === vm.filter;
+                    return topic.status === this.filter;
                 });
+
             }
         }
     };

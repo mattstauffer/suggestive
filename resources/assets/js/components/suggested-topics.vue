@@ -32,36 +32,37 @@
 </template>
 
 <script>
+    import Topics from './../topics.js';
+
     export default {
-        data: function () {
+        data() {
             return {
-                suggestedTopics: []
-            };
+                topics: [],
+            }
         },
-        created: function () {
-            this.$http.get('topics?status=suggested', function (data, status, request) {
-                this.suggestedTopics = data;
-            }).error(function (data, status, request) {
-                console.log('error', data);
+        computed: {
+            suggestedTopics() {
+                return this.topics.filter(topic => {
+                    return topic.status == "suggested";
+                });
+            }
+        },
+        created() {
+            Topics.all().then(topics => {
+                this.topics = topics;
             });
         },
         methods: {
-            flagTopic: function (topic, status) {
-                var vm = this;
-
-                this.$http.patch('topics/' + topic.id, {'status': status}, function (data, status, request) {
-                    vm.suggestedTopics.$remove(topic);
-                }).error(function (data, status, request) {
-                    console.log('error', data);
-                });
+            flagTopic(topic, status) {
+                Topics.flag(topic, status);
             },
-            acceptTopic: function (topic) {
+            acceptTopic(topic) {
                 this.flagTopic(topic, 'accepted');
             },
-            rejectTopic: function (topic) {
+            rejectTopic(topic) {
                 this.flagTopic(topic, 'rejected');
             },
-            markTopicAsDuplicate: function (topic) {
+            markTopicAsDuplicate(topic) {
                 this.flagTopic(topic, 'duplicate');
             },
         }
