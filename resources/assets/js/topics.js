@@ -9,17 +9,16 @@ export default {
         }
 
         return new Promise((resolve, reject) => {
-            Vue.http.get('topics')
-                .then(
-                    response => {
-                        this.topics = response.data;
-                        resolve(this.topics);
-                    },
-                    response => {
-                        console.log('error', response);
-                        reject(response);
-                    }
-                );
+            Vue.$http.get('topics')
+                .then(response => {
+                    console.log(response.data);
+                    this.topics = response.data;
+                    resolve(this.topics);
+                })
+                .catch(response => {
+                    console.log('error', response);
+                    reject(response);
+                });
         });
     },
 
@@ -41,59 +40,53 @@ export default {
 
     add(topic) {
         return new Promise((resolve, reject) => {
-            Vue.http.post('topics', {title: topic.title, description: topic.description})
-                .then(
-                    response => {
-                        this.topics.push(response.data);
-                        resolve(response);
-                    },
-                    response => {
-                        console.log('error', response);
-                        reject(response);
-                    }
-                );
+            Vue.$http.post('topics', {title: topic.title, description: topic.description})
+                .then(response => {
+                    this.topics.push(response.data);
+                    resolve(response);
+                })
+                .catch(response => {
+                    console.log('error', response);
+                    reject(response);
+                });
         });
 
     },
 
     flag(topic, status) {
         return new Promise((resolve, reject) => {
-            Vue.http.patch('topics/' + topic.id, {status: status})
-                .then(
-                    response => {
-                        const matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
-                        matchedTopic.status = status;
-                        resolve(matchedTopic);
-                    },
-                    response => {
-                        console.log('error', response);
-                        reject(response);
-                    }
-                );
+            Vue.$http.patch('topics/' + topic.id, {status: status})
+                .then(response => {
+                    const matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
+                    matchedTopic.status = status;
+                    resolve(matchedTopic);
+                })
+                .catch(response => {
+                    console.log('error', response);
+                    reject(response);
+                });
         });
     },
 
     voteFor(topic) {
         return new Promise((resolve, reject) => {
 
-            Vue.http.post('topics/' + topic.id + '/votes', [])
-                .then(
-                    response => {
-                        const matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
+            Vue.$http.post('topics/' + topic.id + '/votes', [])
+                .then(response => {
+                    const matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
 
-                        if (response.status == 200) {
-                            matchedTopic.votes++;
-                        }
-
-                        matchedTopic.userVotedFor = true;
-
-                        resolve(matchedTopic);
-                    },
-                    response => {
-                        console.log('error', response);
-                        reject(response);
+                    if (response.status == 200) {
+                        matchedTopic.votes++;
                     }
-                );
+
+                    matchedTopic.userVotedFor = true;
+
+                    resolve(matchedTopic);
+                })
+                .catch(err => {
+                    console.log('error', err);
+                    reject(err);
+                });
 
         });
     }

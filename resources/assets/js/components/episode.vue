@@ -34,13 +34,14 @@
         created: function() {
             var vm = this;
 
-            this.$http.get('episodes', function (data, status, request) {
-                this.episode = _.find(this.episodes, function (episode) {
-                    return episode.number == vm.$route.params.episode_number;;
+            this.$http.get('episodes')
+                .then(response => {
+                    this.episode = _.find(this.episodes, function (episode) {
+                        return episode.number == vm.$route.params.episode_number;;
+                    });
+                }).catch(function (data, status, request) {
+                    console.log('error', request);
                 });
-            }).error(function (data, status, request) {
-                console.log('error', request);
-            });
         },
         methods: {
             deleteEpisode: function (episode) {
@@ -48,12 +49,13 @@
                     return;
                 }
 
-                this.$http.delete('episodes/' + episode.id, function (data, status, request) {
-                    console.log('BALETED');
-                    this.episodes.$remove(episode)
-                }).error(function (data, status, request) {
-                    console.log('error', data);
-                });
+                this.$http.delete('episodes/' + episode.id)
+                    .then(response => {
+                        console.log('BALETED');
+                        this.episodes.$remove(episode);
+                    }).catch(err => {
+                        console.log('error', err);
+                    });
             }
         }
     };

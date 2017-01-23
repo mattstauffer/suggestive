@@ -4,12 +4,14 @@ window.VueRouter = require('vue-router');
 window._ = require('lodash');
 window.moment = require('moment');
 
-Vue.use(require('vue-resource'));
+window.axios = require('axios');
 
 Vue.config.debug = true;
 
-Vue.http.options.root = '/api';
-Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').getAttribute('content');
+Vue.$http = Vue.prototype.$http = axios.create({
+    baseURL: "/api",
+    headers: {'X-CSRF-TOKEN': document.querySelector('#csrf-token').getAttribute('content')}
+});
 
 var router = new VueRouter({
     history: true,
@@ -56,11 +58,13 @@ var App = Vue.extend({
         });
 
         if (Suggestive.isAdmin) {
-            this.$http.get('episodes', function (data, status, request) {
-                this.episodes = data;
-            }).error(function (data, status, request) {
-                console.log('error', data);
-            });
+            this.$http.get('episodes')
+                .then(response => {
+                    this.episodes = response.data;
+                })
+                .catch(function (response, status, request) {
+                    console.log('error', response);
+                });
         }
     },
 });

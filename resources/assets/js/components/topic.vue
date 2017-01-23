@@ -96,7 +96,7 @@
                     });
 
                     this.loadingComments = false;
-                }).error((data, status, request) => {
+                }).catch((data, status, request) => {
                     console.log('error', request);
                 });
             },
@@ -109,7 +109,7 @@
 
                     this.comments.push(data);
                     this.newComment = {};
-                }).error((data, status, request) => {
+                }).catch((data, status, request) => {
                     if (request.status == 422) {
                         alert('Please fill in all fields.');
                     }
