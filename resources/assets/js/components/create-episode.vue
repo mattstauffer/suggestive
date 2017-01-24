@@ -119,17 +119,18 @@
             };
         },
         ready: function () {
-            this.$http.get('topics?status=accepted', function (data, status, request) {
-                this.acceptedTopics = data;
+            this.$http.get('topics?status=accepted')
+                .then(response => {
+                    this.acceptedTopics = response.data;
 
-                // @todo: How do we handle this?
-                for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
-                    var topic = this.acceptedTopics[i];
-                    this.selected[topic.id] = false;
-                }
-            }).error(function (data, status, request) {
-                console.log('error', data);
-            });
+                    // @todo: How do we handle this?
+                    for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
+                        var topic = this.acceptedTopics[i];
+                        this.selected[topic.id] = false;
+                    }
+                }).catch(function (data, status, request) {
+                    console.log('error', data);
+                });
 
             this.$els.episodeTitleInput.focus();
         },
@@ -137,11 +138,12 @@
             createEpisode: function () {
                 var vm = this;
 
-                this.$http.post('episodes', { title: this.title, number: this.number }, function (data) {
+                this.$http.post('episodes', { title: this.title, number: this.number })
+                .then(response => {
                     vm.title = '';
                     vm.number = '';
 
-                    vm.episodes.push(data);
+                    vm.episodes.push(response.data);
 
                     vm.$route.router.go('/episodes');
                 });
@@ -155,11 +157,12 @@
             addTopic: function () {
                 var vm = this;
 
-                this.$http.post('topics', { title: this.topicName }, function (data) {
-                    vm.topicName = '';
-                    vm.acceptedTopics.push(data);
-                    vm.selected.$set(data.id, true);
-                });
+                this.$http.post('topics', { title: this.topicName })
+                    .then(response => {
+                        vm.topicName = '';
+                        vm.acceptedTopics.push(response.data);
+                        vm.selected.$set(response.data.id, true);
+                    });
             }
         },
         computed: {

@@ -46,12 +46,13 @@
                     return;
                 }
 
-                this.$http.delete('episodes/' + episode.id, function (data, status, request) {
-                    console.log('BALETED');
-                    this.episodes.$remove(episode)
-                }).error(function (data, status, request) {
-                    console.log('error', data);
-                });
+                this.$http.delete('episodes/' + episode.id)
+                    .then(response => {
+                        console.log('BALETED');
+                        this.episodes.$remove(episode)
+                    }).catch(err => {
+                        console.log('error', err);
+                    });
             }
         }
     };
