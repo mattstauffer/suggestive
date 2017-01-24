@@ -119,17 +119,18 @@
             };
         },
         ready: function () {
-            this.$http.get('topics?status=accepted', function (data, status, request) {
-                this.acceptedTopics = data;
+            this.$http.get('topics?status=accepted')
+                .then(response => {
+                    this.acceptedTopics = response.data;
 
-                // @todo: How do we handle this?
-                for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
-                    var topic = this.acceptedTopics[i];
-                    this.selected[topic.id] = false;
-                }
-            }).catch(function (data, status, request) {
-                console.log('error', data);
-            });
+                    // @todo: How do we handle this?
+                    for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
+                        var topic = this.acceptedTopics[i];
+                        this.selected[topic.id] = false;
+                    }
+                }).catch(function (data, status, request) {
+                    console.log('error', data);
+                });
 
             this.$els.episodeTitleInput.focus();
         },

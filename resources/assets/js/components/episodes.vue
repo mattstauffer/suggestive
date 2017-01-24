@@ -47,12 +47,12 @@
                 }
 
                 this.$http.delete('episodes/' + episode.id)
-                .then(response => {
-                    console.log('BALETED');
-                    this.episodes.$remove(episode)
-                }).catch(err => {
-                    console.log('error', err);
-                });
+                    .then(response => {
+                        console.log('BALETED');
+                        this.episodes.$remove(episode)
+                    }).catch(err => {
+                        console.log('error', err);
+                    });
             }
         }
     };

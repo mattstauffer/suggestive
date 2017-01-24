@@ -87,35 +87,36 @@
             storeComments() {
                 var url = 'topics/' + this.topic.id + '/comments';
 
-                this.$http.get(url, (data, status, request) => {
+                this.$http.get(url)
+                    .then((data, status, request) => {
+                        this.comments = data.map(comment => {
+                            comment.created_at = moment.utc(comment.created_at.date).fromNow();
 
-                    this.comments = data.map(comment => {
-                        comment.created_at = moment.utc(comment.created_at.date).fromNow();
+                            return comment;
+                        });
 
-                        return comment;
+                        this.loadingComments = false;
+                    }).catch((data, status, request) => {
+                        console.log('error', request);
                     });
-
-                    this.loadingComments = false;
-                }).catch((data, status, request) => {
-                    console.log('error', request);
-                });
             },
 
             postComment() {
                 var url = 'topics/' + this.topic.id + '/comments';
 
-                this.$http.post(url, this.newComment, (data, status, request) => {
-                    data.created_at = moment(data.created_at.date).fromNow();
+                this.$http.post(url, this.newComment)
+                    .then(response => {
+                        data.created_at = moment(data.created_at.date).fromNow();
 
-                    this.comments.push(data);
-                    this.newComment = {};
-                }).catch((data, status, request) => {
-                    if (request.status == 422) {
-                        alert('Please fill in all fields.');
-                    }
+                        this.comments.push(data);
+                        this.newComment = {};
+                    }).catch((data, status, request) => {
+                        if (request.status == 422) {
+                            alert('Please fill in all fields.');
+                        }
 
-                    console.log('error', request);
-                });
+                        console.log('error', request);
+                    });
             },
 
             voteFor(topic) {

@@ -26,11 +26,12 @@
                     'topic_id': this.topic.id
                 };
 
-                this.$http.post('episodes/' + val + '/scheduled-topics', data, function (data, status, request) {
-                    // this.$dispatch('hey parent components, i just changed the status of topic #' + topic.id);
-                }).catch(function (data, status, request) {
-                    console.log('error', data);
-                });
+                this.$http.post('episodes/' + val + '/scheduled-topics', data)
+                    .then(response => {
+                        // this.$dispatch('hey parent components, i just changed the status of topic #' + topic.id);
+                    }).catch(function (data, status, request) {
+                        console.log('error', data);
+                    });
             }
         }
     };
