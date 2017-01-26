@@ -28,26 +28,14 @@
 </template>
 
 <script>
-    import Topics from './../topics.js';
-
     export default {
-        props: ['episodes'],
-        data() {
-            return {
-                topics: []
-            }
-        },
+        props: ['episodes', 'topics'],
         computed: {
             acceptedTopics() {
                 return this.topics.filter(topic => {
                     return topic.status == "accepted";
                 });
             }
-        },
-        created() {
-            Topics.all().then(topics => {
-                this.topics = topics;
-            });
         },
         components: {
             'topic-episode-scheduler': require('./topic-episode-scheduler.vue')

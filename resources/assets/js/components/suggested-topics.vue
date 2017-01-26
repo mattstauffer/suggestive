@@ -32,14 +32,10 @@
 </template>
 
 <script>
-    import Topics from './../topics.js';
-
+    import Bus from '../bus';
+    
     export default {
-        data() {
-            return {
-                topics: [],
-            }
-        },
+        props: ['topics'],
         computed: {
             suggestedTopics() {
                 return this.topics.filter(topic => {
@@ -47,14 +43,10 @@
                 });
             }
         },
-        created() {
-            Topics.all().then(topics => {
-                this.topics = topics;
-            });
-        },
         methods: {
             flagTopic(topic, status) {
-                Topics.flag(topic, status);
+                topic.status = status;
+                Bus.$emit('update-topic', topic);
             },
             acceptTopic(topic) {
                 this.flagTopic(topic, 'accepted');

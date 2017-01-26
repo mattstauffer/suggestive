@@ -20,7 +20,7 @@
                         <div class="panel-body">
                             <h3 style="margin-top: 0; font-size: 1em; font-weight: bold;">Topics</h3>
                             <ul>
-                                <li v-for="topic in episode.topics">
+                                <li v-for="topic in topicsForEpisode(episode)">
                                     {{ topic.title }}
                                 </li>
                             </ul>
@@ -36,7 +36,7 @@
 <script>
     import Bus from '../bus';
     export default {
-        props: ['episodes'],
+        props: ['episodes', 'topics'],
         methods: {
             deleteEpisode: function (episode) {
                 if (! confirm("Are you sure?")) {
@@ -49,6 +49,12 @@
                     Bus.$emit('delete-episode', episode);
                 }).catch(err => {
                     console.log('error', err);
+                });
+            },
+            topicsForEpisode(episode){
+                return this.topics.filter(t => {
+                    console.log(t);
+                    return t.episode_id == episode.id;
                 });
             }
         }
