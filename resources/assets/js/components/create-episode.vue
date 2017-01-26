@@ -144,7 +144,7 @@
 
                     vm.episodes.push(response.data);
 
-                    vm.$route.router.go('/episodes');
+                    vm.$router.push('/episodes');
                 });
             },
             toggleTopic: function (topic) {

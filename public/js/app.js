@@ -17250,7 +17250,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 vm.episodes.push(response.data);
 
-                vm.$route.router.go('/episodes');
+                vm.$router.push('/episodes');
             });
         },
         toggleTopic: function toggleTopic(topic) {
@@ -17607,7 +17607,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             __WEBPACK_IMPORTED_MODULE_0__topics_js__["a" /* default */].add(this.topic).then(function (response) {
                 _this.topic.title = '';
                 _this.topic.description = '';
-                _this.$route.router.go('/');
+                _this.$router.push('/');
             }, function (response) {
                 console.log('error', response);
             });

@@ -39,7 +39,7 @@
                     response => {
                         this.topic.title = '';
                         this.topic.description = '';
-                        this.$route.router.go('/');
+                        this.$router.push('/');
                     },
                     response => {
                         console.log('error', response);
