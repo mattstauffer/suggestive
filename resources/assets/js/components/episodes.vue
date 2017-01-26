@@ -34,6 +34,7 @@
 </template>
 
 <script>
+    import Bus from '../bus';
     export default {
         props: {
             episodes: {
@@ -49,7 +50,7 @@
                 this.$http.delete('episodes/' + episode.id)
                 .then(response => {
                     console.log('BALETED');
-                    this.episodes.$remove(episode)
+                    Bus.$emit('delete-episode', episode);
                 }).catch(err => {
                     console.log('error', err);
                 });

@@ -46,6 +46,7 @@ Vue.component('nav-dropdown', require('./components/nav-dropdown.vue'));
 Vue.component('suggest-topic-inline', require('./components/suggest-topic-inline.vue'));
 
 import Topics from './topics.js';
+import Bus from './bus.js';
 
 var App = new Vue({
     data: {
@@ -68,5 +69,16 @@ var App = new Vue({
                     console.log('error', response);
                 });
         }
+
+        this.listen();
     },
+    methods: {
+        listen(){
+            Bus.$on('delete-episode', episode => {
+                this.episodes = this.episodes.filter(e => {
+                    return e.id !== episode.id;
+                });
+            });
+        }
+    }
 }).$mount("#app");

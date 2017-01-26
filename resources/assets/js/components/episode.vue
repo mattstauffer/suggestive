@@ -20,12 +20,9 @@
 </template>
 
 <script>
+    import Bus from '../bus';
     export default {
-        props: {
-            episodes: {
-                sync: true
-            }
-        },
+        props: ['episodes'],
         data: function () {
             return {
                 episode: {}
@@ -52,7 +49,8 @@
                 this.$http.delete('episodes/' + episode.id)
                     .then(response => {
                         console.log('BALETED');
-                        this.episodes.$remove(episode);
+                        Bus.$emit('delete-episode', episode);
+                        this.$router.push("/episodes");
                     }).catch(err => {
                         console.log('error', err);
                     });

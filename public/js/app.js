@@ -16056,6 +16056,7 @@ module.exports = function(module) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__routes__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__topics_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bus_js__ = __webpack_require__(209);
 __webpack_require__(163);
 window.Vue = __webpack_require__(199);
 window.VueRouter = __webpack_require__(192);
@@ -16105,6 +16106,7 @@ Vue.component('suggest-topic-inline', __webpack_require__(174));
 
 
 
+
 var App = new Vue({
     data: {
         topics: [],
@@ -16123,6 +16125,20 @@ var App = new Vue({
                 _this.episodes = response.data;
             }).catch(function (response, status, request) {
                 console.log('error', response);
+            });
+        }
+
+        this.listen();
+    },
+
+    methods: {
+        listen: function listen() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('delete-episode', function (episode) {
+                _this2.episodes = _this2.episodes.filter(function (e) {
+                    return e.id !== episode.id;
+                });
             });
         }
     }
@@ -17293,6 +17309,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(209);
 //
 //
 //
@@ -17315,12 +17332,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: {
-        episodes: {
-            sync: true
-        }
-    },
+    props: ['episodes'],
     data: function data() {
         return {
             episode: {}
@@ -17349,7 +17363,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$http.delete('episodes/' + episode.id).then(function (response) {
                 console.log('BALETED');
-                _this2.episodes.$remove(episode);
+                __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('delete-episode', episode);
+                _this2.$router.push("/episodes");
             }).catch(function (err) {
                 console.log('error', err);
             });
@@ -17363,6 +17378,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(209);
 //
 //
 //
@@ -17398,6 +17414,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 /* harmony default export */ __webpack_exports__["default"] = {
     props: {
@@ -17407,15 +17424,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         deleteEpisode: function deleteEpisode(episode) {
-            var _this = this;
-
             if (!confirm("Are you sure?")) {
                 return;
             }
 
             this.$http.delete('episodes/' + episode.id).then(function (response) {
                 console.log('BALETED');
-                _this.episodes.$remove(episode);
+                __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('delete-episode', episode);
             }).catch(function (err) {
                 console.log('error', err);
             });
@@ -49130,6 +49145,26 @@ module.exports = Vue$3;
 __webpack_require__(123);
 module.exports = __webpack_require__(124);
 
+
+/***/ }),
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+
+
+var bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
+
+/* harmony default export */ __webpack_exports__["a"] = bus;
 
 /***/ })
 /******/ ]);
