@@ -83,7 +83,7 @@
                 <p v-show="filteredTopics.length == 0">No topics matching this filter.</p>
                 <div v-for="topic in filteredTopics" class="row topic-row">
                     <div class="col-xs-3 col-sm-2 col-md-1" style="text-align: right">
-                        <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
+                        <a @click.prevent="voteFor(topic)" :class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
                             <div class="clearfix">
                                 <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up" transition="expand"><use xlink:href="#icon-arrow-up"></use></svg>
                                 <svg v-show="topic.userVotedFor" class="icon icon-checkmark" transition="expand"><use xlink:href="#icon-checkmark"></use></svg>
@@ -119,6 +119,7 @@
 
 <script>
     import Topics from './../topics.js';
+    import Bus from '../bus';
 
     export default {
         data() {
@@ -152,7 +153,11 @@
         },
         methods: {
             voteFor(topic) {
-                Topics.voteFor(topic);
+                Topics.voteFor(topic)
+                    .then(r => {
+                        topic = r;
+                        Bus.$emit('update-topic', topic);
+                    });
             },
             changeFilter(filter) {
                 this.filter = filter;
