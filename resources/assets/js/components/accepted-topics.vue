@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-if="acceptedTopics">
         <div class="col-md-8 col-md-push-2">
             <suggest-topic-button verb="Add"></suggest-topic-button>
             <h2>Accepted Topics</h2>

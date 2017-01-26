@@ -26,7 +26,7 @@
         computed: {
             episode(){
                 return this.episodes.find(e => {
-                    return e.id.toString() === this.$route.params.episode_number;
+                    return e.number.toString() === this.$route.params.episode_number;
                 });
             }
         },
