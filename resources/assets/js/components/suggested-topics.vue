@@ -38,9 +38,9 @@
         props: ['topics'],
         computed: {
             suggestedTopics() {
-                return this.topics.filter(topic => {
+                return this.topics ? this.topics.filter(topic => {
                     return topic.status == "suggested";
-                });
+                }) : [];
             }
         },
         methods: {

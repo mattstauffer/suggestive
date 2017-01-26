@@ -4739,11 +4739,8 @@ var bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         });
     },
     add: function add(topic) {
-        var _this3 = this;
-
         return new Promise(function (resolve, reject) {
             Vue.$http.post('topics', { title: topic.title, description: topic.description }).then(function (response) {
-                _this3.topics.push(response.data);
                 __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('add-topic', response.data);
                 resolve(response);
             }).catch(function (response) {
@@ -4753,11 +4750,11 @@ var bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         });
     },
     flag: function flag(topic, status) {
-        var _this4 = this;
+        var _this3 = this;
 
         return new Promise(function (resolve, reject) {
             Vue.$http.patch('topics/' + topic.id, { status: status }).then(function (response) {
-                var matchedTopic = _this4.topics.find(function (candidate) {
+                var matchedTopic = _this3.topics.find(function (candidate) {
                     return candidate.id == topic.id;
                 });
                 matchedTopic.status = status;
@@ -4770,12 +4767,12 @@ var bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         });
     },
     voteFor: function voteFor(topic) {
-        var _this5 = this;
+        var _this4 = this;
 
         return new Promise(function (resolve, reject) {
 
             Vue.$http.post('topics/' + topic.id + '/votes', []).then(function (response) {
-                var matchedTopic = _this5.topics.find(function (candidate) {
+                var matchedTopic = _this4.topics.find(function (candidate) {
                     return candidate.id == topic.id;
                 });
 
@@ -24745,12 +24742,12 @@ var App = new Vue({
                 });
             });
             __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('update-topic', function (topic) {
-                _this2.episodesUnsorted[_this2.episodesUnsorted.findIndex(function (t) {
+                _this2.topicsUnsorted[_this2.topicsUnsorted.findIndex(function (t) {
                     return t.id === topic.id;
                 })] = topic;
             });
             __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('add-topic', function (topic) {
-                _this2.episodesUnsorted.push(topic);
+                _this2.topicsUnsorted.push(topic);
             });
         }
     }
@@ -25691,7 +25688,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: ['episodes'],
+    props: ['episodes', 'topics'],
     methods: {
         startCreating: function startCreating() {
             this.creating = true;
@@ -26272,9 +26269,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['topics'],
     computed: {
         suggestedTopics: function suggestedTopics() {
-            return this.topics.filter(function (topic) {
+            return this.topics ? this.topics.filter(function (topic) {
                 return topic.status == "suggested";
-            });
+            }) : [];
         }
     },
     methods: {
@@ -46440,7 +46437,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "to": '/episodes/' + episode.number
       }
     }, [_vm._v(_vm._s(episode.number) + ". " + _vm._s(episode.title))])], 1)])
-  }), _vm._v(" "), _c('hr')], 2)]), _vm._v(" "), _c('suggested-topics')], 1)
+  }), _vm._v(" "), _c('hr')], 2)]), _vm._v(" "), _c('suggested-topics', {
+    attrs: {
+      "topics": _vm.topics
+    }
+  })], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

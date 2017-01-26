@@ -90,12 +90,12 @@ var App = new Vue({
                 });
             });
             Bus.$on('update-topic', topic => {
-                this.episodesUnsorted[this.episodesUnsorted.findIndex(t => {
+                this.topicsUnsorted[this.topicsUnsorted.findIndex(t => {
                     return t.id === topic.id;
                 })] = topic;
             });
             Bus.$on('add-topic', topic => {
-                this.episodesUnsorted.push(topic);
+                this.topicsUnsorted.push(topic);
             });
         }
     }

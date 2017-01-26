@@ -43,7 +43,6 @@ export default {
         return new Promise((resolve, reject) => {
             Vue.$http.post('topics', {title: topic.title, description: topic.description})
                 .then(response => {
-                    this.topics.push(response.data);
                     Bus.$emit('add-topic', response.data);
                     resolve(response);
                 })

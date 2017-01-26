@@ -24,13 +24,13 @@
 
         </div>
     </div>
-    <suggested-topics></suggested-topics>
+    <suggested-topics :topics="topics"></suggested-topics>
 </div>
 </template>
 
 <script>
     export default {
-        props: ['episodes'],
+        props: ['episodes', 'topics'],
         methods: {
             startCreating: function () {
                 this.creating = true;
