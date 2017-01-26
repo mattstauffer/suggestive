@@ -1,9 +1,9 @@
 <template>
     <div class="col-md-8 col-md-push-2" v-cloak>
-        <button v-link="{ path: '/' }" type="button" class="btn btn-default" aria-label="All Topics">
+        <router-link to="/" type="button" class="btn btn-default" aria-label="All Topics">
             <svg class="icon icon-back" style=""><use xlink:href="#icon-back"></use></svg>
             All Topics
-        </button>
+        </router-link>
 
         <h2>Topic: {{ topic.title }}</h2>
 

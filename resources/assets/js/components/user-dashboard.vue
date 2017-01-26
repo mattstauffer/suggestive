@@ -97,12 +97,12 @@
                         <div class="topic topic--in-list">
                             <div class="">
                                 <h3 class="topic__title">
-                                    <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
+                                    <router-link :to="'/topics/' + topic.id">{{ topic.title }}</router-link>
                                     <div class="pull-right topic__meta" style="text-align: right;">
                                         <span class="topic__status">{{ topic.status }}</span><br>
                                         {{ topic.suggestor }}<br>
-                                        <a v-link="{ path: '/topics/' + topic.id }">({{ topic.commentCount }}
-                                        {{ topic.commentCount == 1 ? 'comment' : 'comments' }})</a>
+                                        <router-link :to="'/topics/' + topic.id">({{ topic.commentCount }}
+                                        {{ topic.commentCount == 1 ? 'comment' : 'comments' }})</router-link>
                                     </div>
                                 </h3>
                             </div>

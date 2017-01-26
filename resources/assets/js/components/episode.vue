@@ -1,10 +1,10 @@
 <template>
     <div class="row">
         <div class="col-md-8 col-md-push-2">
-            <button v-link="{ path: '/episodes/' }" type="button" class="btn btn-default" aria-label="All Episodes">
+            <router-link to="/episodes" type="button" class="btn btn-default" aria-label="All Episodes">
                 <svg class="icon icon-back" style=""><use xlink:href="#icon-back"></use></svg>
                 All Episodes
-            </button>
+            </router-link>
 
             <h2 class="episode__title">Episode {{ episode.number }}: {{ episode.title }}</h2>
             <h3 style="margin-top: 0; font-size: 1em; font-weight: bold;">Topics</h3>

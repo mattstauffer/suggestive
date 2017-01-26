@@ -37272,17 +37272,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-8 col-md-push-2"
-  }, [_c('button', {
-    directives: [{
-      name: "link",
-      rawName: "v-link",
-      value: ({
-        path: '/episodes/'
-      }),
-      expression: "{ path: '/episodes/' }"
-    }],
+  }, [_c('router-link', {
     staticClass: "btn btn-default",
     attrs: {
+      "to": "/episodes",
       "type": "button",
       "aria-label": "All Episodes"
     }
@@ -37308,7 +37301,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.deleteEpisode(_vm.episode)
       }
     }
-  }, [_vm._v("Delete this episode")])])])
+  }, [_vm._v("Delete this episode")])], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -37365,16 +37358,11 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('a', {
-    directives: [{
-      name: "link",
-      rawName: "v-link",
-      value: ({
-        path: '/suggest-topic'
-      }),
-      expression: "{ path: '/suggest-topic' }"
-    }],
-    staticClass: "btn btn-primary add-button pull-right"
+  return _c('router-link', {
+    staticClass: "btn btn-primary add-button pull-right",
+    attrs: {
+      "to": "/suggest-topic"
+    }
   }, [_vm._v("\n    " + _vm._s(_vm.verb) + " topic\n    "), _c('svg', {
     staticClass: "icon icon-plus"
   }, [_c('use', {
@@ -37772,15 +37760,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "topic topic--in-list"
     }, [_c('div', {}, [_c('h3', {
       staticClass: "topic__title"
-    }, [_c('a', {
-      directives: [{
-        name: "link",
-        rawName: "v-link",
-        value: ({
-          path: '/topics/' + topic.id
-        }),
-        expression: "{ path: '/topics/' + topic.id }"
-      }]
+    }, [_c('router-link', {
+      attrs: {
+        "to": '/topics/' + topic.id
+      }
     }, [_vm._v(_vm._s(topic.title))]), _vm._v(" "), _c('div', {
       staticClass: "pull-right topic__meta",
       staticStyle: {
@@ -37788,16 +37771,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('span', {
       staticClass: "topic__status"
-    }, [_vm._v(_vm._s(topic.status))]), _c('br'), _vm._v("\n                                    " + _vm._s(topic.suggestor)), _c('br'), _vm._v(" "), _c('a', {
-      directives: [{
-        name: "link",
-        rawName: "v-link",
-        value: ({
-          path: '/topics/' + topic.id
-        }),
-        expression: "{ path: '/topics/' + topic.id }"
-      }]
-    }, [_vm._v("(" + _vm._s(topic.commentCount) + "\n                                    " + _vm._s(topic.commentCount == 1 ? 'comment' : 'comments') + ")")])])])]), _vm._v(" "), _c('div', {}, [_vm._v("\n                            " + _vm._s(topic.description) + "\n                        ")])])])])
+    }, [_vm._v(_vm._s(topic.status))]), _c('br'), _vm._v("\n                                    " + _vm._s(topic.suggestor)), _c('br'), _vm._v(" "), _c('router-link', {
+      attrs: {
+        "to": '/topics/' + topic.id
+      }
+    }, [_vm._v("(" + _vm._s(topic.commentCount) + "\n                                    " + _vm._s(topic.commentCount == 1 ? 'comment' : 'comments') + ")")])], 1)], 1)]), _vm._v(" "), _c('div', {}, [_vm._v("\n                            " + _vm._s(topic.description) + "\n                        ")])])])])
   })], 2)])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -37819,23 +37797,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-8 col-md-push-2"
   }, [_c('div', {
     staticClass: "form-inline"
-  }, [_c('a', {
-    directives: [{
-      name: "link",
-      rawName: "v-link",
-      value: ({
-        path: '/episodes/create'
-      }),
-      expression: "{ path: '/episodes/create' }"
-    }],
-    staticClass: "btn btn-primary pull-right"
+  }, [_c('router-link', {
+    staticClass: "btn btn-primary pull-right",
+    attrs: {
+      "to": "/episodes/create"
+    }
   }, [_vm._v("\n                    Create new episode\n                    "), _c('svg', {
     staticClass: "icon icon-plus"
   }, [_c('use', {
     attrs: {
       "xlink:href": "#icon-plus"
     }
-  })])])]), _vm._v(" "), _c('h2', [_vm._v("Episodes")]), _vm._v(" "), _c('p', {
+  })])])], 1), _vm._v(" "), _c('h2', [_vm._v("Episodes")]), _vm._v(" "), _c('p', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -37847,20 +37820,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "panel panel-default episode episode--in-list"
     }, [_c('div', {
       staticClass: "panel-heading"
-    }, [_c('h3', {
-      directives: [{
-        name: "link",
-        rawName: "v-link",
-        value: ({
-          path: '/episodes/' + episode.number
-        }),
-        expression: "{ path: '/episodes/' + episode.number }"
-      }],
+    }, [_c('router-link', {
       staticClass: "episode__title",
       staticStyle: {
         "cursor": "pointer"
+      },
+      attrs: {
+        "tag": "h3",
+        "to": '/episodes/' + episode.number
       }
-    }, [_vm._v(_vm._s(episode.number) + ". " + _vm._s(episode.title))])])])
+    }, [_vm._v(_vm._s(episode.number) + ". " + _vm._s(episode.title))])], 1)])
   }), _vm._v(" "), _c('hr')], 2)]), _vm._v(" "), _c('suggested-topics')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -37878,17 +37847,10 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-md-8 col-md-push-2"
-  }, [_c('button', {
-    directives: [{
-      name: "link",
-      rawName: "v-link",
-      value: ({
-        path: '/'
-      }),
-      expression: "{ path: '/' }"
-    }],
+  }, [_c('router-link', {
     staticClass: "btn btn-default",
     attrs: {
+      "to": "/",
       "type": "button",
       "aria-label": "All Topics"
     }
@@ -38013,7 +37975,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "submit",
       "value": "Post Comment"
     }
-  })])], 2) : _vm._e()])])
+  })])], 2) : _vm._e()])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -38088,17 +38050,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "value": _vm.verb
     }
-  }), _vm._v(" "), _c('a', {
-    directives: [{
-      name: "link",
-      rawName: "v-link",
-      value: ({
-        path: '/'
-      }),
-      expression: "{ path: '/' }"
-    }],
-    staticClass: "btn btn-default"
-  }, [_vm._v("Cancel")])])])])
+  }), _vm._v(" "), _c('router-link', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "to": "/"
+    }
+  }, [_vm._v("Cancel")])], 1)])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -38194,16 +38151,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-8 col-md-push-2"
-  }, [_c('a', {
-    directives: [{
-      name: "link",
-      rawName: "v-link",
-      value: ({
-        path: '/episodes/create'
-      }),
-      expression: "{ path: '/episodes/create' }"
-    }],
-    staticClass: "btn btn-primary add-button pull-right"
+  }, [_c('router-link', {
+    staticClass: "btn btn-primary add-button pull-right",
+    attrs: {
+      "to": "/episodes/create"
+    }
   }, [_vm._v("\n            Add episode\n            "), _c('svg', {
     staticClass: "icon icon-plus"
   }, [_c('use', {
@@ -38233,20 +38185,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "panel panel-default episode episode--in-list"
     }, [_c('div', {
       staticClass: "panel-heading"
-    }, [_c('h3', {
-      directives: [{
-        name: "link",
-        rawName: "v-link",
-        value: ({
-          path: '/episodes/' + episode.number
-        }),
-        expression: "{ path: '/episodes/' + episode.number }"
-      }],
+    }, [_c('router-link', {
       staticClass: "episode__title",
       staticStyle: {
         "cursor": "pointer"
+      },
+      attrs: {
+        "tag": "h3",
+        "to": '/episodes/' + episode.number
       }
-    }, [_vm._v(_vm._s(episode.title))])]), _vm._v(" "), _c('div', {
+    }, [_vm._v(_vm._s(episode.title))])], 1), _vm._v(" "), _c('div', {
       staticClass: "panel-body"
     }, [_c('h3', {
       staticStyle: {
