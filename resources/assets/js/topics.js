@@ -1,3 +1,5 @@
+import Bus from './bus';
+
 export default {
     topics: null,
 
@@ -43,6 +45,7 @@ export default {
             Vue.$http.post('topics', {title: topic.title, description: topic.description})
                 .then(response => {
                     this.topics.push(response.data);
+                    Bus.$emit('add-topic', response.data);
                     resolve(response);
                 })
                 .catch(response => {
@@ -59,6 +62,7 @@ export default {
                 .then(response => {
                     const matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
                     matchedTopic.status = status;
+                    Bus.$emit('update-topic', matchedTopic);
                     resolve(matchedTopic);
                 })
                 .catch(response => {
@@ -80,6 +84,7 @@ export default {
                     }
 
                     matchedTopic.userVotedFor = true;
+                    Bus.$emit('update-topic', matchedTopic);
 
                     resolve(matchedTopic);
                 })

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import Bus from '../bus';
+    import Topics from '../topics';
     
     export default {
         props: ['topics'],
@@ -45,8 +45,10 @@
         },
         methods: {
             flagTopic(topic, status) {
-                topic.status = status;
-                Bus.$emit('update-topic', topic);
+                Topics.flag(topic, status)
+                    .then(({data}) => {
+                        topic = data;
+                    });
             },
             acceptTopic(topic) {
                 this.flagTopic(topic, 'accepted');

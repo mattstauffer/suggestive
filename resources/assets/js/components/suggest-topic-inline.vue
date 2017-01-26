@@ -46,7 +46,6 @@
 
                 Topics.add(this.topic)
                     .then( ({data}) => {
-                        Bus.$emit('add-topic', data);
                         this.topic.title = '';
                         this.topic.description = '';
                     })

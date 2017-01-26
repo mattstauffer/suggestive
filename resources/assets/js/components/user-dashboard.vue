@@ -119,12 +119,11 @@
 
 <script>
     import Topics from './../topics.js';
-    import Bus from '../bus';
 
     export default {
+        props: ['topics'],
         data() {
             return {
-                topics: [],
                 filter: 'suggested',
                 filters: [
                     {
@@ -146,17 +145,11 @@
                 ],
             }
         },
-        created() {
-            Topics.all().then(topics => {
-                this.topics = topics;
-            });
-        },
         methods: {
             voteFor(topic) {
                 Topics.voteFor(topic)
                     .then(r => {
                         topic = r;
-                        Bus.$emit('update-topic', topic);
                     });
             },
             changeFilter(filter) {
