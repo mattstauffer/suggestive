@@ -18,26 +18,36 @@ export default [
     {
     	path: '/suggested-topics',
         component: require('./components/suggested-topics.vue'),
-        adminOnly: true
+        meta: {
+            adminOnly: true
+        }
     },
     {
     	path: '/accepted-topics',
         component: require('./components/accepted-topics.vue'),
-        adminOnly: true
+        meta: {
+            adminOnly: true
+        }
     },
    	{
     	path: '/episodes',
         component: require('./components/episodes.vue'),
-        adminOnly: true
+        meta: {
+            adminOnly: true
+        }
     },
     {
     	path: '/episodes/create',
         component: require('./components/create-episode.vue'),
-        adminOnly: true
+        meta: {
+            adminOnly: true
+        }
     },
     {
     	path: '/episodes/:episode_number',
         component: require('./components/episode.vue'),
-        adminOnly: true
+        meta: {
+            adminOnly: true
+        }
     },
 ]

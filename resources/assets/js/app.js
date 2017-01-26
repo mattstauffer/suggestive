@@ -21,24 +21,23 @@ var router = new VueRouter({
     routes
 });
 
-// router.beforeEach(function (transition) {
-//     if (transition.to.adminOnly) {
-//         if (! Suggestive.isAdmin) {
-//             transition.abort(['YOU SHALL NOT PASS']);
-//         }
-//     }
+router.beforeEach(function (to, from, next) {
+    if (to.meta.adminOnly && ! Suggestive.isAdmin) {
+        console.error('Going to Admin Only');
+        return next(false);
+    }
 
-//     if (transition.to.path == '/' && Suggestive.isAdmin) {
-//         transition.redirect('/admin-dashboard');
-//     }
+    if (to.path == '/' && Suggestive.isAdmin) {
+        return next('/admin-dashboard');
+    }
 
-//     // Catch vue-router bug
-//     if (transition.to.path == '') {
-//         transition.redirect('/');
-//     }
+    // // Catch vue-router bug
+    if (to.path == '') {
+        return next('/');
+    }
 
-//     return true;
-// });
+    return next();
+});
 
 Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
 Vue.component('suggested-topics', require('./components/suggested-topics.vue'));
