@@ -10,8 +10,9 @@
 </template>
 
 <script>
+    import Bus from '../bus';
     export default {
-        props: ['topics', 'episodes'],
+        props: ['topic', 'episodes'],
         data: function () {
             return {
                 episode: null
@@ -23,11 +24,12 @@
                     'topic_id': this.topic.id
                 };
 
-                this.$http.post('episodes/' + val + '/scheduled-topics', data, function (data, status, request) {
-                    // this.$dispatch('hey parent components, i just changed the status of topic #' + topic.id);
-                }).catch(function (data, status, request) {
-                    console.log('error', data);
-                });
+                this.$http.post('episodes/' + val + '/scheduled-topics', data)
+                    .then(() => {
+                        Bus.$emit('update-topic', this.topic);
+                    }).catch(err => {
+                        console.log('error', err);
+                    });
             }
         }
     };
