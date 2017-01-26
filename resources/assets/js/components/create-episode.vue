@@ -104,11 +104,7 @@
 
 <script>
     export default {
-        props: {
-            episodes: {
-                sync: true
-            }
-        },
+        props: ['episodes'],
         data: function () {
             return {
                 selected: [],

@@ -30,11 +30,7 @@
 
 <script>
     export default {
-        props: {
-            episodes: {
-                sync: true
-            },
-        },
+        props: ['episodes'],
         methods: {
             startCreating: function () {
                 this.creating = true;

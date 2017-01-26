@@ -31,11 +31,7 @@
     import Topics from './../topics.js';
 
     export default {
-        props: {
-            episodes: {
-                sync: true
-            }
-        },
+        props: ['episodes'],
         data() {
             return {
                 topics: []

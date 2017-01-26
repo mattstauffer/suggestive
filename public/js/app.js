@@ -17031,11 +17031,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: {
-        episodes: {
-            sync: true
-        }
-    },
+    props: ['episodes'],
     data: function data() {
         return {
             topics: []
@@ -17100,11 +17096,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: {
-        episodes: {
-            sync: true
-        }
-    },
+    props: ['episodes'],
     methods: {
         startCreating: function startCreating() {
             this.creating = true;
@@ -17227,11 +17219,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: {
-        episodes: {
-            sync: true
-        }
-    },
+    props: ['episodes'],
     data: function data() {
         return {
             selected: [],
@@ -17417,11 +17405,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: {
-        episodes: {
-            sync: true
-        }
-    },
+    props: ['episodes'],
     methods: {
         deleteEpisode: function deleteEpisode(episode) {
             if (!confirm("Are you sure?")) {
@@ -17738,10 +17722,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: {
-        topic: {},
-        episodes: {}
-    },
+    props: ['topics', 'episodes'],
     data: function data() {
         return {
             episode: null

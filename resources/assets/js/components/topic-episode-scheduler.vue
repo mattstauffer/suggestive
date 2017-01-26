@@ -11,10 +11,7 @@
 
 <script>
     export default {
-        props: {
-            topic: {},
-            episodes: {},
-        },
+        props: ['topics', 'episodes'],
         data: function () {
             return {
                 episode: null

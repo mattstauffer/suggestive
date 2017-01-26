@@ -36,11 +36,7 @@
 <script>
     import Bus from '../bus';
     export default {
-        props: {
-            episodes: {
-                sync: true
-            }
-        },
+        props: ['episodes'],
         methods: {
             deleteEpisode: function (episode) {
                 if (! confirm("Are you sure?")) {
