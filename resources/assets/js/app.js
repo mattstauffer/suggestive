@@ -79,6 +79,14 @@ var App = new Vue({
                     return e.id !== episode.id;
                 });
             });
+            Bus.$on('update-topic', topic => {
+                console.log('Handling', topic);
+                let index = this.topics.findIndex(t => {
+                    return t.id == topic.id;
+                });
+                console.log(index, this.topics[index]);
+                Vue.set(this.topics[index], topic);
+            });
         }
     }
 }).$mount("#app");
