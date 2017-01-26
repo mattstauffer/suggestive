@@ -13,7 +13,6 @@ export default {
         return new Promise((resolve, reject) => {
             Vue.$http.get('topics')
                 .then(response => {
-                    console.log(response.data);
                     this.topics = response.data;
                     resolve(this.topics);
                 })

@@ -47,7 +47,6 @@
             },
             topicsForEpisode(){
                 return this.topics.filter(t => {
-                    console.log(t);
                     return t.episode_id == this.episode.id;
                 });
             }
