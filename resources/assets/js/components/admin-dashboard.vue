@@ -16,7 +16,7 @@
             <h2>Episodes</h2>
 
             <p v-show="episodes.length == 0">No episodes.</p>
-            <div v-for="episode in episodes | orderBy 'number' -1" class="panel panel-default episode episode--in-list">
+            <div v-for="episode in episodes" class="panel panel-default episode episode--in-list">
                 <div class="panel-heading"><h3 v-link="{ path: '/episodes/' + episode.number }" class="episode__title" style="cursor: pointer;">{{ episode.number }}. {{ episode.title }}</h3></div>
             </div>
 

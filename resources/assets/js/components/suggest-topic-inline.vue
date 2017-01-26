@@ -23,7 +23,7 @@
 
             <textarea v-model="topic.description" class="form-control" placeholder="Description" style="margin-bottom: 0.5em"></textarea>
 
-            <input type="submit" class="btn btn-primary" value="{{ verb }}" style="width: 100%;">
+            <input type="submit" class="btn btn-primary" :value="verb" style="width: 100%;">
         </form>
     </div>
 </template>

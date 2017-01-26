@@ -13,7 +13,7 @@
                 <label>Description</label><br>
                 <textarea v-model="topic.description" class="form-control"></textarea><br>
 
-                <input type="submit" class="btn btn-primary" value="{{ verb }}">
+                <input type="submit" class="btn btn-primary" :value="verb">
                 <a v-link="{ path: '/' }" class="btn btn-default">Cancel</a>
             </form>
         </div>

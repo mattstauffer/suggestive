@@ -10,7 +10,7 @@
 
                 <p v-show="episodes.length == 0">No episodes.</p>
             </div>
-            <div v-for="episode in episodes | orderBy 'number' -1" class="row" style="margin-bottom: 3rem;">
+            <div v-for="episode in episodes" class="row" style="margin-bottom: 3rem;">
                 <div class="col-xs-3 col-sm-1 episode__number--in-list bg-primary">
                     {{ episode.number }}
                 </div>

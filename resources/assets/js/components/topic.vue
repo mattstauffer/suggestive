@@ -31,7 +31,7 @@
 
                 <div class="media" v-for="comment in comments">
                     <div class="media-left">
-                        <img class="media-object" :src="comment.user.avatar" alt="{{ comment.user.name }}">
+                        <img class="media-object" :src="comment.user.avatar" :alt="comment.user.name">
                     </div>
 
                     <div class="media-body">
