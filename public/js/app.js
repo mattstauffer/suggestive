@@ -24702,20 +24702,28 @@ Vue.component('suggest-topic-inline', __webpack_require__(176));
 
 var App = new Vue({
     data: {
-        topics: [],
-        episodes: []
+        topicsUnsorted: [],
+        episodesUnsorted: []
     },
     router: router,
+    computed: {
+        topics: function topics() {
+            return _.sortBy(this.topicsUnsorted, 'id').reverse();
+        },
+        episodes: function episodes() {
+            return _.sortBy(this.episodesUnsorted, 'id').reverse();
+        }
+    },
     created: function created() {
         var _this = this;
 
         __WEBPACK_IMPORTED_MODULE_1__topics_js__["a" /* default */].all().then(function (topics) {
-            _this.topics = topics;
+            _this.topicsUnsorted = topics;
         });
 
         if (Suggestive.isAdmin) {
             this.$http.get('episodes').then(function (response) {
-                _this.episodes = response.data;
+                _this.episodesUnsorted = response.data;
             }).catch(function (response, status, request) {
                 console.log('error', response);
             });
@@ -24728,18 +24736,21 @@ var App = new Vue({
         listen: function listen() {
             var _this2 = this;
 
+            __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('add-episode', function (episode) {
+                _this2.episodesUnsorted.push(episode);
+            });
             __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('delete-episode', function (episode) {
-                _this2.episodes = _this2.episodes.filter(function (e) {
+                _this2.episodesUnsorted = _this2.episodesUnsorted.filter(function (e) {
                     return e.id !== episode.id;
                 });
             });
             __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('update-topic', function (topic) {
-                _this2.topics[_this2.topics.findIndex(function (t) {
+                _this2.episodesUnsorted[_this2.episodesUnsorted.findIndex(function (t) {
                     return t.id === topic.id;
                 })] = topic;
             });
             __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('add-topic', function (topic) {
-                _this2.topics.push(topic);
+                _this2.episodesUnsorted.push(topic);
             });
         }
     }
@@ -25697,6 +25708,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(2);
 //
 //
 //
@@ -25801,6 +25813,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = {
     props: ['episodes'],
@@ -25830,15 +25844,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         createEpisode: function createEpisode() {
-            var vm = this;
+            var _this = this;
 
             this.$http.post('episodes', { title: this.title, number: this.number }).then(function (response) {
-                vm.title = '';
-                vm.number = '';
-
-                vm.episodes.push(response.data);
-
-                vm.$router.push('/episodes');
+                _this.title = '';
+                _this.number = '';
+                __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('add-episode', response.data);
+                _this.$router.push('/episodes');
             });
         },
         toggleTopic: function toggleTopic(topic) {

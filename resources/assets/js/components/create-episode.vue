@@ -103,6 +103,8 @@
 </template>
 
 <script>
+    import Bus from '../bus';
+    
     export default {
         props: ['episodes'],
         data: function () {
@@ -131,16 +133,13 @@
         },
         methods: {
             createEpisode: function () {
-                var vm = this;
 
                 this.$http.post('episodes', { title: this.title, number: this.number })
                 .then(response => {
-                    vm.title = '';
-                    vm.number = '';
-
-                    vm.episodes.push(response.data);
-
-                    vm.$router.push('/episodes');
+                    this.title = '';
+                    this.number = '';
+                    Bus.$emit('add-episode', response.data);
+                    this.$router.push('/episodes');
                 });
             },
             toggleTopic: function (topic) {

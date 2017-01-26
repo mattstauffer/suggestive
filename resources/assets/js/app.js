@@ -49,20 +49,28 @@ import Bus from './bus.js';
 
 var App = new Vue({
     data: {
-        topics: [],
-        episodes: [],
+        topicsUnsorted: [],
+        episodesUnsorted: [],
     },
     router,
+    computed: {
+        topics(){
+            return _.sortBy(this.topicsUnsorted, 'id').reverse();
+        },
+        episodes(){
+            return _.sortBy(this.episodesUnsorted, 'id').reverse();
+        }
+    },
     created() {
 
         Topics.all().then(topics => {
-            this.topics = topics;
+            this.topicsUnsorted = topics;
         });
 
         if (Suggestive.isAdmin) {
             this.$http.get('episodes')
                 .then(response => {
-                    this.episodes = response.data;
+                    this.episodesUnsorted = response.data;
                 })
                 .catch(function (response, status, request) {
                     console.log('error', response);
@@ -73,18 +81,21 @@ var App = new Vue({
     },
     methods: {
         listen(){
+            Bus.$on('add-episode', episode => {
+                this.episodesUnsorted.push(episode);
+            });
             Bus.$on('delete-episode', episode => {
-                this.episodes = this.episodes.filter(e => {
+                this.episodesUnsorted = this.episodesUnsorted.filter(e => {
                     return e.id !== episode.id;
                 });
             });
             Bus.$on('update-topic', topic => {
-                this.topics[this.topics.findIndex(t => {
+                this.episodesUnsorted[this.episodesUnsorted.findIndex(t => {
                     return t.id === topic.id;
                 })] = topic;
             });
             Bus.$on('add-topic', topic => {
-                this.topics.push(topic);
+                this.episodesUnsorted.push(topic);
             });
         }
     }
