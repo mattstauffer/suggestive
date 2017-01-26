@@ -8,7 +8,7 @@
 
             <form @submit.prevent="suggestTopic">
                 <label>Title</label><br>
-                <input type="text" v-model="topic.title" class="form-control" length="255" autofocus v-el:topic-title-input required><br>
+                <input type="text" v-model="topic.title" class="form-control" length="255" autofocus ref="topicTitleInput" required><br>
 
                 <label>Description</label><br>
                 <textarea v-model="topic.description" class="form-control"></textarea><br>
@@ -53,7 +53,7 @@
             }
         },
         ready() {
-            this.$els.topicTitleInput.focus();
+            this.$refs.topicTitleInput.focus();
         }
     };
 </script>

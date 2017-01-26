@@ -47,7 +47,7 @@
 
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:episode-title-input required placeholder="The one about hats">
+                    <input type="text" v-model="title" class="form-control" length="255" autofocus ref="episodeTitleInput" required placeholder="The one about hats">
                 </div>
 
                 <div class="form-group">
@@ -131,7 +131,7 @@
                 console.log('error', data);
             });
 
-            this.$els.episodeTitleInput.focus();
+            this.$refs.episodeTitleInput.focus();
         },
         methods: {
             createEpisode: function () {

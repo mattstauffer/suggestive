@@ -17238,7 +17238,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log('error', data);
         });
 
-        this.$els.episodeTitleInput.focus();
+        this.$refs.episodeTitleInput.focus();
     },
     methods: {
         createEpisode: function createEpisode() {
@@ -17554,7 +17554,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     ready: function ready() {
-        this.$els.topicTitleInput.focus();
+        this.$refs.topicTitleInput.focus();
     }
 };
 
@@ -17619,7 +17619,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     ready: function ready() {
-        this.$els.topicTitleInput.focus();
+        this.$refs.topicTitleInput.focus();
     }
 };
 
@@ -37435,11 +37435,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       rawName: "v-model",
       value: (_vm.title),
       expression: "title"
-    }, {
-      name: "el",
-      rawName: "v-el:episode-title-input",
-      arg: "episode-title-input"
     }],
+    ref: "episodeTitleInput",
     staticClass: "form-control",
     attrs: {
       "type": "text",
@@ -37620,11 +37617,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       rawName: "v-model",
       value: (_vm.topic.title),
       expression: "topic.title"
-    }, {
-      name: "el",
-      rawName: "v-el:topic-title-input",
-      arg: "topic-title-input"
     }],
+    ref: "topicTitleInput",
     staticClass: "form-control",
     staticStyle: {
       "margin-bottom": "0.5em"
@@ -38051,11 +38045,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       rawName: "v-model",
       value: (_vm.topic.title),
       expression: "topic.title"
-    }, {
-      name: "el",
-      rawName: "v-el:topic-title-input",
-      arg: "topic-title-input"
     }],
+    ref: "topicTitleInput",
     staticClass: "form-control",
     attrs: {
       "type": "text",

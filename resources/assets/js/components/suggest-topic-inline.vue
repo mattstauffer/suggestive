@@ -19,7 +19,7 @@
         <div class="suggestor-box__title">{{ verb }} a Topic</div>
 
         <form @submit.prevent="suggestTopic">
-            <input type="text" v-model="topic.title" class="form-control" length="255" autofocus v-el:topic-title-input required placeholder="Topic" style="margin-bottom: 0.5em">
+            <input type="text" v-model="topic.title" class="form-control" length="255" autofocus ref="topicTitleInput" required placeholder="Topic" style="margin-bottom: 0.5em">
 
             <textarea v-model="topic.description" class="form-control" placeholder="Description" style="margin-bottom: 0.5em"></textarea>
 
@@ -60,7 +60,7 @@
             }
         },
         ready() {
-            this.$els.topicTitleInput.focus();
+            this.$refs.topicTitleInput.focus();
         }
     };
 </script>
