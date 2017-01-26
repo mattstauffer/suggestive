@@ -80,12 +80,9 @@ var App = new Vue({
                 });
             });
             Bus.$on('update-topic', topic => {
-                console.log('Handling', topic);
-                let index = this.topics.findIndex(t => {
-                    return t.id == topic.id;
-                });
-                console.log(index, this.topics[index]);
-                Vue.set(this.topics[index], topic);
+                this.topics[this.topics.findIndex(t => {
+                    return t.id === topic.id;
+                })] = topic;
             });
         }
     }

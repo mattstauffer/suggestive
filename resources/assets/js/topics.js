@@ -73,7 +73,7 @@ export default {
 
             Vue.$http.post('topics/' + topic.id + '/votes', [])
                 .then(response => {
-                    const matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
+                    let matchedTopic = this.topics.find(candidate => candidate.id == topic.id);
 
                     if (response.status == 200) {
                         matchedTopic.votes++;
