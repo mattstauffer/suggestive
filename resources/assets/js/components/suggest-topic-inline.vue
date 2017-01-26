@@ -30,6 +30,7 @@
 
 <script>
     import Topics from '../topics.js';
+    import Bus from '../bus';
 
     export default {
         data() {
@@ -43,15 +44,15 @@
         methods: {
             suggestTopic() {
 
-                Topics.add(this.topic).then(
-                    response => {
+                Topics.add(this.topic)
+                    .then( ({data}) => {
+                        Bus.$emit('add-topic', data);
                         this.topic.title = '';
                         this.topic.description = '';
-                    },
-                    response => {
-                        console.log('error', response);
-                    }
-                );
+                    })
+                    .catch(err => {
+                        console.log('error', err);
+                    });
             }
         },
         computed: {

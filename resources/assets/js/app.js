@@ -84,6 +84,9 @@ var App = new Vue({
                     return t.id === topic.id;
                 })] = topic;
             });
+            Bus.$on('add-topic', topic => {
+                this.topics.push(topic);
+            });
         }
     }
 }).$mount("#app");
