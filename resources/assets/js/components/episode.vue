@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-if="episode">
         <div class="col-md-8 col-md-push-2">
             <router-link to="/episodes" type="button" class="btn btn-default" aria-label="All Episodes">
                 <svg class="icon icon-back" style=""><use xlink:href="#icon-back"></use></svg>
@@ -9,7 +9,7 @@
             <h2 class="episode__title">Episode {{ episode.number }}: {{ episode.title }}</h2>
             <h3 style="margin-top: 0; font-size: 1em; font-weight: bold;">Topics</h3>
             <ul>
-                <li v-for="topic in episode.topics">
+                <li v-for="topic in topicsForEpisode()">
                     {{ topic.title }}
                 </li>
             </ul>
@@ -22,23 +22,13 @@
 <script>
     import Bus from '../bus';
     export default {
-        props: ['episodes'],
-        data: function () {
-            return {
-                episode: {}
-            };
-        },
-        created: function() {
-            var vm = this;
-
-            this.$http.get('episodes')
-                .then(response => {
-                    this.episode = _.find(this.episodes, function (episode) {
-                        return episode.number == vm.$route.params.episode_number;;
-                    });
-                }).catch(function (data, status, request) {
-                    console.log('error', request);
+        props: ['episodes', 'topics'],
+        computed: {
+            episode(){
+                return this.episodes.find(e => {
+                    return e.id.toString() === this.$route.params.episode_number;
                 });
+            }
         },
         methods: {
             deleteEpisode: function (episode) {
@@ -54,6 +44,12 @@
                     }).catch(err => {
                         console.log('error', err);
                     });
+            },
+            topicsForEpisode(){
+                return this.topics.filter(t => {
+                    console.log(t);
+                    return t.episode_id == this.episode.id;
+                });
             }
         }
     };
