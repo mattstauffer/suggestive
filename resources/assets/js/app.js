@@ -31,7 +31,7 @@ router.beforeEach(function (to, from, next) {
         return next('/admin-dashboard');
     }
 
-    // // Catch vue-router bug
+    // Catch vue-router bug
     if (to.path == '') {
         return next('/');
     }
