@@ -58,7 +58,7 @@ var App = new Vue({
             return _.sortBy(this.topicsUnsorted, 'id').reverse();
         },
         episodes(){
-            return _.sortBy(this.episodesUnsorted, 'id').reverse();
+            return _.sortBy(this.episodesUnsorted, 'number').reverse();
         }
     },
     created() {

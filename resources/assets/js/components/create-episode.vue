@@ -122,11 +122,29 @@
         methods: {
             createEpisode: function () {
                 this.$http.post('episodes', { title: this.title, number: this.number })
-                    .then(response => {
+                    .then(({data}) => {
                         this.title = '';
                         this.number = '';
-                        Bus.$emit('add-episode', response.data);
+                        Bus.$emit('add-episode', data);
+                        this.assignTopic(data.id, this.selectedTopics);
                         this.$router.push('/episodes');
+                    });
+            },
+            assignTopic(episodeId, topics){
+                let topicIds = topics.map(t => {
+                    return t.id;
+                });
+
+                this.$http.post('episodes/' + episodeId + '/scheduled-topics', {topic_id: topicIds})
+                    .then(() => {
+                        topics.map(topic => {
+                            topic.episode_id = episodeId;
+                            return topic;
+                        }).forEach(topic => {
+                            Bus.$emit('update-topic', this.topic);
+                        });
+                    }).catch(err => {
+                        console.log('error', err);
                     });
             },
             toggleTopic: function (topic) {
