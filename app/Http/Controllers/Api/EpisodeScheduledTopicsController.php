@@ -27,12 +27,13 @@ class EpisodeScheduledTopicsController extends Controller
         }
 
         $episode = Episode::findOrFail($episodeId);
-        $topic_ids = $this->array_wrap($request->get('topic_id'));
+        $topic_ids = $this->arrayWrap($request->get('topic_id'));
         $topics = Topic::whereIn('id', $topic_ids)->get();
         $episode->topics()->saveMany($topics);
     }
 
-    private function array_wrap($var){
+    private function arrayWrap($var)
+    {
         return is_array($var) ? $var : [$var];
     }
 }
