@@ -24684,7 +24684,7 @@ router.beforeEach(function (to, from, next) {
         return next('/admin-dashboard');
     }
 
-    // // Catch vue-router bug
+    // Catch vue-router bug
     if (to.path == '') {
         return next('/');
     }
@@ -26665,7 +26665,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     component: __webpack_require__(179)
 }, {
     path: '/admin-dashboard',
-    component: __webpack_require__(170)
+    component: __webpack_require__(170),
+    meta: {
+        adminOnly: true
+    }
 }, {
     path: '/suggest-topic',
     component: __webpack_require__(177)

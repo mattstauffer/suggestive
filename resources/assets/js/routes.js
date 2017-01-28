@@ -9,7 +9,10 @@ export default [
     },
     {
     	path: '/admin-dashboard',
-        component: require('./components/admin-dashboard.vue')
+        component: require('./components/admin-dashboard.vue'),
+        meta: {
+            adminOnly: true
+        }
     },
     {
     	path: '/suggest-topic',
