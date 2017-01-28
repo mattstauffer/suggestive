@@ -148,9 +148,7 @@
         methods: {
             voteFor(topic) {
                 Topics.voteFor(topic)
-                    .then(r => {
-                        topic = r;
-                    });
+                    .then(r => topic = r);
             },
             changeFilter(filter) {
                 this.filter = filter;
@@ -160,9 +158,7 @@
             filteredTopics() {
 
                 return this.topics.filter(topic => {
-                    if (this.filter === null) {
-                        return true;
-                    }
+                    if (this.filter === null) return true;
 
                     return topic.status === this.filter;
                 });

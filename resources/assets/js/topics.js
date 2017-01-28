@@ -23,6 +23,7 @@ export default {
         });
     },
 
+    // this method should never be called
     find(topicId) {
         return new Promise((resolve, reject) => {
             this.all()
