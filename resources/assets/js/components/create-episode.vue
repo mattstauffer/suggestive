@@ -1,8 +1,8 @@
 <style scoped>
-.topic--in-list {
-    cursor: pointer;
-    margin-bottom: 0.25em;
-}
+    .topic--in-list {
+        cursor: pointer;
+        margin-bottom: 0.25em;
+    }
     .topic--in-list:hover {
         transform: rotate(-0.5deg) scale(1.04);
     }
@@ -62,19 +62,19 @@
                     <div class="col-sm-6">
                         <h3 class="topic-selector__column-head">Scheduled topics</h3>
                         <div
-                            v-for="topic in acceptedTopicsSelected"
+                            v-for="topic in selectedTopics"
                             @click="toggleTopic(topic)"
                             class="panel topic topic--in-list panel-primary"
                             >
                             <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
                         </div>
-                        <p v-show="acceptedTopicsSelected.length == 0">Select a few topics to cover!</p>
+                        <p v-show="selectedTopics.length == 0">Select a few topics to cover!</p>
                     </div>
                     <div class="col-sm-6">
                         <h3 class="topic-selector__column-head">Available topics</h3>
                         <div class="topic-selector__available-topics">
                             <div
-                                v-for="topic in acceptedTopicsNotSelected"
+                                v-for="topic in availableTopics"
                                 @click="toggleTopic(topic)"
                                 class="panel topic topic--in-list panel-default"
                                 >
@@ -104,76 +104,62 @@
 
 <script>
     import Bus from '../bus';
-    
+    import Topics from '../topics';
+
     export default {
-        props: ['episodes'],
+        props: ['episodes', 'topics'],
         data: function () {
             return {
                 selected: [],
                 title: '',
                 number: '',
-                topicName: '',
-                acceptedTopics: []
+                topicName: ''
             };
         },
-        ready: function () {
-            this.$http.get('topics?status=accepted', function (data, status, request) {
-                this.acceptedTopics = data;
-
-                // @todo: How do we handle this?
-                for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
-                    var topic = this.acceptedTopics[i];
-                    this.selected[topic.id] = false;
-                }
-            }).catch(function (data, status, request) {
-                console.log('error', data);
-            });
-
+        mounted() {
             this.$refs.episodeTitleInput.focus();
         },
         methods: {
             createEpisode: function () {
-
                 this.$http.post('episodes', { title: this.title, number: this.number })
-                .then(response => {
-                    this.title = '';
-                    this.number = '';
-                    Bus.$emit('add-episode', response.data);
-                    this.$router.push('/episodes');
-                });
+                    .then(response => {
+                        this.title = '';
+                        this.number = '';
+                        Bus.$emit('add-episode', response.data);
+                        this.$router.push('/episodes');
+                    });
             },
             toggleTopic: function (topic) {
-                this.selected.$set(topic.id, !this.selected[topic.id]);
+                Vue.set(this.selected, topic.id, !this.selected[topic.id]);
             },
             topicIsSelected: function (topic) {
                 return !!this.selected[topic.id];
             },
             addTopic: function () {
-                var vm = this;
-
-                this.$http.post('topics', { title: this.topicName })
-                    .then(response => {
-                        vm.topicName = '';
-                        vm.acceptedTopics.push(response.data);
-                        vm.selected.$set(response.data.id, true);
+                Topics.add({ title: this.topicName })
+                    .then(({data}) => {
+                        this.topicName = '';
+                        Vue.set(this.selected, data.id, !this.selected[data.id]);
                     });
             }
         },
         computed: {
-            acceptedTopicsSelected: function () {
-                // @todo: Underscore map
-                var vm = this;
-                return this.acceptedTopics.filter(function (topic) {
-                    return vm.topicIsSelected(topic);
+            selectedTopics: function () {
+                return this.acceptedTopics.filter(topic => {
+                    console.log('Check For Selected: ' + this.topicIsSelected(topic));
+                    return this.topicIsSelected(topic);
                 });
             },
-            acceptedTopicsNotSelected: function () {
-                // @todo: Underscore map
-                var vm = this;
-                return this.acceptedTopics.filter(function (topic) {
-                    return ! vm.topicIsSelected(topic);
+            availableTopics: function () {
+                return this.acceptedTopics.filter(topic => {
+                    return ! this.topicIsSelected(topic);
                 });
             },
+            acceptedTopics(){
+                return this.topics.filter(topic => {
+                    return topic.status === 'accepted' && !topic.episode_id;
+                });
+            }
         }
     };
 </script>
