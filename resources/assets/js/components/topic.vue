@@ -1,9 +1,9 @@
 <template>
-    <div class="col-md-8 col-md-push-2" v-cloak>
-        <button v-link="{ path: '/' }" type="button" class="btn btn-default" aria-label="All Topics">
+    <div class="col-md-8 col-md-push-2" v-cloak v-if="topic">
+        <router-link to="/" type="button" class="btn btn-default" aria-label="All Topics">
             <svg class="icon icon-back" style=""><use xlink:href="#icon-back"></use></svg>
             All Topics
-        </button>
+        </router-link>
 
         <h2>Topic: {{ topic.title }}</h2>
 
@@ -31,7 +31,7 @@
 
                 <div class="media" v-for="comment in comments">
                     <div class="media-left">
-                        <img class="media-object" :src="comment.user.avatar" alt="{{ comment.user.name }}">
+                        <img class="media-object" :src="comment.user.avatar" :alt="comment.user.name">
                     </div>
 
                     <div class="media-body">
@@ -61,40 +61,39 @@
 
 <script>
     import Topics from './../topics.js';
+    import Bus from '../bus';
 
     export default {
+        props: ['topics'],
         data() {
             return {
-                topic: {},
                 comments: [],
                 loadingComments: true,
                 newComment: {}
             }
         },
+        computed: {
+            topic(){
+                return this.topics.find(t => {
+                    return t.id.toString() == this.$route.params.topic_id;
+                });
+            }
+        },
         created() {
-            Topics.find(this.$route.params.topic_id)
-                .then(
-                    topic => {
-                        this.topic = topic;
-                        this.storeComments();
-                    },
-                    request => {
-                        console.log('error', request);
-                    }
-            );
+            this.$nextTick(() => {
+                this.storeComments()
+            });
         },
         methods: {
             storeComments() {
-                var url = 'topics/' + this.topic.id + '/comments';
+                var url = 'topics/' + this.$route.params.topic_id + '/comments';
 
                 this.$http.get(url)
-                    .then((data, status, request) => {
+                    .then(({data}) => {
                         this.comments = data.map(comment => {
                             comment.created_at = moment.utc(comment.created_at.date).fromNow();
-
                             return comment;
                         });
-
                         this.loadingComments = false;
                     }).catch((data, status, request) => {
                         console.log('error', request);
@@ -105,12 +104,14 @@
                 var url = 'topics/' + this.topic.id + '/comments';
 
                 this.$http.post(url, this.newComment)
-                    .then(response => {
+                    .then(({data}) => {
                         data.created_at = moment(data.created_at.date).fromNow();
-
+                        this.topic = this.topic.commentCount++;
+                        Bus.$emit('update-topic', this.topic);
                         this.comments.push(data);
                         this.newComment = {};
-                    }).catch((data, status, request) => {
+                    })
+                    .catch((data, status, request) => {
                         if (request.status == 422) {
                             alert('Please fill in all fields.');
                         }
