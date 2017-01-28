@@ -4723,6 +4723,9 @@ var bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
             });
         });
     },
+
+
+    // this method should never be called
     find: function find(topicId) {
         var _this2 = this;
 
@@ -24708,7 +24711,7 @@ var App = new Vue({
             return _.sortBy(this.topicsUnsorted, 'id').reverse();
         },
         episodes: function episodes() {
-            return _.sortBy(this.episodesUnsorted, 'id').reverse();
+            return _.sortBy(this.episodesUnsorted, 'number').reverse();
         }
     },
     created: function created() {
@@ -24737,9 +24740,7 @@ var App = new Vue({
                 _this2.episodesUnsorted.push(episode);
             });
             __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('delete-episode', function (episode) {
-                _this2.episodesUnsorted = _this2.episodesUnsorted.filter(function (e) {
-                    return e.id !== episode.id;
-                });
+                _this2.episodesUnsorted = _.without(_this2.episodesUnsorted, episode);
             });
             __WEBPACK_IMPORTED_MODULE_2__bus_js__["a" /* default */].$on('update-topic', function (topic) {
                 _this2.topicsUnsorted[_this2.topicsUnsorted.findIndex(function (t) {
@@ -25688,15 +25689,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: ['episodes', 'topics'],
-    methods: {
-        startCreating: function startCreating() {
-            this.creating = true;
-        },
-        stopCreating: function stopCreating() {
-            this.creating = false;
-        }
-    }
+    props: ['episodes', 'topics']
 };
 
 /***/ }),
@@ -25706,6 +25699,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__topics__ = __webpack_require__(3);
 //
 //
 //
@@ -25810,75 +25804,90 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    props: ['episodes'],
+    props: ['episodes', 'topics'],
     data: function data() {
         return {
             selected: [],
             title: '',
             number: '',
-            topicName: '',
-            acceptedTopics: []
+            topicName: ''
         };
     },
-    ready: function ready() {
-        this.$http.get('topics?status=accepted', function (data, status, request) {
-            this.acceptedTopics = data;
-
-            // @todo: How do we handle this?
-            for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
-                var topic = this.acceptedTopics[i];
-                this.selected[topic.id] = false;
-            }
-        }).catch(function (data, status, request) {
-            console.log('error', data);
-        });
-
+    mounted: function mounted() {
         this.$refs.episodeTitleInput.focus();
     },
+
     methods: {
         createEpisode: function createEpisode() {
             var _this = this;
 
-            this.$http.post('episodes', { title: this.title, number: this.number }).then(function (response) {
+            this.$http.post('episodes', { title: this.title, number: this.number }).then(function (_ref) {
+                var data = _ref.data;
+
                 _this.title = '';
                 _this.number = '';
-                __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('add-episode', response.data);
+                __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('add-episode', data);
+                _this.assignTopic(data.id, _this.selectedTopics);
                 _this.$router.push('/episodes');
             });
         },
+        assignTopic: function assignTopic(episodeId, topics) {
+            var topicIds = topics.map(function (t) {
+                return t.id;
+            });
+
+            this.$http.post('episodes/' + episodeId + '/scheduled-topics', { topic_id: topicIds }).then(function () {
+                topics.map(function (topic) {
+                    topic.episode_id = episodeId;
+                    return topic;
+                }).forEach(function (topic) {
+                    return __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('update-topic', topic);
+                });
+            }).catch(function (err) {
+                return console.log('error', err);
+            });
+        },
+
         toggleTopic: function toggleTopic(topic) {
-            this.selected.$set(topic.id, !this.selected[topic.id]);
+            Vue.set(this.selected, topic.id, !this.selected[topic.id]);
         },
         topicIsSelected: function topicIsSelected(topic) {
             return !!this.selected[topic.id];
         },
         addTopic: function addTopic() {
-            var vm = this;
+            var _this2 = this;
 
-            this.$http.post('topics', { title: this.topicName }).then(function (response) {
-                vm.topicName = '';
-                vm.acceptedTopics.push(response.data);
-                vm.selected.$set(response.data.id, true);
+            __WEBPACK_IMPORTED_MODULE_1__topics__["a" /* default */].add({ title: this.topicName }).then(function (_ref2) {
+                var data = _ref2.data;
+
+                _this2.topicName = '';
+                Vue.set(_this2.selected, data.id, !_this2.selected[data.id]);
             });
         }
     },
     computed: {
-        acceptedTopicsSelected: function acceptedTopicsSelected() {
-            // @todo: Underscore map
-            var vm = this;
+        selectedTopics: function selectedTopics() {
+            var _this3 = this;
+
             return this.acceptedTopics.filter(function (topic) {
-                return vm.topicIsSelected(topic);
+                return _this3.topicIsSelected(topic);
             });
         },
-        acceptedTopicsNotSelected: function acceptedTopicsNotSelected() {
-            // @todo: Underscore map
-            var vm = this;
+        availableTopics: function availableTopics() {
+            var _this4 = this;
+
             return this.acceptedTopics.filter(function (topic) {
-                return !vm.topicIsSelected(topic);
+                return !_this4.topicIsSelected(topic);
+            });
+        },
+        acceptedTopics: function acceptedTopics() {
+            return this.topics.filter(function (topic) {
+                return topic.status === 'accepted' && !topic.episode_id;
             });
         }
     }
@@ -25929,16 +25938,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         deleteEpisode: function deleteEpisode(episode) {
             var _this2 = this;
 
-            if (!confirm("Are you sure?")) {
-                return;
-            }
+            if (!confirm("Are you sure?")) return;
 
             this.$http.delete('episodes/' + episode.id).then(function (response) {
-                console.log('BALETED');
                 __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('delete-episode', episode);
                 _this2.$router.push("/episodes");
             }).catch(function (err) {
-                console.log('error', err);
+                return console.log('error', err);
             });
         },
         topicsForEpisode: function topicsForEpisode() {
@@ -25999,15 +26005,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['episodes', 'topics'],
     methods: {
         deleteEpisode: function deleteEpisode(episode) {
-            if (!confirm("Are you sure?")) {
-                return;
-            }
+            if (!confirm("Are you sure?")) return;
 
             this.$http.delete('episodes/' + episode.id).then(function (response) {
-                console.log('BALETED');
                 __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('delete-episode', episode);
             }).catch(function (err) {
-                console.log('error', err);
+                return console.log('error', err);
             });
         },
         topicsForEpisode: function topicsForEpisode(episode) {
@@ -26040,9 +26043,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         handleClick: function handleClick(event) {
-            if (this.isOpen) {
-                return;
-            }
+            if (this.isOpen) return;
 
             event.stopPropagation();
             this.bindListeners();
@@ -26050,7 +26051,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         bindListeners: function bindListeners() {
             var vm = this,
-                body = document.getElementsByTagName('body')[0];
+                body = document.querySelector('body');
 
             body.addEventListener('click', function dropdownDismiss() {
                 body.removeEventListener('click', dropdownDismiss);
@@ -26143,7 +26144,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.topic.title = '';
                 _this.topic.description = '';
             }).catch(function (err) {
-                console.log('error', err);
+                return console.log('error', err);
             });
         }
     },
@@ -26152,7 +26153,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return Suggestive.isAdmin ? 'Add' : 'Suggest';
         }
     },
-    ready: function ready() {
+    mounted: function mounted() {
         this.$refs.topicTitleInput.focus();
     }
 };
@@ -26203,12 +26204,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         suggestTopic: function suggestTopic() {
             var _this = this;
 
-            __WEBPACK_IMPORTED_MODULE_0__topics_js__["a" /* default */].add(this.topic).then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_0__topics_js__["a" /* default */].add(this.topic).then(function () {
                 _this.topic.title = '';
                 _this.topic.description = '';
                 _this.$router.push('/');
-            }, function (response) {
-                console.log('error', response);
+            }).catch(function (err) {
+                return console.log('error', err);
             });
         }
     },
@@ -26269,17 +26270,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['topics'],
     computed: {
         suggestedTopics: function suggestedTopics() {
-            return this.topics ? this.topics.filter(function (topic) {
+            return this.topics.filter(function (topic) {
                 return topic.status == "suggested";
-            }) : [];
+            });
         }
     },
     methods: {
         flagTopic: function flagTopic(topic, status) {
             __WEBPACK_IMPORTED_MODULE_0__topics__["a" /* default */].flag(topic, status).then(function (_ref) {
                 var data = _ref.data;
-
-                topic = data;
+                return topic = data;
             });
         },
         acceptTopic: function acceptTopic(topic) {
@@ -26325,14 +26325,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'topic.episode_id': function topicEpisode_id(val) {
             var _this = this;
 
-            var data = {
-                'topic_id': this.topic.id
-            };
-
-            this.$http.post('episodes/' + val + '/scheduled-topics', data).then(function () {
-                __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('update-topic', _this.topic);
+            this.$http.post('episodes/' + val + '/scheduled-topics', { 'topic_id': this.topic.id }).then(function () {
+                return __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('update-topic', _this.topic);
             }).catch(function (err) {
-                console.log('error', err);
+                return console.log('error', err);
             });
         }
     }
@@ -26636,7 +26632,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         voteFor: function voteFor(topic) {
             __WEBPACK_IMPORTED_MODULE_0__topics_js__["a" /* default */].voteFor(topic).then(function (r) {
-                topic = r;
+                return topic = r;
             });
         },
         changeFilter: function changeFilter(filter) {
@@ -26648,9 +26644,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             return this.topics.filter(function (topic) {
-                if (_this.filter === null) {
-                    return true;
-                }
+                if (_this.filter === null) return true;
 
                 return topic.status === _this.filter;
             });
@@ -26716,7 +26710,7 @@ exports = module.exports = __webpack_require__(4)();
 
 
 // module
-exports.push([module.i, "\n.topic--in-list[data-v-2a2c64ce] {\n    cursor: pointer;\n    margin-bottom: 0.25em;\n}\n.topic--in-list[data-v-2a2c64ce]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n}\n.topic--in-list.panel-default:hover > .panel-heading[data-v-2a2c64ce] {\n        background: #fff;\n}\n.topic--in-list.panel-primary:hover > .panel-heading[data-v-2a2c64ce] {\n        background: #69A7DC;\n}\n.topic-selector[data-v-2a2c64ce] {\n    background: #fafafa;\n    border: 4px solid #ddd;\n    border-radius: 0.25em;\n    padding: 1em;\n}\n.topic-selector__column-head[data-v-2a2c64ce] {\n        border-bottom: 1px solid #ddd;\n        font-size: 1.5em;\n        margin-top: 0;\n        padding-bottom: 0.25em;\n}\n.topic-selector__available-topics[data-v-2a2c64ce] {\n        height: 20em;\n        overflow-y: scroll;\n        margin-left: -0.5em;\n        margin-right: -0.5em;\n        margin-bottom: 1em;\n        margin-top: 1em;\n        padding: 0.5em;\n}\n", ""]);
+exports.push([module.i, "\n.topic--in-list[data-v-2a2c64ce] {\n        cursor: pointer;\n        margin-bottom: 0.25em;\n}\n.topic--in-list[data-v-2a2c64ce]:hover {\n        -webkit-transform: rotate(-0.5deg) scale(1.04);\n                transform: rotate(-0.5deg) scale(1.04);\n}\n.topic--in-list.panel-default:hover > .panel-heading[data-v-2a2c64ce] {\n        background: #fff;\n}\n.topic--in-list.panel-primary:hover > .panel-heading[data-v-2a2c64ce] {\n        background: #69A7DC;\n}\n.topic-selector[data-v-2a2c64ce] {\n    background: #fafafa;\n    border: 4px solid #ddd;\n    border-radius: 0.25em;\n    padding: 1em;\n}\n.topic-selector__column-head[data-v-2a2c64ce] {\n        border-bottom: 1px solid #ddd;\n        font-size: 1.5em;\n        margin-top: 0;\n        padding-bottom: 0.25em;\n}\n.topic-selector__available-topics[data-v-2a2c64ce] {\n        height: 20em;\n        overflow-y: scroll;\n        margin-left: -0.5em;\n        margin-right: -0.5em;\n        margin-bottom: 1em;\n        margin-top: 1em;\n        padding: 0.5em;\n}\n", ""]);
 
 // exports
 
@@ -46097,7 +46091,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-6"
   }, [_c('h3', {
     staticClass: "topic-selector__column-head"
-  }, [_vm._v("Scheduled topics")]), _vm._v(" "), _vm._l((_vm.acceptedTopicsSelected), function(topic) {
+  }, [_vm._v("Scheduled topics")]), _vm._v(" "), _vm._l((_vm.selectedTopics), function(topic) {
     return _c('div', {
       staticClass: "panel topic topic--in-list panel-primary",
       on: {
@@ -46114,8 +46108,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.acceptedTopicsSelected.length == 0),
-      expression: "acceptedTopicsSelected.length == 0"
+      value: (_vm.selectedTopics.length == 0),
+      expression: "selectedTopics.length == 0"
     }]
   }, [_vm._v("Select a few topics to cover!")])], 2), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
@@ -46123,7 +46117,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "topic-selector__column-head"
   }, [_vm._v("Available topics")]), _vm._v(" "), _c('div', {
     staticClass: "topic-selector__available-topics"
-  }, _vm._l((_vm.acceptedTopicsNotSelected), function(topic) {
+  }, _vm._l((_vm.availableTopics), function(topic) {
     return _c('div', {
       staticClass: "panel topic topic--in-list panel-default",
       on: {
