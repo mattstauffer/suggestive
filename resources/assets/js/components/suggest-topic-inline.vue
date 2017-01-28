@@ -19,17 +19,18 @@
         <div class="suggestor-box__title">{{ verb }} a Topic</div>
 
         <form @submit.prevent="suggestTopic">
-            <input type="text" v-model="topic.title" class="form-control" length="255" autofocus v-el:topic-title-input required placeholder="Topic" style="margin-bottom: 0.5em">
+            <input type="text" v-model="topic.title" class="form-control" length="255" autofocus ref="topicTitleInput" required placeholder="Topic" style="margin-bottom: 0.5em">
 
             <textarea v-model="topic.description" class="form-control" placeholder="Description" style="margin-bottom: 0.5em"></textarea>
 
-            <input type="submit" class="btn btn-primary" value="{{ verb }}" style="width: 100%;">
+            <input type="submit" class="btn btn-primary" :value="verb" style="width: 100%;">
         </form>
     </div>
 </template>
 
 <script>
     import Topics from '../topics.js';
+    import Bus from '../bus';
 
     export default {
         data() {
@@ -43,15 +44,12 @@
         methods: {
             suggestTopic() {
 
-                Topics.add(this.topic).then(
-                    response => {
+                Topics.add(this.topic)
+                    .then( ({data}) => {
                         this.topic.title = '';
                         this.topic.description = '';
-                    },
-                    response => {
-                        console.log('error', response);
-                    }
-                );
+                    })
+                    .catch(err => console.log('error', err));
             }
         },
         computed: {
@@ -59,8 +57,8 @@
                 return Suggestive.isAdmin ? 'Add' : 'Suggest';
             }
         },
-        ready() {
-            this.$els.topicTitleInput.focus();
+        mounted() {
+            this.$refs.topicTitleInput.focus();
         }
     };
 </script>

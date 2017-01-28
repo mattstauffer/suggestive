@@ -83,7 +83,7 @@
                 <p v-show="filteredTopics.length == 0">No topics matching this filter.</p>
                 <div v-for="topic in filteredTopics" class="row topic-row">
                     <div class="col-xs-3 col-sm-2 col-md-1" style="text-align: right">
-                        <a @click.prevent="voteFor(topic)" v-bind:class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
+                        <a @click.prevent="voteFor(topic)" :class="[ 'btn', 'btn-primary', 'vote-button', topic.userVotedFor ? 'disabled' : '' ]">
                             <div class="clearfix">
                                 <svg v-show="! topic.userVotedFor" class="icon icon-arrow-up" transition="expand"><use xlink:href="#icon-arrow-up"></use></svg>
                                 <svg v-show="topic.userVotedFor" class="icon icon-checkmark" transition="expand"><use xlink:href="#icon-checkmark"></use></svg>
@@ -97,12 +97,12 @@
                         <div class="topic topic--in-list">
                             <div class="">
                                 <h3 class="topic__title">
-                                    <a v-link="{ path: '/topics/' + topic.id }">{{ topic.title }}</a>
+                                    <router-link :to="'/topics/' + topic.id">{{ topic.title }}</router-link>
                                     <div class="pull-right topic__meta" style="text-align: right;">
                                         <span class="topic__status">{{ topic.status }}</span><br>
                                         {{ topic.suggestor }}<br>
-                                        <a v-link="{ path: '/topics/' + topic.id }">({{ topic.commentCount }}
-                                        {{ topic.commentCount == 1 ? 'comment' : 'comments' }})</a>
+                                        <router-link :to="'/topics/' + topic.id">({{ topic.commentCount }}
+                                        {{ topic.commentCount == 1 ? 'comment' : 'comments' }})</router-link>
                                     </div>
                                 </h3>
                             </div>
@@ -121,9 +121,9 @@
     import Topics from './../topics.js';
 
     export default {
+        props: ['topics'],
         data() {
             return {
-                topics: [],
                 filter: 'suggested',
                 filters: [
                     {
@@ -145,14 +145,10 @@
                 ],
             }
         },
-        created() {
-            Topics.all().then(topics => {
-                this.topics = topics;
-            });
-        },
         methods: {
             voteFor(topic) {
-                Topics.voteFor(topic);
+                Topics.voteFor(topic)
+                    .then(r => topic = r);
             },
             changeFilter(filter) {
                 this.filter = filter;
@@ -162,9 +158,7 @@
             filteredTopics() {
 
                 return this.topics.filter(topic => {
-                    if (this.filter === null) {
-                        return true;
-                    }
+                    if (this.filter === null) return true;
 
                     return topic.status === this.filter;
                 });

@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-if="suggestedTopics">
         <div class="col-md-8 col-md-push-2">
             <suggest-topic-button verb="Add"></suggest-topic-button>
             <h2>Suggested Topics</h2>
@@ -32,29 +32,19 @@
 </template>
 
 <script>
-    import Topics from './../topics.js';
-
+    import Topics from '../topics';
+    
     export default {
-        data() {
-            return {
-                topics: [],
-            }
-        },
+        props: ['topics'],
         computed: {
             suggestedTopics() {
-                return this.topics.filter(topic => {
-                    return topic.status == "suggested";
-                });
+                return this.topics.filter(topic => topic.status == "suggested");
             }
-        },
-        created() {
-            Topics.all().then(topics => {
-                this.topics = topics;
-            });
         },
         methods: {
             flagTopic(topic, status) {
-                Topics.flag(topic, status);
+                Topics.flag(topic, status)
+                    .then(({data}) => topic = data);
             },
             acceptTopic(topic) {
                 this.flagTopic(topic, 'accepted');

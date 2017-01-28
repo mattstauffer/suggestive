@@ -6,16 +6,14 @@
 
 <script>
     export default {
-        data: function () {
+        data () {
             return {
                 'isOpen': false,
             };
         },
         methods: {
             handleClick: function (event) {
-                if (this.isOpen) {
-                    return;
-                }
+                if (this.isOpen) return;
 
                 event.stopPropagation();
                 this.bindListeners();
@@ -23,9 +21,9 @@
             },
             bindListeners: function () {
                 var vm = this,
-                    body = document.getElementsByTagName('body')[0];
+                    body = document.querySelector('body');
 
-                body.addEventListener('click', function dropdownDismiss () {
+                body.addEventListener('click', function dropdownDismiss(){
                     body.removeEventListener('click', dropdownDismiss);
                     vm.isOpen = false;
                 });
