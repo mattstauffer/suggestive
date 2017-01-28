@@ -49,9 +49,7 @@
                         this.topic.title = '';
                         this.topic.description = '';
                     })
-                    .catch(err => {
-                        console.log('error', err);
-                    });
+                    .catch(err => console.log('error', err));
             }
         },
         computed: {
@@ -59,7 +57,7 @@
                 return Suggestive.isAdmin ? 'Add' : 'Suggest';
             }
         },
-        ready() {
+        mounted() {
             this.$refs.topicTitleInput.focus();
         }
     };
