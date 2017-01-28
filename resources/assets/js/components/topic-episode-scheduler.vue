@@ -20,16 +20,9 @@
         },
         watch: {
             'topic.episode_id': function (val) {
-                var data = {
-                    'topic_id': this.topic.id
-                };
-
-                this.$http.post('episodes/' + val + '/scheduled-topics', data)
-                    .then(() => {
-                        Bus.$emit('update-topic', this.topic);
-                    }).catch(err => {
-                        console.log('error', err);
-                    });
+                this.$http.post('episodes/' + val + '/scheduled-topics', { 'topic_id': this.topic.id })
+                    .then(() => Bus.$emit('update-topic', this.topic))
+                    .catch(err => console.log('error', err));
             }
         }
     };
