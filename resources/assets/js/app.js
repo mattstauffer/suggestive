@@ -85,9 +85,7 @@ var App = new Vue({
                 this.episodesUnsorted.push(episode);
             });
             Bus.$on('delete-episode', episode => {
-                this.episodesUnsorted = this.episodesUnsorted.filter(e => {
-                    return e.id !== episode.id;
-                });
+                this.episodesUnsorted = _.without(this.episodesUnsorted, episode);
             });
             Bus.$on('update-topic', topic => {
                 this.topicsUnsorted[this.topicsUnsorted.findIndex(t => {
