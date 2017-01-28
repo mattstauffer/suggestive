@@ -131,21 +131,15 @@
                     });
             },
             assignTopic(episodeId, topics){
-                let topicIds = topics.map(t => {
-                    return t.id;
-                });
+                let topicIds = topics.map(t => t.id );
 
                 this.$http.post('episodes/' + episodeId + '/scheduled-topics', {topic_id: topicIds})
                     .then(() => {
                         topics.map(topic => {
                             topic.episode_id = episodeId;
                             return topic;
-                        }).forEach(topic => {
-                            Bus.$emit('update-topic', this.topic);
-                        });
-                    }).catch(err => {
-                        console.log('error', err);
-                    });
+                        }).forEach(topic => Bus.$emit('update-topic', topic));
+                    }).catch(err => console.log('error', err));
             },
             toggleTopic: function (topic) {
                 Vue.set(this.selected, topic.id, !this.selected[topic.id]);
@@ -163,20 +157,13 @@
         },
         computed: {
             selectedTopics: function () {
-                return this.acceptedTopics.filter(topic => {
-                    console.log('Check For Selected: ' + this.topicIsSelected(topic));
-                    return this.topicIsSelected(topic);
-                });
+                return this.acceptedTopics.filter(topic => this.topicIsSelected(topic));
             },
             availableTopics: function () {
-                return this.acceptedTopics.filter(topic => {
-                    return ! this.topicIsSelected(topic);
-                });
+                return this.acceptedTopics.filter(topic => ! this.topicIsSelected(topic));
             },
             acceptedTopics(){
-                return this.topics.filter(topic => {
-                    return topic.status === 'accepted' && !topic.episode_id;
-                });
+                return this.topics.filter(topic => topic.status === 'accepted' && !topic.episode_id);
             }
         }
     };
