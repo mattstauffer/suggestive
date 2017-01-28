@@ -38,17 +38,13 @@
         props: ['topics'],
         computed: {
             suggestedTopics() {
-                return this.topics ? this.topics.filter(topic => {
-                    return topic.status == "suggested";
-                }) : [];
+                return this.topics.filter(topic => topic.status == "suggested");
             }
         },
         methods: {
             flagTopic(topic, status) {
                 Topics.flag(topic, status)
-                    .then(({data}) => {
-                        topic = data;
-                    });
+                    .then(({data}) => topic = data);
             },
             acceptTopic(topic) {
                 this.flagTopic(topic, 'accepted');
