@@ -39,22 +39,15 @@
         props: ['episodes', 'topics'],
         methods: {
             deleteEpisode: function (episode) {
-                if (! confirm("Are you sure?")) {
-                    return;
-                }
+                if (! confirm("Are you sure?")) return;
 
                 this.$http.delete('episodes/' + episode.id)
                 .then(response => {
-                    console.log('BALETED');
                     Bus.$emit('delete-episode', episode);
-                }).catch(err => {
-                    console.log('error', err);
-                });
+                }).catch(err => console.log('error', err));
             },
             topicsForEpisode(episode){
-                return this.topics.filter(t => {
-                    return t.episode_id == episode.id;
-                });
+                return this.topics.filter(t => t.episode_id == episode.id);
             }
         }
     };
