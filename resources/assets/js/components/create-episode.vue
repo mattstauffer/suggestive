@@ -1,8 +1,8 @@
 <style scoped>
-    .topic--in-list {
-        cursor: pointer;
-        margin-bottom: 0.25em;
-    }
+.topic--in-list {
+    cursor: pointer;
+    margin-bottom: 0.25em;
+}
     .topic--in-list:hover {
         transform: rotate(-0.5deg) scale(1.04);
     }
@@ -47,7 +47,7 @@
 
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" v-model="title" class="form-control" length="255" autofocus ref="episodeTitleInput" required placeholder="The one about hats">
+                    <input type="text" v-model="title" class="form-control" length="255" autofocus v-el:episode-title-input required placeholder="The one about hats">
                 </div>
 
                 <div class="form-group">
@@ -62,19 +62,19 @@
                     <div class="col-sm-6">
                         <h3 class="topic-selector__column-head">Scheduled topics</h3>
                         <div
-                            v-for="topic in selectedTopics"
+                            v-for="topic in acceptedTopicsSelected"
                             @click="toggleTopic(topic)"
                             class="panel topic topic--in-list panel-primary"
                             >
                             <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
                         </div>
-                        <p v-show="selectedTopics.length == 0">Select a few topics to cover!</p>
+                        <p v-show="acceptedTopicsSelected.length == 0">Select a few topics to cover!</p>
                     </div>
                     <div class="col-sm-6">
                         <h3 class="topic-selector__column-head">Available topics</h3>
                         <div class="topic-selector__available-topics">
                             <div
-                                v-for="topic in availableTopics"
+                                v-for="topic in acceptedTopicsNotSelected"
                                 @click="toggleTopic(topic)"
                                 class="panel topic topic--in-list panel-default"
                                 >
@@ -103,68 +103,83 @@
 </template>
 
 <script>
-    import Bus from '../bus';
-    import Topics from '../topics';
-
     export default {
-        props: ['episodes', 'topics'],
+        props: {
+            episodes: {
+                sync: true
+            }
+        },
         data: function () {
             return {
                 selected: [],
                 title: '',
                 number: '',
-                topicName: ''
+                topicName: '',
+                acceptedTopics: []
             };
         },
-        mounted() {
-            this.$refs.episodeTitleInput.focus();
+        ready: function () {
+            this.$http.get('topics?status=accepted')
+                .then(response => {
+                    this.acceptedTopics = response.data;
+
+                    // @todo: How do we handle this?
+                    for (var i = 0, len = this.acceptedTopics.length; i < len; i++) {
+                        var topic = this.acceptedTopics[i];
+                        this.selected[topic.id] = false;
+                    }
+                }).catch(function (data, status, request) {
+                    console.log('error', data);
+                });
+
+            this.$els.episodeTitleInput.focus();
         },
         methods: {
             createEpisode: function () {
-                this.$http.post('episodes', { title: this.title, number: this.number })
-                    .then(({data}) => {
-                        this.title = '';
-                        this.number = '';
-                        Bus.$emit('add-episode', data);
-                        this.assignTopic(data.id, this.selectedTopics);
-                        this.$router.push('/episodes');
-                    });
-            },
-            assignTopic(episodeId, topics){
-                let topicIds = topics.map(t => t.id );
+                var vm = this;
 
-                this.$http.post('episodes/' + episodeId + '/scheduled-topics', {topic_id: topicIds})
-                    .then(() => {
-                        topics.map(topic => {
-                            topic.episode_id = episodeId;
-                            return topic;
-                        }).forEach(topic => Bus.$emit('update-topic', topic));
-                    }).catch(err => console.log('error', err));
+                this.$http.post('episodes', { title: this.title, number: this.number })
+                .then(response => {
+                    vm.title = '';
+                    vm.number = '';
+
+                    vm.episodes.push(response.data);
+
+                    vm.$route.router.go('/episodes');
+                });
             },
             toggleTopic: function (topic) {
-                Vue.set(this.selected, topic.id, !this.selected[topic.id]);
+                this.selected.$set(topic.id, !this.selected[topic.id]);
             },
             topicIsSelected: function (topic) {
                 return !!this.selected[topic.id];
             },
             addTopic: function () {
-                Topics.add({ title: this.topicName })
-                    .then(({data}) => {
-                        this.topicName = '';
-                        Vue.set(this.selected, data.id, !this.selected[data.id]);
+                var vm = this;
+
+                this.$http.post('topics', { title: this.topicName })
+                    .then(response => {
+                        vm.topicName = '';
+                        vm.acceptedTopics.push(response.data);
+                        vm.selected.$set(response.data.id, true);
                     });
             }
         },
         computed: {
-            selectedTopics: function () {
-                return this.acceptedTopics.filter(topic => this.topicIsSelected(topic));
+            acceptedTopicsSelected: function () {
+                // @todo: Underscore map
+                var vm = this;
+                return this.acceptedTopics.filter(function (topic) {
+                    return vm.topicIsSelected(topic);
+                });
             },
-            availableTopics: function () {
-                return this.acceptedTopics.filter(topic => ! this.topicIsSelected(topic));
+            acceptedTopicsNotSelected: function () {
+                // @todo: Underscore map
+                var vm = this;
+                return this.acceptedTopics.filter(function (topic) {
+                    return ! vm.topicIsSelected(topic);
+                });
             },
-            acceptedTopics(){
-                return this.topics.filter(topic => topic.status === 'accepted' && !topic.episode_id);
-            }
         }
     };
 </script>
