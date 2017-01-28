@@ -34,17 +34,13 @@
         },
         methods: {
             suggestTopic() {
-
-                Topics.add(this.topic).then(
-                    response => {
+                Topics.add(this.topic)
+                    .then(() => {
                         this.topic.title = '';
                         this.topic.description = '';
                         this.$router.push('/');
-                    },
-                    response => {
-                        console.log('error', response);
-                    }
-                );
+                    })
+                    .catch(err => console.log('error', err));
             }
         },
         computed: {
