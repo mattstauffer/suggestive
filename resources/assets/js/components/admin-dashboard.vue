@@ -31,13 +31,5 @@
 <script>
     export default {
         props: ['episodes', 'topics'],
-        methods: {
-            startCreating: function () {
-                this.creating = true;
-            },
-            stopCreating: function () {
-                this.creating = false;
-            }
-        }
     };
 </script>
