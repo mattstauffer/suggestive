@@ -2,6 +2,8 @@
 
 [ ![Codeship Status for mattstauffer/suggestive](https://codeship.com/projects/13c6db40-7e06-0133-5999-1a60f99c26b7/status?branch=master)](https://codeship.com/projects/120269)
 
+**(Completely under development--a free time hacking project, not a production app)**
+
 Suggestive makes it easy for podcasts and other recurring content sources to take suggestions from fans/followers. **Suggestive is still under development. There are no active releases yet. It's pre-Alpha, so fork and use at your own discretion.**
 
 **Features:**
