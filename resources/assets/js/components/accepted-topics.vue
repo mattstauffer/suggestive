@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-if="acceptedTopics">
         <div class="col-md-8 col-md-push-2">
             <suggest-topic-button verb="Add"></suggest-topic-button>
             <h2>Accepted Topics</h2>
@@ -28,30 +28,14 @@
 </template>
 
 <script>
-    import Topics from './../topics.js';
-
     export default {
-        props: {
-            episodes: {
-                sync: true
-            }
-        },
-        data() {
-            return {
-                topics: []
-            }
-        },
+        props: ['episodes', 'topics'],
         computed: {
             acceptedTopics() {
                 return this.topics.filter(topic => {
                     return topic.status == "accepted";
                 });
             }
-        },
-        created() {
-            Topics.all().then(topics => {
-                this.topics = topics;
-            });
         },
         components: {
             'topic-episode-scheduler': require('./topic-episode-scheduler.vue')

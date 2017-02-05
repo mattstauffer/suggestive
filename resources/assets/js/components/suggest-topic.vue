@@ -8,13 +8,13 @@
 
             <form @submit.prevent="suggestTopic">
                 <label>Title</label><br>
-                <input type="text" v-model="topic.title" class="form-control" length="255" autofocus v-el:topic-title-input required><br>
+                <input type="text" v-model="topic.title" class="form-control" length="255" autofocus ref="topicTitleInput" required><br>
 
                 <label>Description</label><br>
                 <textarea v-model="topic.description" class="form-control"></textarea><br>
 
-                <input type="submit" class="btn btn-primary" value="{{ verb }}">
-                <a v-link="{ path: '/' }" class="btn btn-default">Cancel</a>
+                <input type="submit" class="btn btn-primary" :value="verb">
+                <router-link to="/" class="btn btn-default">Cancel</router-link>
             </form>
         </div>
     </div>
@@ -34,17 +34,13 @@
         },
         methods: {
             suggestTopic() {
-
-                Topics.add(this.topic).then(
-                    response => {
+                Topics.add(this.topic)
+                    .then(() => {
                         this.topic.title = '';
                         this.topic.description = '';
-                        this.$route.router.go('/');
-                    },
-                    response => {
-                        console.log('error', response);
-                    }
-                );
+                        this.$router.push('/');
+                    })
+                    .catch(err => console.log('error', err));
             }
         },
         computed: {
@@ -53,7 +49,7 @@
             }
         },
         ready() {
-            this.$els.topicTitleInput.focus();
+            this.$refs.topicTitleInput.focus();
         }
     };
 </script>
