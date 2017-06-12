@@ -11,7 +11,7 @@
                 <input type="text" v-model="topic.title" class="form-control" length="255" autofocus ref="topicTitleInput" required><br>
 
                 <label>Description</label><br>
-                <textarea v-model="topic.description" class="form-control"></textarea><br>
+                <suggestive-editor v-model="topic.description"></suggestive-editor>
 
                 <input type="submit" class="btn btn-primary" :value="verb">
                 <router-link to="/" class="btn btn-default">Cancel</router-link>
@@ -22,6 +22,7 @@
 
 <script>
     import Topics from './../topics.js';
+    import SuggestiveEditor from './suggestive-editor.vue';
 
     export default {
         data() {
@@ -50,6 +51,9 @@
         },
         ready() {
             this.$refs.topicTitleInput.focus();
+        },
+        components: {
+            SuggestiveEditor
         }
     };
 </script>

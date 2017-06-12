@@ -62,7 +62,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
+            <div class="col-md-6 col-md-push-3 col-sm-6 col-sm-push-3">
                 <suggest-topic-inline></suggest-topic-inline>
             </div>
         </div>
@@ -107,7 +107,7 @@
                                 </h3>
                             </div>
                             <div class="">
-                                {{ topic.description }}
+                                <span v-html="topic.description"></span>
                             </div>
                         </div>
                     </div>

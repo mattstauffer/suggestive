@@ -21,7 +21,7 @@
         <form @submit.prevent="suggestTopic">
             <input type="text" v-model="topic.title" class="form-control" length="255" autofocus ref="topicTitleInput" required placeholder="Topic" style="margin-bottom: 0.5em">
 
-            <textarea v-model="topic.description" class="form-control" placeholder="Description" style="margin-bottom: 0.5em"></textarea>
+            <suggestive-editor v-model="topic.description"></suggestive-editor>
 
             <input type="submit" class="btn btn-primary" :value="verb" style="width: 100%;">
         </form>
@@ -31,19 +31,19 @@
 <script>
     import Topics from '../topics.js';
     import Bus from '../bus';
+    import SuggestiveEditor from './suggestive-editor.vue';
 
     export default {
         data() {
             return {
                 topic: {
                     title: '',
-                    description: '',
+                    description: ''
                 }
             }
         },
         methods: {
             suggestTopic() {
-
                 Topics.add(this.topic)
                     .then( ({data}) => {
                         this.topic.title = '';
@@ -59,6 +59,9 @@
         },
         mounted() {
             this.$refs.topicTitleInput.focus();
+        },
+        components: {
+            SuggestiveEditor
         }
     };
 </script>

@@ -22,7 +22,7 @@
             <div class="col-xs-9 col-sm-10 col-md-11">
                 <div class="panel panel-default topic topic--in-list">
                     <div class="panel-body">
-                        {{ topic.description }}
+                        <span v-html="topic.description"></span>
                     </div>
                 </div>
             </div>
