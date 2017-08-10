@@ -11,7 +11,7 @@
                     <div class="panel panel-default topic topic--in-list">
                         <div class="panel-heading"><h3 class="topic__title">{{ topic.title }}</h3></div>
                         <div class="panel-body">
-                            {{ topic.description }}
+                            <span v-html="topic.description"></span>
                         </div>
                         <div class="panel-footer">
                             <div class="btn-group">

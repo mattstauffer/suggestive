@@ -1,6 +1,6 @@
 require('es6-promise/auto');
 window.Vue = require('vue');
-window.VueRouter = require('vue-router');
+import VueRouter from 'vue-router';
 window._ = require('lodash');
 window.moment = require('moment');
 
@@ -39,6 +39,7 @@ router.beforeEach(function (to, from, next) {
     return next();
 });
 
+Vue.use(VueRouter);
 Vue.component('suggest-topic-button', require('./components/suggest-topic-button.vue'));
 Vue.component('suggested-topics', require('./components/suggested-topics.vue'));
 Vue.component('nav-dropdown', require('./components/nav-dropdown.vue'));
